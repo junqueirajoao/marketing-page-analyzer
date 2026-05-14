@@ -1,61 +1,61 @@
 # Marketing Page Analyzer
 
-Aplicação web multiagente para análise e recomendação de melhorias em páginas digitais de marketing para uma instituição financeira.
+Multi-agent web application for analyzing and recommending improvements to digital marketing pages for a financial institution.
 
-## Visão geral
+## Overview
 
-O Marketing Page Analyzer ajuda times de Marketing Digital, UX, Conteúdo e canais digitais a avaliarem páginas de forma mais rápida, padronizada e acionável. A solução analisa URLs, briefings em linguagem natural e, em uma evolução futura, mockups, retornando recomendações sobre SEO, estrutura modular, narrativa, clareza de conteúdo e segurança de marca.
+Marketing Page Analyzer helps Digital Marketing, UX, Content, and digital channel teams evaluate pages faster, more consistently, and with more actionable outputs. The solution analyzes URLs, natural-language briefings, and, in a future evolution, mockups, returning recommendations about SEO, modular structure, narrative, content clarity, and brand safety.
 
-O projeto foi pensado para um hackathon com duas ferramentas principais:
+The project was designed for a hackathon using two main tools:
 
-- **IBM Consulting Advantage**: camada de agentes especializados para análise, raciocínio e recomendações.
-- **IBM Bob**: apoio ao desenvolvimento no VS Code para acelerar implementação, testes, documentação e refatoração.
+- **IBM Consulting Advantage**: specialized agent layer for analysis, reasoning, and recommendations.
+- **IBM Bob**: VS Code development support to accelerate implementation, testing, documentation, and refactoring.
 
-## Problema
+## Problem
 
-Revisar páginas de marketing costuma exigir várias análises manuais ao mesmo tempo:
+Reviewing marketing pages usually requires several manual analyses at the same time:
 
-- SEO técnico e semântico.
-- Clareza da proposta de valor.
-- Estrutura dos módulos da página.
-- Storytelling e progressão narrativa.
-- Qualidade dos CTAs.
-- Tom de marca.
-- Riscos de linguagem em contexto financeiro.
+- Technical and semantic SEO.
+- Value proposition clarity.
+- Page module structure.
+- Storytelling and narrative progression.
+- CTA quality.
+- Brand tone.
+- Language risks in a financial context.
 
-Esse processo pode ser demorado, inconsistente e dependente de múltiplos especialistas. A proposta deste projeto é criar um assistente multiagente que consolida essas análises e entrega um plano de melhoria priorizado.
+This process can be slow, inconsistent, and dependent on multiple specialists. This project proposes a multi-agent assistant that consolidates these analyses and delivers a prioritized improvement plan.
 
-## Solução
+## Solution
 
-O sistema recebe uma URL ou briefing e gera um relatório com:
+The system receives a URL or briefing and generates a report with:
 
-- Score geral da página.
-- Score por dimensão: SEO, storytelling, módulos e segurança de marca.
-- Diagnóstico executivo.
-- Top prioridades.
-- Sugestões de palavras-chave.
-- Recomendações de módulos para manter, remover, mover ou adicionar.
-- Nova estrutura narrativa sugerida.
-- Sugestões de copy antes/depois.
-- Checklist para o time de Marketing.
+- Overall page score.
+- Score by dimension: SEO, storytelling, modules, and brand safety.
+- Executive diagnosis.
+- Top priorities.
+- Keyword suggestions.
+- Module recommendations to keep, remove, move, or add.
+- Suggested new narrative structure.
+- Before/after copy suggestions.
+- Checklist for the Marketing team.
 
-## Arquitetura
+## Architecture
 
 ```text
-Usuário
+User
   |
-  | URL ou briefing
+  | URL or briefing
   v
-Frontend Web
+Web Frontend
   |
   v
-Backend FastAPI
+FastAPI Backend
   |
-  | scraping, extração e normalização
+  | scraping, extraction, and normalization
   v
 Page Intelligence Layer
   |
-  | payload estruturado
+  | structured payload
   v
 IBM Consulting Advantage
   |
@@ -66,39 +66,39 @@ IBM Consulting Advantage
   | Brand Safety Agent
   | Recommendation Agent
   v
-Resultado consolidado
+Consolidated result
   |
   v
-Dashboard e relatório de recomendações
+Dashboard and recommendation report
 ```
 
-## Agentes
+## Agents
 
 ### Orchestrator Agent
 
-Coordena a análise, identifica o tipo da página e consolida os resultados dos demais agentes.
+Coordinates the analysis, identifies the page type, and consolidates the results from the other agents.
 
 ### SEO Agent
 
-Avalia title, meta description, H1, headings, intenção de busca, palavras-chave e oportunidades de melhoria on-page.
+Evaluates title, meta description, H1, headings, search intent, keywords, and on-page improvement opportunities.
 
 ### Module Strategy Agent
 
-Analisa a composição da página em módulos, recomendando o que manter, remover, mover, reescrever ou adicionar.
+Analyzes the page composition in modules, recommending what to keep, remove, move, rewrite, or add.
 
 ### Storytelling Agent
 
-Avalia se a página segue uma narrativa adequada ao objetivo, como conversão, educação, campanha ou posicionamento institucional.
+Evaluates whether the page follows a narrative that fits its goal, such as conversion, education, campaign, or institutional positioning.
 
 ### Brand Safety Agent
 
-Verifica clareza, tom, linguagem sensível e possíveis riscos de promessas fortes demais em contexto financeiro.
+Checks clarity, tone, sensitive language, and possible risks from overly strong claims in a financial context.
 
 ### Recommendation Agent
 
-Transforma os achados dos demais agentes em um plano de ação priorizado por impacto e esforço.
+Transforms findings from the other agents into an action plan prioritized by impact and effort.
 
-## Stack técnica
+## Technical stack
 
 ### Frontend
 
@@ -123,14 +123,14 @@ Transforma os achados dos demais agentes em um plano de ação priorizado por im
 - python-dotenv.
 - Pytest.
 
-### Opcional
+### Optional
 
-- Playwright para páginas renderizadas por JavaScript.
-- ChromaDB ou FAISS para RAG.
-- SQLite para histórico de análises.
-- Exportação em Markdown ou PDF.
+- Playwright for JavaScript-rendered pages.
+- ChromaDB or FAISS for RAG.
+- SQLite for analysis history.
+- Markdown or PDF export.
 
-## Estrutura de pastas
+## Folder structure
 
 ```text
 marketing-page-analyzer/
@@ -196,75 +196,75 @@ marketing-page-analyzer/
         PriorityMatrix.tsx
 ```
 
-## Setup do backend
+## Backend setup
 
-Entre na pasta do backend:
+Enter the backend folder:
 
 ```bash
 cd backend
 ```
 
-Crie o ambiente virtual:
+Create the virtual environment:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-No Windows:
+On Windows:
 
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
 ```
 
-Instale as dependências:
+Install the dependencies:
 
 ```bash
 pip install fastapi uvicorn pydantic pydantic-settings httpx beautifulsoup4 trafilatura readability-lxml lxml python-dotenv pytest
 ```
 
-Ou use:
+Or use:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Rode a API:
+Run the API:
 
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
 
-Teste:
+Test it:
 
 ```bash
 curl http://localhost:8000/health
 ```
 
-## Setup do frontend
+## Frontend setup
 
-Entre na pasta do frontend:
+Enter the frontend folder:
 
 ```bash
 cd frontend
 ```
 
-Instale as dependências:
+Install the dependencies:
 
 ```bash
 npm install
 ```
 
-Rode o projeto:
+Run the project:
 
 ```bash
 npm run dev
 ```
 
-## Variáveis de ambiente
+## Environment variables
 
-Crie um arquivo `.env` no backend a partir do `.env.example`:
+Create a `.env` file in the backend based on `.env.example`:
 
 ```env
 APP_NAME=marketing-page-analyzer
@@ -279,9 +279,9 @@ ENABLE_AGENT_FALLBACK=true
 
 ### `GET /health`
 
-Verifica se a API está ativa.
+Checks whether the API is running.
 
-Resposta:
+Response:
 
 ```json
 {
@@ -291,35 +291,35 @@ Resposta:
 
 ### `POST /analyze/url`
 
-Analisa uma página a partir de uma URL.
+Analyzes a page from a URL.
 
-Entrada:
+Input:
 
 ```json
 {
-  "url": "https://www.exemplo.com.br/pagina",
-  "business_goal": "conversao",
-  "target_audience": "pessoa física interessada em produto financeiro",
-  "page_type_hint": "produto"
+  "url": "https://www.example.com/page",
+  "business_goal": "conversion",
+  "target_audience": "individual interested in a financial product",
+  "page_type_hint": "product"
 }
 ```
 
 ### `POST /analyze/briefing`
 
-Analisa uma página planejada a partir de um briefing.
+Analyzes a planned page from a briefing.
 
-Entrada:
+Input:
 
 ```json
 {
-  "briefing": "Criar uma página para divulgar uma solução financeira para pequenos negócios.",
-  "business_goal": "gerar leads",
-  "target_audience": "microempreendedores e pequenas empresas",
-  "constraints": ["tom simples", "evitar promessas absolutas"]
+  "briefing": "Create a page to promote a financial solution for small businesses.",
+  "business_goal": "generate leads",
+  "target_audience": "micro-entrepreneurs and small businesses",
+  "constraints": ["simple tone", "avoid absolute promises"]
 }
 ```
 
-## Exemplo de resposta
+## Example response
 
 ```json
 {
@@ -332,17 +332,17 @@ Entrada:
     "brand_safety": 90
   },
   "page_summary": {
-    "detected_type": "produto",
-    "primary_goal": "conversao",
-    "main_topic": "solução financeira"
+    "detected_type": "product",
+    "primary_goal": "conversion",
+    "main_topic": "financial solution"
   },
   "recommendations": [
     {
       "priority": "high",
       "area": "SEO",
-      "title": "Reescrever meta description",
-      "why": "A descrição atual não comunica benefício nem intenção de busca.",
-      "suggestion": "Use uma descrição com benefício claro, palavra-chave principal e CTA suave.",
+      "title": "Rewrite meta description",
+      "why": "The current description does not communicate a benefit or search intent.",
+      "suggestion": "Use a description with a clear benefit, primary keyword, and soft CTA.",
       "impact": "high",
       "effort": "low"
     }
@@ -357,31 +357,31 @@ Entrada:
 }
 ```
 
-## Catálogos locais
+## Local catalogs
 
-O projeto usa catálogos JSON para reduzir recomendações genéricas e dar contexto aos agentes.
+The project uses JSON catalogs to reduce generic recommendations and provide context to the agents.
 
 ### `modules_catalog.json`
 
-Define tipos de módulos, como hero, benefícios, FAQ, prova social, simulador, CTA e conteúdo educativo.
+Defines module types such as hero, benefits, FAQ, social proof, simulator, CTA, and educational content.
 
 ### `storytelling_patterns.json`
 
-Define padrões narrativos por tipo de página, como produto, campanha, educação financeira e institucional.
+Defines narrative patterns by page type, such as product, campaign, financial education, and institutional pages.
 
 ### `brand_rules.json`
 
-Define regras de tom e segurança de linguagem, como evitar promessas absolutas e simplificar termos financeiros.
+Defines tone and language safety rules, such as avoiding absolute promises and simplifying financial terms.
 
 ### `keyword_topics.json`
 
-Define temas e palavras-chave iniciais para apoiar sugestões de SEO sem depender de APIs pagas no MVP.
+Defines initial topics and keywords to support SEO suggestions without relying on paid APIs in the MVP.
 
-## Fallback local
+## Local fallback
 
-Para evitar bloqueios durante a demo, o backend deve ter um fallback local caso a integração com IBM Consulting Advantage não esteja configurada.
+To avoid blockers during the demo, the backend should have a local fallback if the IBM Consulting Advantage integration is not configured.
 
-Exemplo:
+Example:
 
 ```python
 class LocalAgentFallback:
@@ -394,13 +394,13 @@ class LocalAgentFallback:
                 "modules": 76,
                 "brand_safety": 88
             },
-            "executive_summary": "Análise simulada para fallback de demo.",
+            "executive_summary": "Simulated analysis for demo fallback.",
             "top_priorities": [
                 {
                     "area": "SEO",
                     "impact": "high",
                     "effort": "low",
-                    "title": "Melhorar title e meta description"
+                    "title": "Improve title and meta description"
                 }
             ]
         }
@@ -410,288 +410,288 @@ class LocalAgentFallback:
 
 ### P0
 
-- Criar backend FastAPI.
-- Criar endpoint `/health`.
-- Criar endpoint `/analyze/url`.
-- Criar endpoint `/analyze/briefing`.
-- Implementar scraper simples.
-- Implementar normalizador de página.
-- Criar catálogos JSON.
-- Criar cliente para IBM Consulting Advantage.
-- Criar fallback local.
-- Criar frontend com formulário de URL.
-- Criar frontend com formulário de briefing.
-- Criar tela de resultado.
-- Criar cards de score.
-- Criar lista de recomendações.
-- Criar visualização de módulos.
-- Criar prompts dos agentes.
-- Criar roteiro de demo.
+- Create FastAPI backend.
+- Create `/health` endpoint.
+- Create `/analyze/url` endpoint.
+- Create `/analyze/briefing` endpoint.
+- Implement simple scraper.
+- Implement page normalizer.
+- Create JSON catalogs.
+- Create client for IBM Consulting Advantage.
+- Create local fallback.
+- Create frontend with URL form.
+- Create frontend with briefing form.
+- Create result screen.
+- Create score cards.
+- Create recommendation list.
+- Create module visualization.
+- Create agent prompts.
+- Create demo script.
 
 ### P1
 
-- Adicionar Playwright para páginas com JavaScript.
-- Adicionar upload de mockup.
-- Adicionar histórico de análises.
-- Adicionar exportação em Markdown.
-- Adicionar testes unitários.
-- Adicionar loading states e tratamento de erro.
+- Add Playwright for JavaScript pages.
+- Add mockup upload.
+- Add analysis history.
+- Add Markdown export.
+- Add unit tests.
+- Add loading states and error handling.
 
 ### P2
 
-- Adicionar RAG com páginas aprovadas.
-- Adicionar benchmark com concorrentes.
-- Adicionar comparação antes/depois.
-- Adicionar geração de wireframe sugerido.
-- Adicionar priorização visual por impacto e esforço.
+- Add RAG with approved pages.
+- Add competitor benchmarking.
+- Add before/after comparison.
+- Add suggested wireframe generation.
+- Add visual prioritization by impact and effort.
 
-## Prompts para IBM Bob
+## Prompts for IBM Bob
 
 ### Backend
 
 ```text
-Crie um backend FastAPI para um aplicativo chamado Marketing Page Analyzer.
+Create a FastAPI backend for an application called Marketing Page Analyzer.
 
-Requisitos:
-- Endpoint GET /health.
-- Endpoint POST /analyze/url.
-- Endpoint POST /analyze/briefing.
-- Usar Pydantic para validação.
-- Separar routes, schemas e services.
-- Criar services para scraper, normalização, detecção de módulos e cliente do IBM Consulting Advantage.
-- Criar fallback local para demo caso a chamada ao IBM Consulting Advantage não esteja configurada.
-- Manter o código simples, testável e bem organizado.
+Requirements:
+- GET /health endpoint.
+- POST /analyze/url endpoint.
+- POST /analyze/briefing endpoint.
+- Use Pydantic for validation.
+- Separate routes, schemas, and services.
+- Create services for scraping, normalization, module detection, and the IBM Consulting Advantage client.
+- Create a local fallback for the demo if the IBM Consulting Advantage call is not configured.
+- Keep the code simple, testable, and well organized.
 ```
 
 ### Scraper
 
 ```text
-Implemente um service scraper.py em Python.
+Implement a scraper.py service in Python.
 
-Requisitos:
-- Receber uma URL.
-- Baixar HTML com httpx.
-- Extrair title, meta description, canonical, headings H1 a H3, links, imagens e texto principal.
-- Usar BeautifulSoup e trafilatura quando fizer sentido.
-- Retornar um dicionário estruturado.
-- Tratar erros de timeout, URL inválida e HTML vazio.
+Requirements:
+- Receive a URL.
+- Download HTML with httpx.
+- Extract title, meta description, canonical, H1 to H3 headings, links, images, and main text.
+- Use BeautifulSoup and trafilatura when appropriate.
+- Return a structured dictionary.
+- Handle timeout errors, invalid URLs, and empty HTML.
 ```
 
 ### Frontend
 
 ```text
-Crie uma interface React com TypeScript para o Marketing Page Analyzer.
+Create a React with TypeScript interface for Marketing Page Analyzer.
 
-Requisitos:
-- Tela inicial com tabs para análise por URL e análise por briefing.
-- Campos para objetivo de negócio e público-alvo.
-- Botão para iniciar análise.
-- Tela de resultado com score geral, scores por área, resumo executivo, top prioridades, mapa de módulos e sugestões de copy.
-- Usar Tailwind CSS.
-- Componentes reutilizáveis.
-- Criar um arquivo lib/api.ts para chamadas ao backend.
+Requirements:
+- Home screen with tabs for URL analysis and briefing analysis.
+- Fields for business goal and target audience.
+- Button to start analysis.
+- Result screen with overall score, scores by area, executive summary, top priorities, module map, and copy suggestions.
+- Use Tailwind CSS.
+- Reusable components.
+- Create a lib/api.ts file for backend calls.
 ```
 
-### Testes
+### Tests
 
 ```text
-Crie testes unitários com pytest para os serviços:
+Create unit tests with pytest for the services:
 - seo_static_analyzer.py.
 - module_detector.py.
 - page_normalizer.py.
 
-Cenários:
-- Página sem title.
-- Página sem meta description.
-- Página com múltiplos H1.
-- Página com headings fora de ordem.
-- Página com módulos vazios.
-- Briefing curto demais.
+Scenarios:
+- Page without title.
+- Page without meta description.
+- Page with multiple H1s.
+- Page with headings out of order.
+- Page with empty modules.
+- Briefing that is too short.
 ```
 
-## Prompts para IBM Consulting Advantage
+## Prompts for IBM Consulting Advantage
 
 ### Orchestrator Agent
 
 ```text
-Você é o Orchestrator Agent de um analisador de páginas de marketing para uma instituição financeira.
+You are the Orchestrator Agent for a marketing page analyzer for a financial institution.
 
-Sua tarefa é coordenar análises especializadas de SEO, módulos, storytelling, conteúdo e segurança de marca.
+Your task is to coordinate specialized analyses of SEO, modules, storytelling, content, and brand safety.
 
-Use os dados normalizados da página, o objetivo de negócio, o público-alvo e os catálogos disponíveis.
+Use the normalized page data, business goal, target audience, and available catalogs.
 
-Você deve:
-1. Identificar o tipo provável da página.
-2. Definir a intenção principal da página.
-3. Consolidar os achados dos agentes especializados.
-4. Retornar uma resposta única, clara e priorizada.
+You must:
+1. Identify the probable page type.
+2. Define the main page intent.
+3. Consolidate findings from the specialized agents.
+4. Return a single, clear, prioritized response.
 
-Critérios:
-- Seja prático.
-- Priorize recomendações de alto impacto.
-- Não invente dados.
-- Sinalize incertezas quando necessário.
-- Evite recomendações genéricas.
-- Retorne apenas JSON válido.
+Criteria:
+- Be practical.
+- Prioritize high-impact recommendations.
+- Do not invent data.
+- Flag uncertainty when necessary.
+- Avoid generic recommendations.
+- Return only valid JSON.
 ```
 
 ### SEO Agent
 
 ```text
-Você é um especialista em SEO para páginas de marketing de serviços financeiros.
+You are an SEO specialist for financial services marketing pages.
 
-Analise metadados, headings, texto principal, links e estrutura da página.
+Analyze metadata, headings, main text, links, and page structure.
 
-Avalie:
+Evaluate:
 - Title tag.
 - Meta description.
 - H1.
-- Hierarquia de H2 e H3.
-- Palavra-chave principal.
-- Palavras-chave secundárias.
-- Intenção de busca.
-- Links internos.
-- Oportunidades para snippets.
+- H2 and H3 hierarchy.
+- Primary keyword.
+- Secondary keywords.
+- Search intent.
+- Internal links.
+- Snippet opportunities.
 
-Retorne JSON válido com score, problemas, recomendações, title sugerido, meta description sugerida, palavra-chave principal e palavras-chave secundárias.
+Return valid JSON with score, issues, recommendations, suggested title, suggested meta description, primary keyword, and secondary keywords.
 ```
 
 ### Module Strategy Agent
 
 ```text
-Você é um estrategista de UX e conteúdo especializado em páginas modulares de marketing.
+You are a UX and content strategist specialized in modular marketing pages.
 
-Você receberá módulos detectados e um catálogo de módulos possíveis.
+You will receive detected modules and a catalog of possible modules.
 
-Avalie:
-- Quais módulos manter.
-- Quais módulos remover.
-- Quais módulos mudar de posição.
-- Quais módulos reescrever.
-- Quais módulos adicionar.
+Evaluate:
+- Which modules to keep.
+- Which modules to remove.
+- Which modules to reposition.
+- Which modules to rewrite.
+- Which modules to add.
 
-Considere tipo da página, objetivo de negócio e público-alvo.
-Retorne JSON válido com justificativa e impacto esperado.
+Consider the page type, business goal, and target audience.
+Return valid JSON with rationale and expected impact.
 ```
 
 ### Storytelling Agent
 
 ```text
-Você é um especialista em storytelling para páginas digitais de marketing.
+You are a storytelling specialist for digital marketing pages.
 
-Analise se a página tem progressão narrativa clara:
-- Gancho.
-- Contexto ou problema.
-- Solução.
-- Benefícios.
-- Prova.
+Analyze whether the page has a clear narrative progression:
+- Hook.
+- Context or problem.
+- Solution.
+- Benefits.
+- Proof.
 - CTA.
-- Redução de objeções.
+- Objection handling.
 
-Compare a estrutura atual com o padrão ideal para o tipo da página.
-Retorne score, diagnóstico, estrutura recomendada e sugestões de copy.
-Retorne apenas JSON válido.
+Compare the current structure with the ideal pattern for the page type.
+Return score, diagnosis, recommended structure, and copy suggestions.
+Return only valid JSON.
 ```
 
 ### Brand Safety Agent
 
 ```text
-Você é um revisor de marca e segurança de conteúdo para uma instituição financeira.
+You are a brand and content safety reviewer for a financial institution.
 
-Analise:
-- Clareza.
-- Tom institucional.
-- Promessas absolutas.
-- Termos financeiros complexos.
-- Riscos de interpretação.
-- CTAs ambíguos.
-- Necessidade de revisão humana.
+Analyze:
+- Clarity.
+- Institutional tone.
+- Absolute promises.
+- Complex financial terms.
+- Interpretation risks.
+- Ambiguous CTAs.
+- Need for human review.
 
-Use as regras de marca fornecidas.
-Retorne JSON válido com score, riscos, trechos problemáticos, sugestões de reescrita e indicação de revisão humana.
+Use the provided brand rules.
+Return valid JSON with score, risks, problematic excerpts, rewrite suggestions, and human review indication.
 ```
 
 ### Recommendation Agent
 
 ```text
-Você é um consultor de marketing digital responsável por transformar análises em plano de ação.
+You are a digital marketing consultant responsible for transforming analyses into an action plan.
 
-Você receberá achados dos agentes de SEO, módulos, storytelling e brand safety.
+You will receive findings from the SEO, module, storytelling, and brand safety agents.
 
-Crie:
-- Resumo executivo.
-- Top 5 prioridades.
+Create:
+- Executive summary.
+- Top 5 priorities.
 - Quick wins.
-- Melhorias estruturais.
-- Sugestões de copy.
-- Nova ordem de módulos.
-- Checklist final.
+- Structural improvements.
+- Copy suggestions.
+- New module order.
+- Final checklist.
 
-Classifique cada recomendação por impacto, esforço e área.
-Retorne apenas JSON válido.
+Classify each recommendation by impact, effort, and area.
+Return only valid JSON.
 ```
 
-## Roteiro de demo
+## Demo script
 
-### Abertura
+### Opening
 
-"O problema que queremos resolver é que otimizar páginas de marketing exige olhar SEO, conteúdo, UX, storytelling, marca e segurança de linguagem ao mesmo tempo. Esse processo normalmente é manual, demorado e pouco padronizado."
+"The problem we want to solve is that optimizing marketing pages requires looking at SEO, content, UX, storytelling, brand, and language safety at the same time. This process is usually manual, time-consuming, and not very standardized."
 
-### Fluxo
+### Flow
 
-1. Abrir o app.
-2. Colar uma URL pública ou inserir um briefing.
-3. Informar objetivo de negócio.
-4. Informar público-alvo.
-5. Rodar análise.
-6. Mostrar score geral.
-7. Mostrar oportunidades de SEO.
-8. Mostrar plano de módulos.
-9. Mostrar storytelling recomendado.
-10. Mostrar sugestões de copy.
-11. Mostrar top prioridades.
+1. Open the app.
+2. Paste a public URL or enter a briefing.
+3. Enter the business goal.
+4. Enter the target audience.
+5. Run the analysis.
+6. Show the overall score.
+7. Show SEO opportunities.
+8. Show the module plan.
+9. Show the recommended storytelling.
+10. Show copy suggestions.
+11. Show top priorities.
 
-### Fechamento
+### Closing
 
-"A solução usa IBM Consulting Advantage para orquestrar agentes especialistas e IBM Bob para acelerar a construção do software. O resultado é uma análise padronizada, explicável e acionável para times de Marketing Digital."
+"The solution uses IBM Consulting Advantage to orchestrate specialist agents and IBM Bob to accelerate software development. The result is a standardized, explainable, and actionable analysis for Digital Marketing teams."
 
-## Critérios de aceite
+## Acceptance criteria
 
-- O usuário consegue analisar uma URL.
-- O usuário consegue analisar um briefing.
-- A API retorna JSON estruturado.
-- O dashboard exibe score geral e scores por área.
-- A solução retorna pelo menos cinco recomendações priorizadas.
-- As recomendações indicam impacto e esforço.
-- O sistema funciona mesmo com fallback local.
-- O README permite rodar o projeto localmente.
+- The user can analyze a URL.
+- The user can analyze a briefing.
+- The API returns structured JSON.
+- The dashboard displays the overall score and scores by area.
+- The solution returns at least five prioritized recommendations.
+- The recommendations indicate impact and effort.
+- The system works even with the local fallback.
+- The README allows the project to be run locally.
 
-## Roadmap sugerido
+## Suggested roadmap
 
-### Fase 1
+### Phase 1
 
 - Backend.
 - Frontend.
 - Scraper.
-- Normalização.
+- Normalization.
 - Fallback.
-- Dashboard básico.
+- Basic dashboard.
 
-### Fase 2
+### Phase 2
 
-- Integração com IBM Consulting Advantage.
-- Agentes especializados.
-- Catálogos de módulos e storytelling.
-- Melhorias de UI.
+- IBM Consulting Advantage integration.
+- Specialized agents.
+- Module and storytelling catalogs.
+- UI improvements.
 
-### Fase 3
+### Phase 3
 
 - Mockups.
-- Histórico.
-- Exportação.
+- History.
+- Export.
 - RAG.
-- Benchmark.
+- Benchmarking.
 
-## Observações
+## Notes
 
-Este projeto não substitui revisão humana de marca, jurídico ou compliance. Ele atua como acelerador de diagnóstico e priorização, ajudando times a encontrarem oportunidades de melhoria com mais velocidade e consistência.
+This project does not replace human brand, legal, or compliance review. It acts as a diagnostic and prioritization accelerator, helping teams find improvement opportunities faster and more consistently.
