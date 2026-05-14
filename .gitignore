@@ -1,2 +1,3 @@
 docs/guia-tecnico-hackathon.md
-docs/guia-tecnico*.md
+docs/guia-tecnico*.md__pycache__/
+*.pyc

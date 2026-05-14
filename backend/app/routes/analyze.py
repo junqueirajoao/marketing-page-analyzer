@@ -1,6 +1,9 @@
 from fastapi import APIRouter
-from app.schemas.input import AnalyzeBriefingRequest
-from app.services.report_builder import build_briefing_analysis_report
+from app.schemas.input import AnalyzeBriefingRequest, AnalyzeUrlRequest
+from app.services.report_builder import (
+    build_briefing_analysis_report,
+    build_url_analysis_report
+)
 
 router = APIRouter()
 
@@ -8,3 +11,8 @@ router = APIRouter()
 @router.post("/briefing")
 def analyze_briefing(payload: AnalyzeBriefingRequest):
     return build_briefing_analysis_report(payload)
+
+
+@router.post("/url")
+def analyze_url(payload: AnalyzeUrlRequest):
+    return build_url_analysis_report(payload)
