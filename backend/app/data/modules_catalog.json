@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Hero com CTA",
+    "best_for": ["produto", "campanha", "conversao"],
+    "purpose": "Apresentar a proposta principal e conduzir para a acao.",
+    "good_when": "Tem beneficio claro, CTA visivel e linguagem direta.",
+    "bad_when": "E generico, tem texto excessivo ou nao explica valor."
+  },
+  {
+    "name": "Beneficios",
+    "best_for": ["produto", "servico", "campanha"],
+    "purpose": "Explicar por que a solucao importa para o usuario.",
+    "good_when": "Mostra beneficios concretos, nao apenas funcionalidades.",
+    "bad_when": "Repete claims genericos ou nao conecta com a dor do publico."
+  },
+  {
+    "name": "Como funciona",
+    "best_for": ["produto", "servico", "educacao"],
+    "purpose": "Reduzir incerteza explicando etapas ou funcionamento.",
+    "good_when": "Usa passos curtos e linguagem simples.",
+    "bad_when": "Tem jargao, etapas demais ou falta clareza operacional."
+  },
+  {
+    "name": "FAQ",
+    "best_for": ["produto", "servico", "educacao"],
+    "purpose": "Responder duvidas e objecoes antes da conversao.",
+    "good_when": "Responde perguntas reais, especificas e uteis.",
+    "bad_when": "Traz perguntas genericas ou respostas juridicas demais."
+  },
+  {
+    "name": "Prova social",
+    "best_for": ["produto", "campanha", "institucional"],
+    "purpose": "Aumentar confianca com evidencias, numeros ou reconhecimentos.",
+    "good_when": "Usa evidencias verificaveis e relevantes.",
+    "bad_when": "Usa claims vagos sem contexto."
+  }
+]

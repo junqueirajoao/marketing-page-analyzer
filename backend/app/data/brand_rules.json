@@ -1,0 +1,17 @@
+[
+  {
+    "rule": "Evitar promessas financeiras absolutas",
+    "bad_examples": ["lucro garantido", "renda garantida", "sem risco", "melhor investimento"],
+    "suggestion": "Use linguagem educativa, contextual e sem promessa de resultado."
+  },
+  {
+    "rule": "Usar linguagem simples",
+    "bad_examples": ["liquidez diaria em alocacao estrategica sem suitability"],
+    "suggestion": "Explique termos financeiros com exemplos praticos."
+  },
+  {
+    "rule": "Deixar CTA claro",
+    "bad_examples": ["Saiba mais", "Clique aqui"],
+    "suggestion": "Prefira CTAs especificos, como Simule seu credito ou Conheca as opcoes."
+  }
+]

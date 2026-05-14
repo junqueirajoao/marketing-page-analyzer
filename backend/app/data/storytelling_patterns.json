@@ -1,0 +1,22 @@
+[
+  {
+    "page_type": "produto",
+    "pattern": ["Problema", "Solucao", "Beneficios", "Como funciona", "Prova", "CTA", "FAQ"],
+    "description": "Ideal para paginas que precisam explicar valor e converter."
+  },
+  {
+    "page_type": "campanha",
+    "pattern": ["Gancho", "Oferta", "Beneficios", "Urgencia", "Confianca", "CTA"],
+    "description": "Ideal para campanhas com uma acao principal."
+  },
+  {
+    "page_type": "educacao_financeira",
+    "pattern": ["Contexto", "Explicacao simples", "Exemplos", "Orientacao pratica", "Proximo passo"],
+    "description": "Ideal para conteudos que precisam ensinar e guiar."
+  },
+  {
+    "page_type": "institucional",
+    "pattern": ["Proposito", "Credibilidade", "Diferenciais", "Servicos", "Prova", "Contato"],
+    "description": "Ideal para paginas de posicionamento e confianca."
+  }
+]
