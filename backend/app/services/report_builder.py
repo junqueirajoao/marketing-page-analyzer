@@ -3,6 +3,7 @@ from app.services.catalog_loader import load_all_catalogs
 from app.services.advantage_client import LocalAgentFallback
 from app.services.scraper import fetch_page
 from app.services.page_normalizer import normalize_page
+from app.services.module_detector import detect_modules
 
 
 def build_briefing_analysis_report(payload: AnalyzeBriefingRequest) -> dict:
@@ -26,6 +27,13 @@ async def build_url_analysis_report(payload: AnalyzeUrlRequest) -> dict:
     # Fetch and normalize page
     raw_page = await fetch_page(str(payload.url))
     normalized_page = normalize_page(raw_page)
+    
+    # Detect modules in the normalized page
+    detected_modules = detect_modules(
+        normalized_page,
+        catalogs["modules_catalog"]
+    )
+    normalized_page["modules"] = detected_modules
     
     # Build agent payload with normalized page data
     agent_payload = {

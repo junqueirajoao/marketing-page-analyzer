@@ -675,11 +675,13 @@ class LocalAgentFallback:
                 - links_count: Number of links
                 - images_count: Number of images
                 - has_error: Whether there was an error fetching/parsing
+                - modules_detected_count: Number of modules detected
         """
         metadata = normalized_page.get("metadata", {})
         headings = normalized_page.get("headings", [])
         links = normalized_page.get("links", [])
         images = normalized_page.get("images", [])
+        modules = normalized_page.get("modules", [])
         error = normalized_page.get("error")
         
         return {
@@ -690,7 +692,8 @@ class LocalAgentFallback:
             "headings_count": len(headings),
             "links_count": len(links),
             "images_count": len(images),
-            "has_error": error is not None
+            "has_error": error is not None,
+            "modules_detected_count": len(modules)
         }
 
         suggestions.append({
