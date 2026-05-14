@@ -1,37 +1,2233 @@
 [
   {
-    "name": "Hero com CTA",
-    "best_for": ["produto", "campanha", "conversao"],
-    "purpose": "Apresentar a proposta principal e conduzir para a acao.",
-    "good_when": "Tem beneficio claro, CTA visivel e linguagem direta.",
-    "bad_when": "E generico, tem texto excessivo ou nao explica valor."
+    "id": "module_01",
+    "name": "Breadcrumb Header",
+    "display_name": "Breadcrumb",
+    "generic_type": "Navigation",
+    "description": "Módulo de navegação hierárquica que mostra o caminho da página dentro da arquitetura do site.",
+    "purpose": "Ajudar o usuário a entender onde está, voltar para níveis anteriores e reforçar a organização do conteúdo.",
+    "synonyms": [
+      "breadcrumb",
+      "migalha de pão",
+      "caminho de navegação",
+      "trilha de navegação",
+      "navegação hierárquica"
+    ],
+    "detection_hints": [
+      "costuma aparecer no topo da página, abaixo do header, ou próximo ao rodapé",
+      "contém separadores como >, / ou chevrons entre links",
+      "geralmente mostra termos como Início, Home, Para você, Empresas, Produto ou Página atual",
+      "normalmente tem links pequenos e pouco destaque visual",
+      "não costuma ter imagem, botão principal ou conteúdo persuasivo"
+    ],
+    "common_content": [
+      "links para páginas superiores",
+      "nome da página atual",
+      "categoria ou seção do site"
+    ],
+    "common_ui_elements": [
+      "links textuais",
+      "separadores",
+      "ícones de chevron",
+      "texto pequeno"
+    ],
+    "interactions": [
+      "clique em links anteriores da hierarquia"
+    ],
+    "good_for": [
+      "páginas profundas dentro do site",
+      "produtos financeiros com muitas categorias",
+      "conteúdos institucionais ou regulatórios",
+      "melhorar orientação e navegabilidade"
+    ],
+    "bad_for": [
+      "landing pages muito curtas e focadas em conversão única",
+      "páginas com arquitetura rasa",
+      "primeira dobra quando compete visualmente com o hero"
+    ],
+    "good_when": "O caminho é claro, curto, clicável e ajuda o usuário a entender a localização da página sem atrapalhar a leitura.",
+    "bad_when": "Mostra uma hierarquia confusa, links quebrados, nomes técnicos demais ou aparece com destaque visual maior do que deveria.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página está dentro de uma navegação institucional complexa",
+        "o usuário pode precisar voltar para categorias anteriores"
+      ],
+      "removeWhen": [
+        "a página é uma landing page isolada e o breadcrumb cria distração",
+        "o breadcrumb repete links que já estão claros no header"
+      ],
+      "improveWhen": [
+        "os rótulos são genéricos",
+        "o caminho é longo demais",
+        "a página atual não está identificada"
+      ]
+    }
   },
   {
-    "name": "Beneficios",
-    "best_for": ["produto", "servico", "campanha"],
-    "purpose": "Explicar por que a solucao importa para o usuario.",
-    "good_when": "Mostra beneficios concretos, nao apenas funcionalidades.",
-    "bad_when": "Repete claims genericos ou nao conecta com a dor do publico."
+    "id": "module_02",
+    "name": "Richtext",
+    "display_name": "Texto livre",
+    "generic_type": "Text Content",
+    "description": "Bloco flexível de conteúdo textual, usado para títulos, parágrafos, listas, links e explicações editoriais.",
+    "purpose": "Explicar informações que não exigem estrutura visual complexa, como descrições, orientações, avisos, contextualização e conteúdo institucional.",
+    "synonyms": [
+      "texto livre",
+      "bloco de texto",
+      "conteúdo editorial",
+      "rich text",
+      "texto formatado",
+      "seção textual"
+    ],
+    "detection_hints": [
+      "predominância de texto em relação a imagens ou cards",
+      "pode conter H2, H3, parágrafos, bullets, links e negritos",
+      "não tem layout fortemente estruturado como cards, abas ou acordeões",
+      "pode aparecer em qualquer parte da página",
+      "normalmente é usado para explicar regras, conceitos ou detalhes"
+    ],
+    "common_content": [
+      "títulos",
+      "parágrafos explicativos",
+      "listas",
+      "links inline",
+      "observações",
+      "disclaimers"
+    ],
+    "common_ui_elements": [
+      "texto",
+      "links",
+      "listas",
+      "subtítulos"
+    ],
+    "interactions": [
+      "clique em links textuais"
+    ],
+    "good_for": [
+      "explicações simples",
+      "contextualização",
+      "conteúdo legal ou institucional",
+      "orientações de uso",
+      "detalhes que não precisam virar cards"
+    ],
+    "bad_for": [
+      "conteúdos longos sem escaneabilidade",
+      "comparações complexas",
+      "passo a passo operacional",
+      "benefícios que precisam de destaque visual",
+      "primeira dobra de páginas de conversão"
+    ],
+    "good_when": "O texto é claro, curto, escaneável e usa títulos, listas ou links para facilitar a leitura.",
+    "bad_when": "Vira um bloco denso, genérico, sem hierarquia visual, com jargão ou excesso de informações regulatórias sem organização.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "o conteúdo precisa de explicação textual direta",
+        "a informação é complementar e não exige interação"
+      ],
+      "removeWhen": [
+        "repete informações já apresentadas em módulos mais claros",
+        "é muito longo e reduz a conversão"
+      ],
+      "improveWhen": [
+        "há parágrafos extensos",
+        "faltam subtítulos ou bullets",
+        "a mensagem principal não aparece no início"
+      ],
+      "considerAlternativeModules": [
+        "Accordion para dúvidas ou detalhes extensos",
+        "Card with List para listas de benefícios",
+        "Media with steps para instruções sequenciais"
+      ]
+    }
   },
   {
-    "name": "Como funciona",
-    "best_for": ["produto", "servico", "educacao"],
-    "purpose": "Reduzir incerteza explicando etapas ou funcionamento.",
-    "good_when": "Usa passos curtos e linguagem simples.",
-    "bad_when": "Tem jargao, etapas demais ou falta clareza operacional."
+    "id": "module_03",
+    "name": "Image with text",
+    "display_name": "Imagem com texto",
+    "generic_type": "Image Text Split",
+    "description": "Seção que combina uma imagem com texto explicativo em layout dividido, geralmente lado a lado no desktop.",
+    "purpose": "Apoiar uma mensagem, benefício ou explicação com reforço visual, tornando a seção mais atrativa e compreensível.",
+    "synonyms": [
+      "imagem com texto",
+      "texto com imagem",
+      "split image text",
+      "seção 50/50",
+      "bloco imagem e texto",
+      "feature com imagem"
+    ],
+    "detection_hints": [
+      "tem imagem em uma coluna e texto em outra",
+      "em desktop costuma ter layout lado a lado",
+      "em mobile costuma empilhar imagem e texto",
+      "pode conter título, parágrafo e CTA",
+      "a imagem normalmente ilustra o benefício ou contexto descrito"
+    ],
+    "common_content": [
+      "título",
+      "texto explicativo",
+      "imagem lateral",
+      "CTA opcional",
+      "link secundário opcional"
+    ],
+    "common_ui_elements": [
+      "imagem",
+      "título",
+      "parágrafo",
+      "botão",
+      "link"
+    ],
+    "interactions": [
+      "clique em CTA ou link, quando presente"
+    ],
+    "good_for": [
+      "explicar benefício principal",
+      "humanizar produto financeiro",
+      "apresentar contexto de uso",
+      "quebrar blocos longos de texto",
+      "reforçar storytelling"
+    ],
+    "bad_for": [
+      "conteúdo puramente legal",
+      "comparação de muitas opções",
+      "listas longas",
+      "FAQ",
+      "informação que exige interação complexa"
+    ],
+    "good_when": "A imagem complementa o texto, a mensagem é objetiva e o CTA está alinhado ao próximo passo da jornada.",
+    "bad_when": "A imagem é genérica, decorativa demais ou o texto não se conecta claramente com o visual.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página precisa alternar ritmo visual",
+        "a seção explica um benefício importante"
+      ],
+      "removeWhen": [
+        "a imagem não agrega significado",
+        "o mesmo argumento já está em outro módulo"
+      ],
+      "improveWhen": [
+        "falta CTA em seção de conversão",
+        "o texto está longo demais",
+        "a imagem não representa o público ou contexto"
+      ]
+    }
   },
   {
-    "name": "FAQ",
-    "best_for": ["produto", "servico", "educacao"],
-    "purpose": "Responder duvidas e objecoes antes da conversao.",
-    "good_when": "Responde perguntas reais, especificas e uteis.",
-    "bad_when": "Traz perguntas genericas ou respostas juridicas demais."
+    "id": "module_04",
+    "name": "Accordion",
+    "display_name": "Acordeão ou FAQ",
+    "generic_type": "Expandable Content",
+    "description": "Módulo de conteúdo expansível, usado para organizar perguntas frequentes, detalhes, regras ou informações longas.",
+    "purpose": "Reduzir excesso visual, permitir leitura progressiva e responder dúvidas sem ocupar muito espaço inicial.",
+    "synonyms": [
+      "acordeão",
+      "FAQ",
+      "perguntas frequentes",
+      "conteúdo expansível",
+      "abre e fecha",
+      "lista expansível"
+    ],
+    "detection_hints": [
+      "lista de perguntas ou títulos clicáveis",
+      "cada item abre e fecha ao clicar",
+      "usa ícones de mais, menos, chevron ou seta",
+      "geralmente aparece perto do final da página",
+      "pode ter perguntas começando com Como, O que, Quais, Posso, Quando"
+    ],
+    "common_content": [
+      "perguntas",
+      "respostas",
+      "detalhes operacionais",
+      "regras",
+      "condições",
+      "links complementares"
+    ],
+    "common_ui_elements": [
+      "títulos clicáveis",
+      "ícone de expansão",
+      "painel de resposta",
+      "links dentro das respostas"
+    ],
+    "interactions": [
+      "expandir item",
+      "recolher item",
+      "clicar em links internos"
+    ],
+    "good_for": [
+      "FAQ",
+      "objeções de conversão",
+      "detalhes regulatórios",
+      "informações extensas",
+      "reduzir carga visual no final da página"
+    ],
+    "bad_for": [
+      "mensagem principal da página",
+      "benefícios que precisam estar sempre visíveis",
+      "CTAs principais",
+      "informações críticas que não podem ficar escondidas"
+    ],
+    "good_when": "As perguntas são reais, específicas, bem agrupadas e respondem objeções importantes antes da conversão.",
+    "bad_when": "Esconde informações essenciais, tem perguntas genéricas, respostas longas demais ou linguagem jurídica excessiva.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há muitas dúvidas ou regras detalhadas",
+        "o usuário precisa comparar condições sem poluir a página"
+      ],
+      "removeWhen": [
+        "há poucos itens e eles poderiam estar em texto simples",
+        "o conteúdo escondido é essencial para decisão"
+      ],
+      "improveWhen": [
+        "faltam perguntas sobre preço, contratação, elegibilidade ou funcionamento",
+        "as respostas não terminam com próximo passo quando adequado"
+      ]
+    }
   },
   {
-    "name": "Prova social",
-    "best_for": ["produto", "campanha", "institucional"],
-    "purpose": "Aumentar confianca com evidencias, numeros ou reconhecimentos.",
-    "good_when": "Usa evidencias verificaveis e relevantes.",
-    "bad_when": "Usa claims vagos sem contexto."
+    "id": "module_05",
+    "name": "Carrossel",
+    "display_name": "Carrossel",
+    "generic_type": "Carousel",
+    "description": "Módulo que exibe múltiplos conteúdos dentro de uma área navegável horizontalmente.",
+    "purpose": "Agrupar várias mensagens, cards, banners, produtos ou conteúdos relacionados sem ocupar muito espaço vertical.",
+    "synonyms": [
+      "carrossel",
+      "slider",
+      "carousel",
+      "lista horizontal",
+      "cards deslizáveis",
+      "banners rotativos"
+    ],
+    "detection_hints": [
+      "tem múltiplos itens em sequência horizontal",
+      "pode ter setas, dots, paginação ou swipe",
+      "mostra parte de itens anteriores ou próximos",
+      "pode rotacionar automaticamente ou por interação",
+      "em mobile costuma permitir arrastar lateralmente"
+    ],
+    "common_content": [
+      "cards",
+      "imagens",
+      "banners",
+      "produtos",
+      "benefícios",
+      "depoimentos"
+    ],
+    "common_ui_elements": [
+      "setas",
+      "indicadores",
+      "cards",
+      "imagens",
+      "links",
+      "botões"
+    ],
+    "interactions": [
+      "navegar para item anterior",
+      "navegar para próximo item",
+      "arrastar no mobile",
+      "clicar em item"
+    ],
+    "good_for": [
+      "múltiplos produtos",
+      "ofertas relacionadas",
+      "banners promocionais secundários",
+      "conteúdo editorial agrupado",
+      "reduzir altura da página"
+    ],
+    "bad_for": [
+      "conteúdo essencial que precisa ser visto por todos",
+      "comparações que exigem leitura simultânea",
+      "muitas mensagens críticas",
+      "páginas em que acessibilidade e SEO dependem de conteúdo sempre visível"
+    ],
+    "good_when": "Os itens são independentes, curtos, visualmente consistentes e a navegação é clara em desktop e mobile.",
+    "bad_when": "Esconde conteúdo importante, tem rotação automática agressiva ou dificulta leitura e acessibilidade.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há várias ofertas ou conteúdos equivalentes",
+        "o conteúdo não precisa aparecer todo simultaneamente"
+      ],
+      "removeWhen": [
+        "o item principal fica escondido depois do primeiro slide",
+        "há poucos itens e um grid seria mais claro"
+      ],
+      "improveWhen": [
+        "faltam controles visíveis",
+        "os cards têm tamanhos ou CTAs inconsistentes",
+        "a ordem dos itens não prioriza o objetivo de negócio"
+      ],
+      "considerAlternativeModules": [
+        "Product Showcase para produtos",
+        "Double Box para apenas dois itens",
+        "Card with icon para benefícios curtos"
+      ]
+    }
+  },
+  {
+    "id": "module_06",
+    "name": "Image Icon",
+    "display_name": "Ícones em bolinhas",
+    "generic_type": "Icon Feature List",
+    "description": "Módulo com ícones dentro de círculos ou bolinhas, usado para representar benefícios, etapas, atributos ou recursos. Pode ter imagem lateral no desktop ou não.",
+    "purpose": "Transformar informações curtas em pontos visuais fáceis de escanear, usando ícones circulares como apoio de compreensão.",
+    "synonyms": [
+      "ícones em bolinhas",
+      "ícones circulares",
+      "lista de ícones",
+      "benefícios com ícones",
+      "image icon",
+      "ícones com texto"
+    ],
+    "detection_hints": [
+      "ícones aparecem dentro de círculos ou bolinhas",
+      "cada ícone costuma ter título e descrição curta",
+      "pode ter uma imagem ao lado no desktop",
+      "pode aparecer como lista vertical ou grid",
+      "o ícone é o elemento visual principal de cada item"
+    ],
+    "common_content": [
+      "ícones",
+      "títulos curtos",
+      "descrições curtas",
+      "imagem lateral opcional",
+      "CTA opcional"
+    ],
+    "common_ui_elements": [
+      "ícones circulares",
+      "texto curto",
+      "imagem lateral",
+      "grid ou lista"
+    ],
+    "interactions": [
+      "normalmente não possui interação",
+      "pode ter CTA secundário quando configurado"
+    ],
+    "good_for": [
+      "benefícios simples",
+      "diferenciais",
+      "etapas resumidas",
+      "atributos de produto",
+      "explicações rápidas"
+    ],
+    "bad_for": [
+      "conteúdo longo",
+      "regras complexas",
+      "comparações detalhadas",
+      "documentos e tarifas",
+      "mensagem principal da página"
+    ],
+    "good_when": "Os ícones são claros, consistentes e cada item tem texto curto que comunica um benefício ou atributo específico.",
+    "bad_when": "Os ícones são decorativos, genéricos, repetitivos ou o texto de cada item é longo demais.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a seção precisa apresentar benefícios de forma escaneável",
+        "há entre 3 e 6 pontos curtos"
+      ],
+      "removeWhen": [
+        "os ícones não ajudam a entender o conteúdo",
+        "há muitos itens e a seção fica visualmente poluída"
+      ],
+      "improveWhen": [
+        "os títulos dos itens não comunicam benefício",
+        "os textos repetem a mesma ideia",
+        "a imagem lateral não agrega contexto"
+      ]
+    }
+  },
+  {
+    "id": "module_07",
+    "name": "Contract and tariffs",
+    "display_name": "Contratos e tarifas",
+    "generic_type": "Documents and Legal Links",
+    "description": "Módulo normalmente posicionado no final da página para disponibilizar documentos, condições gerais, regulamentos, contratos, tarifas e materiais legais para download.",
+    "purpose": "Dar transparência e acesso fácil a documentos regulatórios, comerciais ou legais relacionados ao produto ou serviço.",
+    "synonyms": [
+      "contratos e tarifas",
+      "documentos",
+      "condições gerais",
+      "regulamentos",
+      "tarifas",
+      "downloads legais",
+      "documentos importantes"
+    ],
+    "detection_hints": [
+      "geralmente aparece perto do final da página",
+      "contém links para PDF ou documentos",
+      "usa termos como contrato, tarifa, regulamento, condições gerais, termos ou política",
+      "pode ter ícones de download ou arquivo",
+      "normalmente tem função informativa e regulatória, não promocional"
+    ],
+    "common_content": [
+      "contratos",
+      "regulamentos",
+      "condições gerais",
+      "tabelas de tarifas",
+      "políticas",
+      "documentos para download"
+    ],
+    "common_ui_elements": [
+      "links de download",
+      "ícones de arquivo",
+      "listas de documentos",
+      "títulos de seção",
+      "datas ou versões"
+    ],
+    "interactions": [
+      "baixar documento",
+      "abrir PDF",
+      "acessar página de tarifas"
+    ],
+    "good_for": [
+      "produtos financeiros",
+      "páginas reguladas",
+      "transparência de tarifas",
+      "contratação com documentação formal",
+      "reduzir dúvidas jurídicas ou comerciais"
+    ],
+    "bad_for": [
+      "primeira dobra",
+      "seções de campanha emocional",
+      "conteúdo de benefício principal",
+      "páginas muito simples sem documentos associados"
+    ],
+    "good_when": "Os documentos estão bem nomeados, atualizados, agrupados por tema e fáceis de baixar.",
+    "bad_when": "Os links são genéricos, os documentos não indicam versão, há excesso de arquivos sem organização ou aparecem cedo demais na jornada.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página é de produto financeiro com obrigações de transparência",
+        "há documentos necessários para decisão ou contratação"
+      ],
+      "removeWhen": [
+        "não há documentos reais ou os links são irrelevantes",
+        "o módulo aparece em página que não exige esse tipo de suporte"
+      ],
+      "improveWhen": [
+        "faltam nomes claros dos documentos",
+        "não há agrupamento por tipo",
+        "os links de download não são acessíveis ou identificáveis"
+      ]
+    }
+  },
+  {
+    "id": "module_08",
+    "name": "Card with icon",
+    "display_name": "Card com ícone",
+    "generic_type": "Icon Card",
+    "description": "Card individual ou conjunto de cards com ícone, título e descrição curta.",
+    "purpose": "Destacar benefícios, funcionalidades, diferenciais ou passos de forma visual e escaneável.",
+    "synonyms": [
+      "card com ícone",
+      "cards com ícones",
+      "benefício com ícone",
+      "feature card",
+      "icon card"
+    ],
+    "detection_hints": [
+      "cada card contém um ícone",
+      "há título e texto curto dentro do card",
+      "os cards podem aparecer em grid",
+      "pode ter borda, sombra ou fundo destacado",
+      "o ícone não precisa estar dentro de bolinha, diferente de Image Icon"
+    ],
+    "common_content": [
+      "ícone",
+      "título",
+      "descrição",
+      "link opcional",
+      "CTA opcional"
+    ],
+    "common_ui_elements": [
+      "cards",
+      "ícones",
+      "títulos",
+      "texto curto",
+      "links"
+    ],
+    "interactions": [
+      "clique no card",
+      "clique em link ou botão, quando presente"
+    ],
+    "good_for": [
+      "benefícios",
+      "diferenciais",
+      "funcionalidades",
+      "passos simples",
+      "argumentos de venda curtos"
+    ],
+    "bad_for": [
+      "textos longos",
+      "FAQ",
+      "comparativos complexos",
+      "documentos legais",
+      "conteúdo que precisa de imagem real"
+    ],
+    "good_when": "Cada card comunica uma ideia única, com ícone relevante e texto curto.",
+    "bad_when": "Os cards são repetitivos, têm muito texto ou usam ícones que não ajudam a entender o conteúdo.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há uma lista curta de benefícios ou funcionalidades",
+        "o usuário precisa escanear rapidamente os diferenciais"
+      ],
+      "removeWhen": [
+        "há apenas um item e não justifica formato de card",
+        "os cards duplicam conteúdo de outra seção"
+      ],
+      "improveWhen": [
+        "os títulos não são paralelos",
+        "os ícones não têm relação com o texto",
+        "os cards não têm hierarquia visual clara"
+      ]
+    }
+  },
+  {
+    "id": "module_09",
+    "name": "Main Banner",
+    "display_name": "Banner principal",
+    "generic_type": "Hero",
+    "description": "Banner principal da página, normalmente usado na primeira dobra para apresentar a mensagem central, produto, campanha ou oferta.",
+    "purpose": "Comunicar rapidamente a proposta de valor e orientar o usuário para o próximo passo principal.",
+    "synonyms": [
+      "banner principal",
+      "hero",
+      "main banner",
+      "dobra inicial",
+      "chamada principal",
+      "headline principal"
+    ],
+    "detection_hints": [
+      "geralmente aparece logo abaixo do header",
+      "costuma conter o H1",
+      "tem grande destaque visual",
+      "pode ter imagem de fundo, ilustração ou imagem lateral",
+      "pode conter CTA principal",
+      "normalmente resume a promessa da página"
+    ],
+    "common_content": [
+      "headline",
+      "subheadline",
+      "imagem",
+      "CTA principal",
+      "selo ou tag opcional",
+      "oferta ou benefício principal"
+    ],
+    "common_ui_elements": [
+      "imagem grande",
+      "texto em destaque",
+      "botão",
+      "overlay",
+      "tag promocional"
+    ],
+    "interactions": [
+      "clique no CTA principal",
+      "clique em link secundário, quando presente"
+    ],
+    "good_for": [
+      "páginas de produto",
+      "campanhas",
+      "landing pages de conversão",
+      "ofertas prioritárias",
+      "introdução de tema"
+    ],
+    "bad_for": [
+      "conteúdo secundário",
+      "documentos legais",
+      "listas extensas",
+      "páginas em que a primeira dobra precisa ser funcional e não promocional"
+    ],
+    "good_when": "A mensagem é clara, específica, orientada a benefício e tem CTA coerente com o objetivo da página.",
+    "bad_when": "É genérico, não explica valor, não tem CTA claro ou depende apenas de imagem decorativa.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página precisa apresentar uma proposta central",
+        "o objetivo é conversão ou entendimento rápido"
+      ],
+      "removeWhen": [
+        "a página é puramente transacional e o banner atrasa a tarefa",
+        "o conteúdo do banner não está alinhado ao restante da página"
+      ],
+      "improveWhen": [
+        "o H1 não comunica benefício",
+        "falta CTA",
+        "a imagem compete com a leitura",
+        "a oferta não tem contexto"
+      ]
+    }
+  },
+  {
+    "id": "module_10",
+    "name": "Media with steps",
+    "display_name": "Mídia com passo a passo",
+    "generic_type": "Steps with Media",
+    "description": "Módulo que combina imagem, vídeo ou ilustração com uma sequência de etapas.",
+    "purpose": "Explicar processos, jornadas, contratação, instalação, uso de app ou funcionamento de produto de forma sequencial.",
+    "synonyms": [
+      "mídia com passos",
+      "passo a passo com imagem",
+      "etapas com mídia",
+      "como fazer",
+      "tutorial visual",
+      "processo guiado"
+    ],
+    "detection_hints": [
+      "contém passos numerados ou sequenciais",
+      "tem imagem, vídeo ou ilustração acompanhando a explicação",
+      "usa termos como passo, etapa, primeiro, depois, por fim",
+      "pode ter timeline, lista numerada ou cards de etapas",
+      "geralmente ensina uma ação operacional"
+    ],
+    "common_content": [
+      "imagem ou vídeo",
+      "passos numerados",
+      "instruções",
+      "títulos de etapa",
+      "CTA final"
+    ],
+    "common_ui_elements": [
+      "mídia",
+      "números",
+      "lista de etapas",
+      "ícones",
+      "botão final"
+    ],
+    "interactions": [
+      "assistir vídeo",
+      "avançar etapas, se interativo",
+      "clicar em CTA"
+    ],
+    "good_for": [
+      "explicar contratação",
+      "mostrar uso de app",
+      "orientar instalação",
+      "explicar processo financeiro",
+      "reduzir dúvidas operacionais"
+    ],
+    "bad_for": [
+      "benefícios abstratos",
+      "comparativos",
+      "mensagens promocionais curtas",
+      "FAQ simples",
+      "documentos legais"
+    ],
+    "good_when": "As etapas são curtas, sequenciais, acionáveis e a mídia ajuda a entender o processo.",
+    "bad_when": "Há etapas demais, ordem confusa, mídia decorativa ou instruções longas que poderiam ser simplificadas.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "o usuário precisa entender uma jornada antes de converter",
+        "a página explica um processo com várias etapas"
+      ],
+      "removeWhen": [
+        "não existe sequência real",
+        "o módulo transforma uma mensagem simples em algo complexo"
+      ],
+      "improveWhen": [
+        "faltam números ou ordem clara",
+        "as etapas não têm verbo de ação",
+        "não há CTA depois do passo a passo"
+      ]
+    }
+  },
+  {
+    "id": "module_11",
+    "name": "Background with text",
+    "display_name": "Fundo com texto",
+    "generic_type": "Text on Background",
+    "description": "Bloco com texto sobre fundo colorido, imagem ou elemento visual de destaque.",
+    "purpose": "Dar ênfase a uma mensagem, argumento, aviso, benefício ou transição narrativa com impacto visual.",
+    "synonyms": [
+      "fundo com texto",
+      "texto sobre imagem",
+      "bloco com fundo",
+      "banner textual",
+      "faixa de destaque",
+      "text overlay"
+    ],
+    "detection_hints": [
+      "texto aparece sobre fundo colorido ou imagem",
+      "pode ocupar largura total da página",
+      "tem aparência de faixa ou banner",
+      "normalmente destaca uma mensagem curta",
+      "pode ter CTA, mas nem sempre"
+    ],
+    "common_content": [
+      "título curto",
+      "frase de destaque",
+      "parágrafo breve",
+      "CTA opcional"
+    ],
+    "common_ui_elements": [
+      "fundo colorido",
+      "imagem de fundo",
+      "texto em overlay",
+      "botão opcional"
+    ],
+    "interactions": [
+      "clique em CTA, quando presente"
+    ],
+    "good_for": [
+      "destacar mensagem importante",
+      "quebrar ritmo visual",
+      "reforçar benefício",
+      "criar transição entre seções",
+      "campanhas"
+    ],
+    "bad_for": [
+      "textos longos",
+      "conteúdo regulatório",
+      "listas complexas",
+      "informações que exigem leitura detalhada"
+    ],
+    "good_when": "O contraste é bom, a mensagem é curta e o fundo reforça a ideia sem prejudicar legibilidade.",
+    "bad_when": "O texto fica ilegível, o fundo compete com a mensagem ou o bloco vira apenas decoração.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página precisa de uma pausa visual ou reforço emocional",
+        "há uma mensagem curta que merece destaque"
+      ],
+      "removeWhen": [
+        "o conteúdo é longo e difícil de ler sobre fundo",
+        "o fundo não tem relação com a mensagem"
+      ],
+      "improveWhen": [
+        "contraste é baixo",
+        "há excesso de texto",
+        "falta CTA quando a seção pede ação"
+      ]
+    }
+  },
+  {
+    "id": "module_12",
+    "name": "Button Help WhatsApp",
+    "display_name": "Botão flutuante de ajuda ou WhatsApp",
+    "generic_type": "Floating Contact Button",
+    "description": "Botão flutuante configurável para contato ou suporte. Pode operar no modo WhatsApp ou no modo Ajuda.",
+    "purpose": "Oferecer acesso persistente a suporte, atendimento ou chat sem depender da posição do usuário na página.",
+    "synonyms": [
+      "botão flutuante",
+      "botão de ajuda",
+      "botão de WhatsApp",
+      "atalho de contato",
+      "floating button",
+      "floating help button",
+      "floating whatsapp button"
+    ],
+    "detection_hints": [
+      "aparece fixo ou flutuante sobre a página",
+      "normalmente permanece visível durante a rolagem",
+      "pode usar ícone de WhatsApp ou ícone de ajuda",
+      "no modo WhatsApp, pode abrir modal no desktop com QR Code para ir ao chat",
+      "no modo WhatsApp, também pode ser um botão clicável que leva direto ao chat",
+      "no modo Ajuda, exibe ícone flutuante de ajuda e leva para uma URL especificada"
+    ],
+    "common_content": [
+      "ícone de WhatsApp",
+      "ícone de ajuda",
+      "modal com QR Code no desktop",
+      "link direto para chat",
+      "URL configurada de ajuda"
+    ],
+    "common_ui_elements": [
+      "botão flutuante",
+      "ícone",
+      "modal",
+      "QR Code",
+      "link externo ou interno"
+    ],
+    "interactions": [
+      "abrir modal",
+      "ler QR Code",
+      "clicar para abrir chat",
+      "clicar para acessar URL de ajuda",
+      "fechar modal"
+    ],
+    "good_for": [
+      "páginas com necessidade de suporte rápido",
+      "produtos com dúvidas frequentes antes da conversão",
+      "jornadas consultivas",
+      "páginas com atendimento humano ou assistido",
+      "reduzir abandono por dúvida"
+    ],
+    "bad_for": [
+      "páginas em que o CTA principal deve ser a única ação",
+      "experiências com muitos elementos flutuantes",
+      "páginas em que o contato via WhatsApp não é suportado",
+      "contextos em que o botão compete com acessibilidade ou chat já existente"
+    ],
+    "good_when": "O botão tem destino claro, não compete com o CTA principal e o comportamento por device é adequado.",
+    "bad_when": "O botão aparece sem contexto, abre modal confuso, sobrepõe conteúdo importante ou leva para canal não esperado pelo usuário.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página tem alta chance de dúvidas antes da conversão",
+        "o atendimento por WhatsApp ou ajuda externa é parte da jornada"
+      ],
+      "removeWhen": [
+        "já existe outro canal flutuante concorrente",
+        "o botão tira foco de uma conversão principal mais importante"
+      ],
+      "improveWhen": [
+        "não está claro se é ajuda ou WhatsApp",
+        "o modal de QR Code não explica o próximo passo",
+        "a URL de ajuda não é específica para o contexto da página"
+      ]
+    }
+  },
+  {
+    "id": "module_13",
+    "name": "Double Box",
+    "display_name": "Dupla de cards",
+    "generic_type": "Two Card Grid",
+    "description": "Módulo com dois cards lado a lado, cada um representando um tópico, caminho, opção ou argumento. Pode ter botões ou não.",
+    "purpose": "Apresentar duas alternativas, dois públicos, dois benefícios ou dois caminhos de decisão de forma equilibrada.",
+    "synonyms": [
+      "dupla de cards",
+      "dois cards",
+      "double box",
+      "card grid de dois",
+      "grid de dois cards",
+      "cards lado a lado"
+    ],
+    "detection_hints": [
+      "tem dois blocos principais lado a lado no desktop",
+      "cada bloco possui título e texto",
+      "pode ter botão em cada card",
+      "os dois blocos costumam ter peso visual semelhante",
+      "em mobile os cards geralmente ficam empilhados"
+    ],
+    "common_content": [
+      "dois títulos",
+      "duas descrições",
+      "botões opcionais",
+      "ícones ou imagens opcionais"
+    ],
+    "common_ui_elements": [
+      "dois cards",
+      "títulos",
+      "texto",
+      "botões",
+      "links"
+    ],
+    "interactions": [
+      "clique em botão do card",
+      "clique no card, quando configurado"
+    ],
+    "good_for": [
+      "dois públicos diferentes",
+      "cliente e não cliente",
+      "duas opções de contratação",
+      "dois tópicos complementares",
+      "comparação simples"
+    ],
+    "bad_for": [
+      "mais de duas opções",
+      "comparativos muito detalhados",
+      "conteúdo sem simetria entre os cards",
+      "listas longas",
+      "FAQ"
+    ],
+    "good_when": "Os dois cards são paralelos, têm peso semelhante e ajudam o usuário a escolher um caminho.",
+    "bad_when": "Um card é muito mais importante que o outro, há conteúdo demais ou os CTAs competem sem clareza.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página precisa separar dois caminhos de decisão",
+        "há exatamente dois tópicos de importância semelhante"
+      ],
+      "removeWhen": [
+        "há apenas um tópico real",
+        "existem três ou mais opções e o formato limita a compreensão"
+      ],
+      "improveWhen": [
+        "os títulos não deixam clara a diferença entre os cards",
+        "um card tem CTA e o outro não sem motivo",
+        "os textos não seguem a mesma estrutura"
+      ],
+      "considerAlternativeModules": [
+        "Card with icon para três ou mais benefícios",
+        "Card Comparative para comparação direta",
+        "Duo Text Link para chamadas mais simples"
+      ]
+    }
+  },
+  {
+    "id": "module_14",
+    "name": "QR Code Nativo",
+    "display_name": "QR Code nativo",
+    "generic_type": "QR Code CTA",
+    "description": "Módulo de QR Code com comportamento adaptado por device. No desktop, mostra texto e apenas um QR Code ao lado. No mobile, pode exibir botão e permitir imagem genérica.",
+    "purpose": "Levar o usuário para uma ação em outro dispositivo ou aplicativo, como baixar app, continuar jornada no celular ou acessar atendimento.",
+    "synonyms": [
+      "QR Code nativo",
+      "qr code",
+      "QR Code com texto",
+      "baixar app por QR Code",
+      "continuar no celular",
+      "escaneie o QR Code"
+    ],
+    "detection_hints": [
+      "no desktop, mostra texto e QR Code ao lado",
+      "no desktop, não possui imagem genérica junto ao QR Code",
+      "no mobile, pode trocar para botão",
+      "no mobile, pode permitir imagem genérica",
+      "usa termos como escaneie, aponte a câmera, baixe o app ou acesse pelo celular"
+    ],
+    "common_content": [
+      "texto instrucional",
+      "QR Code",
+      "botão no mobile",
+      "imagem genérica opcional no mobile",
+      "instrução de leitura"
+    ],
+    "common_ui_elements": [
+      "QR Code",
+      "texto",
+      "botão mobile",
+      "imagem mobile opcional"
+    ],
+    "interactions": [
+      "ler QR Code no desktop",
+      "clicar em botão no mobile",
+      "abrir app ou link externo"
+    ],
+    "good_for": [
+      "download de aplicativo",
+      "continuação de jornada no celular",
+      "início de atendimento via mobile",
+      "ações que fazem mais sentido no smartphone",
+      "campanhas que conectam desktop e mobile"
+    ],
+    "bad_for": [
+      "ações que devem acontecer na própria página desktop",
+      "conteúdos informativos sem próxima ação",
+      "usuários que já estão no mobile quando não há botão",
+      "jornadas em que QR Code cria fricção desnecessária"
+    ],
+    "good_when": "O texto explica claramente por que escanear, o QR Code é visível e o mobile oferece alternativa clicável.",
+    "bad_when": "O QR Code aparece sem contexto, não há alternativa mobile ou a ação poderia ser resolvida com um link simples.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a conversão depende de aplicativo ou experiência mobile",
+        "a página é acessada em desktop e precisa migrar o usuário para celular"
+      ],
+      "removeWhen": [
+        "o usuário pode concluir a ação melhor na própria página",
+        "não há diferença real entre desktop e mobile"
+      ],
+      "improveWhen": [
+        "falta instrução clara",
+        "o botão mobile não existe",
+        "o QR Code está distante do texto que o explica"
+      ]
+    }
+  },
+  {
+    "id": "module_15",
+    "name": "QR Code With Text",
+    "display_name": "QR Code com texto",
+    "generic_type": "QR Code CTA",
+    "description": "Variante com QR Code, texto, imagem e botão, renderizada de forma igual ou muito parecida em desktop e mobile. Não deve ser priorizada como sugestão padrão.",
+    "purpose": "Apresentar QR Code junto de texto, imagem e botão para conduzir uma ação relacionada a app, atendimento ou continuidade de jornada.",
+    "synonyms": [
+      "QR Code com texto",
+      "qr code com imagem",
+      "qr code com botão",
+      "bloco de qr code",
+      "download com qr code"
+    ],
+    "detection_hints": [
+      "tem QR Code, texto, imagem e botão",
+      "mostra composição parecida em desktop e mobile",
+      "a imagem aparece como parte do módulo, diferente do QR Code Nativo no desktop",
+      "pode ter botão mesmo no desktop",
+      "usa instruções de escaneamento ou download"
+    ],
+    "common_content": [
+      "QR Code",
+      "texto explicativo",
+      "imagem",
+      "botão",
+      "instrução"
+    ],
+    "common_ui_elements": [
+      "QR Code",
+      "imagem",
+      "botão",
+      "texto"
+    ],
+    "interactions": [
+      "ler QR Code",
+      "clicar em botão",
+      "abrir app ou link"
+    ],
+    "good_for": [
+      "casos específicos em que a imagem é necessária para contexto",
+      "campanhas com peça visual associada",
+      "experiências que precisam de QR Code e botão juntos"
+    ],
+    "bad_for": [
+      "sugestão padrão do agente",
+      "jornadas em que QR Code Nativo resolve melhor por device",
+      "páginas com pouco espaço",
+      "ações simples que poderiam usar apenas botão"
+    ],
+    "good_when": "A imagem, o QR Code e o botão têm papéis claros e não criam redundância.",
+    "bad_when": "Duplica ações, ocupa espaço demais ou deveria ser substituído por QR Code Nativo.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página já usa esse padrão e a composição visual é necessária",
+        "há justificativa para exibir imagem e botão junto do QR Code"
+      ],
+      "removeWhen": [
+        "o módulo está sendo usado como padrão sem necessidade",
+        "o QR Code Nativo atenderia melhor a experiência por device"
+      ],
+      "improveWhen": [
+        "o botão e o QR Code levam para destinos diferentes sem explicação",
+        "a imagem não ajuda a entender a ação"
+      ],
+      "recommendationPriority": "low"
+    }
+  },
+  {
+    "id": "module_16",
+    "name": "Duo Text Link",
+    "display_name": "Dupla de links textuais",
+    "generic_type": "Two Text Links",
+    "description": "Módulo com duas chamadas textuais ou dois links complementares, normalmente mais simples e menos visual que uma dupla de cards.",
+    "purpose": "Oferecer dois caminhos de navegação ou conteúdos relacionados sem usar cards, imagens ou estrutura pesada.",
+    "synonyms": [
+      "dupla de links",
+      "dois links",
+      "duo text link",
+      "links textuais duplos",
+      "duas chamadas textuais"
+    ],
+    "detection_hints": [
+      "apresenta dois blocos ou chamadas de texto",
+      "cada chamada possui link",
+      "não tem aparência forte de card",
+      "pode aparecer como lista de dois itens",
+      "é mais textual e leve que Double Box"
+    ],
+    "common_content": [
+      "dois títulos ou rótulos",
+      "dois links",
+      "descrição curta opcional"
+    ],
+    "common_ui_elements": [
+      "links textuais",
+      "setas",
+      "texto curto",
+      "divisor opcional"
+    ],
+    "interactions": [
+      "clique em link"
+    ],
+    "good_for": [
+      "links complementares",
+      "conteúdos de apoio",
+      "duas jornadas secundárias",
+      "faturamento ou documentação relacionada",
+      "navegação simples"
+    ],
+    "bad_for": [
+      "CTAs principais",
+      "comparações que exigem destaque",
+      "ofertas promocionais",
+      "benefícios que precisam de persuasão visual"
+    ],
+    "good_when": "Os dois links são claros, complementares e não precisam competir com o CTA principal.",
+    "bad_when": "Os links parecem soltos, não têm contexto ou deveriam ser cards por exigirem explicação maior.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há dois conteúdos de apoio relacionados",
+        "a ação é secundária e não precisa de destaque visual"
+      ],
+      "removeWhen": [
+        "os links não têm relação direta com a página",
+        "há apenas um link relevante"
+      ],
+      "improveWhen": [
+        "os rótulos são genéricos como saiba mais",
+        "não fica claro o destino de cada link"
+      ]
+    }
+  },
+  {
+    "id": "module_17",
+    "name": "Card Comparative",
+    "display_name": "Card comparativo",
+    "generic_type": "Comparison Cards",
+    "description": "Módulo de cards usado para comparar opções, produtos, planos, condições ou caminhos de forma resumida.",
+    "purpose": "Ajudar o usuário a escolher entre alternativas destacando diferenças principais de maneira simples.",
+    "synonyms": [
+      "card comparativo",
+      "comparativo em cards",
+      "cards de comparação",
+      "comparação simples",
+      "opções comparadas"
+    ],
+    "detection_hints": [
+      "tem dois ou mais cards comparando opções",
+      "cada card representa uma alternativa",
+      "pode conter atributos, benefícios, valores ou CTAs",
+      "os cards têm estrutura similar",
+      "normalmente aparece antes de uma decisão ou conversão"
+    ],
+    "common_content": [
+      "nomes de opções",
+      "benefícios",
+      "atributos",
+      "valores",
+      "CTAs",
+      "selos de destaque"
+    ],
+    "common_ui_elements": [
+      "cards",
+      "colunas",
+      "listas",
+      "botões",
+      "tags"
+    ],
+    "interactions": [
+      "selecionar opção",
+      "clicar em CTA",
+      "abrir detalhes"
+    ],
+    "good_for": [
+      "comparação resumida",
+      "planos ou pacotes",
+      "tipos de produto",
+      "opções de contratação",
+      "diferenças de benefícios"
+    ],
+    "bad_for": [
+      "comparações muito longas",
+      "informações regulatórias extensas",
+      "conteúdo sem alternativas reais",
+      "listas de benefícios não comparativas"
+    ],
+    "good_when": "As opções são comparáveis, os critérios são claros e o usuário consegue entender rapidamente qual caminho escolher.",
+    "bad_when": "Compara coisas diferentes demais, omite critérios importantes ou transforma uma tabela necessária em cards incompletos.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a decisão exige comparar poucas alternativas",
+        "os critérios são simples e escaneáveis"
+      ],
+      "removeWhen": [
+        "não há comparação real",
+        "as opções são muitas ou complexas demais para cards"
+      ],
+      "improveWhen": [
+        "faltam critérios paralelos",
+        "os CTAs não deixam claro o próximo passo",
+        "uma opção é recomendada mas não está destacada"
+      ],
+      "considerAlternativeModules": [
+        "Detailed Comparative para muitas informações",
+        "Double Box para apenas dois caminhos simples"
+      ]
+    }
+  },
+  {
+    "id": "module_18",
+    "name": "Micro Frontend",
+    "display_name": "Micro Frontend",
+    "generic_type": "Embedded Interactive Experience",
+    "description": "Componente funcional ou experiência dinâmica incorporada à página, geralmente com lógica própria, integração ou carregamento independente.",
+    "purpose": "Permitir funcionalidades mais complexas dentro da página, como simulação, formulário avançado, consulta, fluxo transacional ou integração com sistemas.",
+    "synonyms": [
+      "micro frontend",
+      "componente embutido",
+      "experiência dinâmica",
+      "widget funcional",
+      "simulador",
+      "fluxo integrado"
+    ],
+    "detection_hints": [
+      "tem comportamento mais complexo que conteúdo estático",
+      "pode carregar dados dinamicamente",
+      "pode conter formulários, simulações, validações ou integrações",
+      "pode estar embutido via aplicação separada",
+      "geralmente possui estados de carregamento, erro ou sucesso"
+    ],
+    "common_content": [
+      "campos de formulário",
+      "simulações",
+      "resultados dinâmicos",
+      "consultas",
+      "validações",
+      "mensagens de erro"
+    ],
+    "common_ui_elements": [
+      "inputs",
+      "botões",
+      "cards dinâmicos",
+      "loading",
+      "mensagens de erro",
+      "resultados"
+    ],
+    "interactions": [
+      "preencher campos",
+      "submeter dados",
+      "calcular simulação",
+      "consultar informações",
+      "receber feedback dinâmico"
+    ],
+    "good_for": [
+      "simuladores",
+      "contratação assistida",
+      "captação de lead qualificado",
+      "consulta personalizada",
+      "experiências que exigem backend ou integração"
+    ],
+    "bad_for": [
+      "conteúdo meramente informativo",
+      "páginas simples de campanha",
+      "seções sem necessidade de interação",
+      "experiências em que performance é prioridade máxima e a funcionalidade é dispensável"
+    ],
+    "good_when": "A funcionalidade resolve uma necessidade real, tem estados claros e reduz fricção na jornada.",
+    "bad_when": "É usado para algo que poderia ser conteúdo estático, pesa a página ou falha sem fallback.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a conversão depende de interação personalizada",
+        "o usuário precisa calcular, consultar ou preencher algo"
+      ],
+      "removeWhen": [
+        "não há valor funcional real",
+        "o componente atrasa carregamento sem impacto na conversão"
+      ],
+      "improveWhen": [
+        "faltam mensagens de erro claras",
+        "não há fallback",
+        "o objetivo do componente não está explicado antes da interação"
+      ]
+    }
+  },
+  {
+    "id": "module_19",
+    "name": "Call to Action",
+    "display_name": "Chamada para ação",
+    "generic_type": "CTA",
+    "description": "Módulo focado em conduzir o usuário para uma ação específica, como contratar, simular, abrir conta, falar com especialista ou baixar app.",
+    "purpose": "Converter interesse em ação, reforçando o próximo passo da jornada.",
+    "synonyms": [
+      "call to action",
+      "CTA",
+      "chamada para ação",
+      "bloco de conversão",
+      "convite para ação",
+      "próximo passo"
+    ],
+    "detection_hints": [
+      "tem texto persuasivo e botão em destaque",
+      "normalmente aparece depois de benefícios ou explicação",
+      "pode aparecer no meio ou final da página",
+      "usa verbos de ação como simule, contrate, abra, fale, conheça, baixe",
+      "geralmente tem objetivo único"
+    ],
+    "common_content": [
+      "título persuasivo",
+      "texto curto",
+      "botão principal",
+      "link secundário opcional",
+      "imagem opcional"
+    ],
+    "common_ui_elements": [
+      "botão",
+      "texto de apoio",
+      "fundo destacado",
+      "ícone ou imagem opcional"
+    ],
+    "interactions": [
+      "clicar em CTA",
+      "abrir formulário",
+      "ir para contratação",
+      "abrir contato"
+    ],
+    "good_for": [
+      "conversão",
+      "próximo passo claro",
+      "final de seção persuasiva",
+      "campanhas",
+      "páginas com objetivo comercial"
+    ],
+    "bad_for": [
+      "conteúdo puramente informativo sem ação",
+      "seções regulatórias",
+      "momentos em que o usuário ainda não recebeu contexto suficiente",
+      "múltiplas ações concorrentes sem hierarquia"
+    ],
+    "good_when": "O CTA é específico, visível, alinhado ao conteúdo anterior e usa verbo de ação claro.",
+    "bad_when": "O botão é genérico, há CTAs demais competindo ou a ação aparece antes de explicar valor suficiente.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página tem objetivo de conversão",
+        "o usuário já recebeu contexto suficiente para agir"
+      ],
+      "removeWhen": [
+        "a ação não está conectada ao conteúdo",
+        "há excesso de CTAs repetidos sem progressão"
+      ],
+      "improveWhen": [
+        "o texto do botão é genérico",
+        "o CTA não informa o que acontece depois",
+        "a seção não explica benefício antes de pedir ação"
+      ]
+    }
+  },
+  {
+    "id": "module_20",
+    "name": "Card with List",
+    "display_name": "Card com lista",
+    "generic_type": "List Card",
+    "description": "Card que organiza informações em lista, como benefícios, requisitos, passos, documentos ou características.",
+    "purpose": "Agrupar itens relacionados de forma compacta, escaneável e visualmente delimitada.",
+    "synonyms": [
+      "card com lista",
+      "lista em card",
+      "card de bullets",
+      "card com tópicos",
+      "list card"
+    ],
+    "detection_hints": [
+      "tem aparência de card",
+      "contém lista de bullets, checks ou itens",
+      "pode ter título e subtítulo",
+      "pode ter ícone ou CTA",
+      "os itens ficam agrupados dentro de uma caixa visual"
+    ],
+    "common_content": [
+      "título",
+      "lista de itens",
+      "ícones de check",
+      "descrição opcional",
+      "CTA opcional"
+    ],
+    "common_ui_elements": [
+      "card",
+      "lista",
+      "bullets",
+      "checks",
+      "botão opcional"
+    ],
+    "interactions": [
+      "clique em CTA, quando presente"
+    ],
+    "good_for": [
+      "benefícios agrupados",
+      "requisitos",
+      "documentos necessários",
+      "características de produto",
+      "resumos de condições"
+    ],
+    "bad_for": [
+      "listas muito longas",
+      "conteúdo narrativo",
+      "comparação complexa",
+      "FAQ expansível",
+      "mensagem principal da página"
+    ],
+    "good_when": "A lista é curta, os itens são paralelos e o card tem um tema claro.",
+    "bad_when": "O card vira depósito de informações, mistura temas diferentes ou contém lista grande demais.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há um grupo pequeno de itens relacionados",
+        "a página precisa tornar requisitos ou benefícios mais escaneáveis"
+      ],
+      "removeWhen": [
+        "os itens não pertencem ao mesmo tema",
+        "a lista é tão longa que deveria virar seção própria ou accordion"
+      ],
+      "improveWhen": [
+        "os itens não têm estrutura paralela",
+        "faltam ícones ou bullets para escaneabilidade",
+        "o título do card não resume a lista"
+      ]
+    }
+  },
+  {
+    "id": "module_21",
+    "name": "Card Side Text",
+    "display_name": "Card com texto lateral",
+    "generic_type": "Card with Side Copy",
+    "description": "Módulo que combina um card visual com texto lateral, usado para destacar uma informação ou oferta com apoio explicativo.",
+    "purpose": "Dar destaque a um conteúdo em formato de card enquanto o texto lateral contextualiza, explica ou conduz a ação.",
+    "synonyms": [
+      "card com texto lateral",
+      "card side text",
+      "card com apoio textual",
+      "texto ao lado do card",
+      "card destacado com descrição"
+    ],
+    "detection_hints": [
+      "há um card visual e uma área textual ao lado",
+      "o card pode conter imagem, ícone, valor ou destaque",
+      "o texto lateral explica ou complementa o card",
+      "em mobile, card e texto costumam empilhar",
+      "parece uma mistura entre card e Image with text"
+    ],
+    "common_content": [
+      "card destacado",
+      "título",
+      "descrição lateral",
+      "CTA opcional",
+      "imagem ou ícone opcional"
+    ],
+    "common_ui_elements": [
+      "card",
+      "texto lateral",
+      "botão",
+      "imagem",
+      "ícone"
+    ],
+    "interactions": [
+      "clique em CTA",
+      "clique no card, quando configurado"
+    ],
+    "good_for": [
+      "destacar uma oferta",
+      "explicar um recurso com apoio visual",
+      "apresentar benefício com contexto",
+      "seção intermediária de persuasão"
+    ],
+    "bad_for": [
+      "múltiplas opções equivalentes",
+      "comparação detalhada",
+      "listas longas",
+      "FAQ",
+      "conteúdo puramente legal"
+    ],
+    "good_when": "O card chama atenção para o ponto certo e o texto lateral explica valor ou próximo passo.",
+    "bad_when": "O card e o texto dizem a mesma coisa, a hierarquia fica confusa ou não há ação clara quando necessária.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há um elemento que precisa de destaque visual e explicação",
+        "a seção tem apenas um foco principal"
+      ],
+      "removeWhen": [
+        "o card não adiciona valor visual",
+        "o conteúdo poderia ser Image with text ou Richtext de forma mais simples"
+      ],
+      "improveWhen": [
+        "a relação entre card e texto não é clara",
+        "o CTA está distante do argumento principal"
+      ]
+    }
+  },
+  {
+    "id": "module_22",
+    "name": "Cardbox Comparative",
+    "display_name": "Box comparativo",
+    "generic_type": "Structured Comparison Boxes",
+    "description": "Módulo de comparação em boxes estruturados, mais robusto que cards simples, mas geralmente menos extenso que um comparativo detalhado.",
+    "purpose": "Comparar alternativas ou atributos com uma estrutura visual organizada em caixas.",
+    "synonyms": [
+      "box comparativo",
+      "cardbox comparative",
+      "comparativo em boxes",
+      "caixas comparativas",
+      "comparação em blocos"
+    ],
+    "detection_hints": [
+      "usa caixas ou boxes para comparar informações",
+      "pode ter colunas, linhas ou grupos de atributos",
+      "é mais estruturado que Card Comparative",
+      "pode incluir valores, condições, recursos ou benefícios",
+      "geralmente tem visual de tabela simplificada"
+    ],
+    "common_content": [
+      "nomes das opções",
+      "atributos",
+      "valores",
+      "condições",
+      "benefícios",
+      "CTAs opcionais"
+    ],
+    "common_ui_elements": [
+      "boxes",
+      "colunas",
+      "linhas",
+      "tags",
+      "botões"
+    ],
+    "interactions": [
+      "clicar em CTA",
+      "expandir detalhe, se configurado"
+    ],
+    "good_for": [
+      "comparações intermediárias",
+      "opções com alguns atributos",
+      "produtos com diferenças claras",
+      "planos",
+      "condições comerciais"
+    ],
+    "bad_for": [
+      "comparações muito simples",
+      "comparações muito longas",
+      "conteúdo não comparativo",
+      "benefícios sem alternativas"
+    ],
+    "good_when": "A estrutura deixa as diferenças claras e mantém paralelismo entre as opções.",
+    "bad_when": "Os boxes não seguem o mesmo padrão, faltam critérios importantes ou o conteúdo deveria ser tabela detalhada.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há comparação com complexidade média",
+        "cards simples não mostram todos os critérios necessários"
+      ],
+      "removeWhen": [
+        "não há critérios comparáveis",
+        "o módulo é visualmente pesado para uma decisão simples"
+      ],
+      "improveWhen": [
+        "faltam cabeçalhos claros",
+        "os critérios não são paralelos",
+        "o destaque de melhor opção é ambíguo"
+      ]
+    }
+  },
+  {
+    "id": "module_23",
+    "name": "Mosaic",
+    "display_name": "Mosaico",
+    "generic_type": "Mosaic Grid",
+    "description": "Composição visual em grade, geralmente com imagens, cards ou chamadas de tamanhos variados.",
+    "purpose": "Criar uma seção visualmente rica para apresentar múltiplos temas, conteúdos ou histórias de forma editorial.",
+    "synonyms": [
+      "mosaico",
+      "mosaic",
+      "grade editorial",
+      "grid visual",
+      "mosaico de imagens",
+      "mosaico de cards"
+    ],
+    "detection_hints": [
+      "tem grade visual com tamanhos variados",
+      "pode combinar imagens, texto e cards",
+      "a composição não é uma grade uniforme simples",
+      "costuma ser mais editorial ou inspiracional",
+      "pode ter múltiplas chamadas clicáveis"
+    ],
+    "common_content": [
+      "imagens",
+      "cards",
+      "chamadas curtas",
+      "links",
+      "temas relacionados"
+    ],
+    "common_ui_elements": [
+      "grade assimétrica",
+      "imagens",
+      "cards",
+      "overlays",
+      "links"
+    ],
+    "interactions": [
+      "clicar em card ou imagem",
+      "acessar conteúdo relacionado"
+    ],
+    "good_for": [
+      "conteúdo editorial",
+      "inspiração",
+      "múltiplas histórias",
+      "campanhas visuais",
+      "páginas institucionais"
+    ],
+    "bad_for": [
+      "comparações objetivas",
+      "conteúdo regulatório",
+      "passo a passo",
+      "mensagem de conversão direta",
+      "páginas que precisam de máxima clareza"
+    ],
+    "good_when": "A composição visual orienta o olhar e cada item tem função clara.",
+    "bad_when": "O layout parece decorativo, confuso ou dificulta entender a prioridade entre os itens.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página tem objetivo editorial ou inspiracional",
+        "há múltiplos conteúdos visuais relacionados"
+      ],
+      "removeWhen": [
+        "a página precisa de decisão simples e rápida",
+        "o mosaico distrai da conversão principal"
+      ],
+      "improveWhen": [
+        "não há hierarquia visual",
+        "os itens não têm relação entre si",
+        "faltam textos ou links claros"
+      ]
+    }
+  },
+  {
+    "id": "module_24",
+    "name": "Main Banner Rotating",
+    "display_name": "Banner rotativo",
+    "generic_type": "Hero Carousel",
+    "description": "Banner principal em formato rotativo, usado para exibir múltiplas mensagens de alto destaque.",
+    "purpose": "Apresentar mais de uma campanha, produto ou mensagem principal em uma área de grande impacto visual.",
+    "synonyms": [
+      "banner rotativo",
+      "main banner rotating",
+      "hero carousel",
+      "carrossel principal",
+      "slider principal",
+      "banner carrossel"
+    ],
+    "detection_hints": [
+      "aparece no topo ou em área de grande destaque",
+      "tem mais de um slide de banner",
+      "pode ter setas, dots ou rotação automática",
+      "cada slide pode ter headline, imagem e CTA",
+      "tem comportamento de carrossel, mas com papel de hero"
+    ],
+    "common_content": [
+      "múltiplos banners",
+      "headlines",
+      "imagens",
+      "CTAs",
+      "indicadores de slide"
+    ],
+    "common_ui_elements": [
+      "banner grande",
+      "setas",
+      "dots",
+      "botões",
+      "imagens"
+    ],
+    "interactions": [
+      "avançar slide",
+      "voltar slide",
+      "clicar em CTA",
+      "pausar rotação, se disponível"
+    ],
+    "good_for": [
+      "múltiplas campanhas prioritárias",
+      "home pages",
+      "páginas com várias mensagens equivalentes",
+      "divulgação de produtos em destaque"
+    ],
+    "bad_for": [
+      "landing page com único objetivo",
+      "mensagem crítica que todos precisam ver",
+      "páginas em que performance e foco são prioridade",
+      "conteúdo que precisa ser indexado e lido com clareza"
+    ],
+    "good_when": "O primeiro slide contém a mensagem mais importante, a rotação não prejudica leitura e os controles são acessíveis.",
+    "bad_when": "Esconde a mensagem principal em slides posteriores, gira rápido demais ou cria competição entre CTAs.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há múltiplas mensagens realmente prioritárias",
+        "a página funciona como hub ou home"
+      ],
+      "removeWhen": [
+        "existe uma única proposta de valor clara",
+        "os slides competem com o objetivo de conversão"
+      ],
+      "improveWhen": [
+        "o primeiro slide não é o mais importante",
+        "não há controle manual claro",
+        "os CTAs variam sem lógica"
+      ],
+      "considerAlternativeModules": [
+        "Main Banner para mensagem única",
+        "Carrossel para conteúdos secundários"
+      ]
+    }
+  },
+  {
+    "id": "module_25",
+    "name": "Faas",
+    "display_name": "FaaS",
+    "generic_type": "Internal Functional Module",
+    "description": "Módulo funcional específico interno. O nome não é autoexplicativo e deve ser enriquecido com exemplos reais, regras internas e prints para melhorar a identificação pelo agente.",
+    "purpose": "Representar uma funcionalidade ou bloco interno específico que pode variar conforme implementação.",
+    "synonyms": [
+      "faas",
+      "FaaS",
+      "módulo funcional interno",
+      "componente funcional",
+      "serviço embutido"
+    ],
+    "detection_hints": [
+      "o nome por si só não permite identificação robusta",
+      "deve ser detectado preferencialmente por metadados, classe, data attribute ou catálogo interno",
+      "pode ter comportamento funcional ou dinâmico",
+      "precisa de exemplos reais para treinamento ou prompt",
+      "não deve ser inferido apenas por aparência visual"
+    ],
+    "common_content": [
+      "conteúdo variável",
+      "funcionalidade interna",
+      "dados dinâmicos",
+      "integração específica"
+    ],
+    "common_ui_elements": [
+      "depende da implementação",
+      "pode conter inputs, cards, botões ou conteúdo dinâmico"
+    ],
+    "interactions": [
+      "depende da implementação"
+    ],
+    "good_for": [
+      "funcionalidades internas específicas",
+      "casos em que o CMS ou plataforma exige esse módulo",
+      "experiências padronizadas internamente"
+    ],
+    "bad_for": [
+      "classificação baseada apenas em visual",
+      "recomendação automática sem exemplos",
+      "explicação para usuário final sem tradução",
+      "substituir módulos mais claros quando o padrão visual é conhecido"
+    ],
+    "good_when": "O agente tem evidências estruturais ou exemplos reais suficientes para identificar o módulo com confiança.",
+    "bad_when": "É usado como classificação genérica para qualquer componente desconhecido.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "o HTML ou metadado confirma que o módulo é Faas",
+        "o projeto possui regra interna para esse tipo de componente"
+      ],
+      "removeWhen": [
+        "o módulo foi inferido apenas por falta de opção melhor",
+        "há um módulo mais específico que representa melhor o padrão"
+      ],
+      "improveWhen": [
+        "faltam exemplos reais no catálogo",
+        "não há sinônimos ou atributos técnicos para detecção",
+        "o displayName não explica nada para o usuário final"
+      ],
+      "confidenceNote": "Classificar como Faas apenas quando houver evidência interna ou exemplos claros."
+    }
+  },
+  {
+    "id": "module_26",
+    "name": "Card Offer",
+    "display_name": "Card de oferta",
+    "generic_type": "Offer Card",
+    "description": "Card dedicado a destacar uma oferta, condição especial, produto, benefício promocional ou oportunidade comercial.",
+    "purpose": "Dar visibilidade a uma proposta comercial de forma compacta, com benefício claro e possível CTA.",
+    "synonyms": [
+      "card de oferta",
+      "offer card",
+      "card promocional",
+      "card de condição especial",
+      "oferta em card"
+    ],
+    "detection_hints": [
+      "apresenta oferta, condição ou benefício comercial",
+      "pode conter preço, desconto, taxa, prazo ou vantagem",
+      "geralmente tem CTA",
+      "usa linguagem promocional ou de oportunidade",
+      "pode aparecer em grid ou isolado"
+    ],
+    "common_content": [
+      "nome da oferta",
+      "benefício",
+      "condição",
+      "validade opcional",
+      "CTA",
+      "imagem ou ícone opcional"
+    ],
+    "common_ui_elements": [
+      "card",
+      "tag promocional",
+      "botão",
+      "texto de condição",
+      "destaque visual"
+    ],
+    "interactions": [
+      "clicar em CTA",
+      "abrir detalhes da oferta",
+      "contratar ou simular"
+    ],
+    "good_for": [
+      "ofertas comerciais",
+      "campanhas",
+      "condições especiais",
+      "produtos em destaque",
+      "cross-sell"
+    ],
+    "bad_for": [
+      "conteúdo sem oferta real",
+      "informações puramente educativas",
+      "detalhes regulatórios",
+      "comparações complexas",
+      "mensagem principal quando exige muito contexto"
+    ],
+    "good_when": "A oferta é específica, tem benefício claro, condições transparentes e CTA direto.",
+    "bad_when": "A oferta é vaga, parece promessa absoluta, omite condições ou usa urgência sem sustentação.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há uma condição comercial relevante",
+        "o módulo ajuda a aproximar o usuário da conversão"
+      ],
+      "removeWhen": [
+        "não existe oferta concreta",
+        "a oferta distrai do produto principal"
+      ],
+      "improveWhen": [
+        "faltam condições ou validade",
+        "o CTA é genérico",
+        "o benefício não está claro"
+      ]
+    }
+  },
+  {
+    "id": "module_27",
+    "name": "Likert",
+    "display_name": "Likert",
+    "generic_type": "Feedback Scale",
+    "description": "Módulo de escala de avaliação usado para coletar opinião, satisfação ou nível de concordância do usuário.",
+    "purpose": "Capturar feedback estruturado sobre experiência, conteúdo, produto ou atendimento.",
+    "synonyms": [
+      "likert",
+      "escala likert",
+      "escala de avaliação",
+      "avaliação de satisfação",
+      "feedback por escala",
+      "concordo discordo"
+    ],
+    "detection_hints": [
+      "apresenta escala de opções",
+      "pode usar números, estrelas, emojis, botões ou rótulos de satisfação",
+      "usa rótulos como concordo, discordo, satisfeito, insatisfeito, útil ou não útil",
+      "normalmente aparece após conteúdo ou experiência",
+      "pode ter pergunta curta antes da escala"
+    ],
+    "common_content": [
+      "pergunta de feedback",
+      "escala",
+      "opções de resposta",
+      "mensagem de agradecimento",
+      "campo aberto opcional"
+    ],
+    "common_ui_elements": [
+      "botões de escala",
+      "números",
+      "estrelas",
+      "ícones",
+      "campo de comentário opcional"
+    ],
+    "interactions": [
+      "selecionar nota",
+      "enviar feedback",
+      "preencher comentário opcional"
+    ],
+    "good_for": [
+      "coletar satisfação",
+      "validar utilidade do conteúdo",
+      "medir percepção da página",
+      "pesquisas rápidas",
+      "feedback pós-interação"
+    ],
+    "bad_for": [
+      "conversão principal",
+      "primeira dobra",
+      "páginas onde feedback distrai da ação",
+      "jornadas sensíveis em que avaliação precoce gera fricção"
+    ],
+    "good_when": "A pergunta é simples, a escala é clara e o feedback não interrompe a jornada principal.",
+    "bad_when": "Aparece cedo demais, não explica o que será avaliado ou cria atrito antes da conversão.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "o objetivo é medir satisfação ou utilidade",
+        "o módulo aparece depois de conteúdo relevante"
+      ],
+      "removeWhen": [
+        "o feedback compete com CTA principal",
+        "não há uso claro para a informação coletada"
+      ],
+      "improveWhen": [
+        "a pergunta é ambígua",
+        "a escala não tem rótulos claros",
+        "não há confirmação após resposta"
+      ]
+    }
+  },
+  {
+    "id": "module_28",
+    "name": "Detailed Comparative",
+    "display_name": "Comparativo detalhado",
+    "generic_type": "Detailed Comparison",
+    "description": "Módulo de comparação aprofundada, geralmente em tabela ou estrutura extensa, usado para comparar opções por muitos critérios.",
+    "purpose": "Ajudar o usuário a tomar decisão informada quando há múltiplos atributos, condições ou diferenças relevantes.",
+    "synonyms": [
+      "comparativo detalhado",
+      "tabela comparativa",
+      "comparação detalhada",
+      "detailed comparative",
+      "matriz comparativa",
+      "comparativo completo"
+    ],
+    "detection_hints": [
+      "compara opções por vários critérios",
+      "pode usar tabela, linhas e colunas",
+      "tem mais detalhes que Card Comparative",
+      "pode conter checks, valores, condições e descrições",
+      "geralmente aparece quando a decisão exige análise cuidadosa"
+    ],
+    "common_content": [
+      "opções comparadas",
+      "critérios",
+      "valores",
+      "benefícios",
+      "limitações",
+      "CTAs por opção"
+    ],
+    "common_ui_elements": [
+      "tabela",
+      "colunas",
+      "linhas",
+      "checks",
+      "ícones",
+      "botões"
+    ],
+    "interactions": [
+      "rolar tabela",
+      "clicar em CTA",
+      "filtrar ou expandir, se configurado"
+    ],
+    "good_for": [
+      "comparar planos",
+      "comparar produtos financeiros",
+      "explicar diferenças complexas",
+      "apoiar decisão racional",
+      "transparência de condições"
+    ],
+    "bad_for": [
+      "primeira dobra",
+      "campanhas simples",
+      "poucas opções com diferenças óbvias",
+      "conteúdo emocional ou inspiracional",
+      "mobile quando a tabela não é responsiva"
+    ],
+    "good_when": "Os critérios são relevantes, paralelos e a tabela é legível em desktop e mobile.",
+    "bad_when": "A tabela é extensa demais, difícil no mobile, tem critérios inconsistentes ou mais confunde do que ajuda.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a escolha depende de muitos critérios",
+        "o usuário precisa comparar condições antes de converter"
+      ],
+      "removeWhen": [
+        "existem poucas diferenças e cards simples bastam",
+        "a comparação aparece antes de explicar o contexto"
+      ],
+      "improveWhen": [
+        "faltam critérios prioritários",
+        "a tabela não tem destaque da opção recomendada",
+        "a versão mobile é difícil de ler"
+      ]
+    }
+  },
+  {
+    "id": "module_29",
+    "name": "Product Showcase",
+    "display_name": "Vitrine de produtos",
+    "generic_type": "Product Showcase",
+    "description": "Módulo de vitrine para exibir produtos, categorias ou soluções disponíveis para escolha ou exploração.",
+    "purpose": "Apresentar um conjunto de produtos de forma organizada, permitindo que o usuário compare rapidamente e avance para o item de interesse.",
+    "synonyms": [
+      "vitrine de produtos",
+      "product showcase",
+      "showcase de produtos",
+      "lista de produtos",
+      "cards de produtos",
+      "catálogo de produtos"
+    ],
+    "detection_hints": [
+      "mostra múltiplos produtos ou categorias",
+      "cada item costuma ter nome, descrição e link ou CTA",
+      "pode usar cards, abas ou grid",
+      "pode conter imagens ou ícones",
+      "orienta escolha entre opções de produto"
+    ],
+    "common_content": [
+      "nomes de produtos",
+      "descrições",
+      "imagens ou ícones",
+      "links",
+      "CTAs",
+      "categorias"
+    ],
+    "common_ui_elements": [
+      "cards de produto",
+      "grid",
+      "imagens",
+      "botões",
+      "links",
+      "tags"
+    ],
+    "interactions": [
+      "clicar em produto",
+      "clicar em CTA",
+      "filtrar ou navegar entre categorias, se configurado"
+    ],
+    "good_for": [
+      "hub de produtos",
+      "cross-sell",
+      "categorias de solução",
+      "páginas com várias ofertas",
+      "orientar escolha"
+    ],
+    "bad_for": [
+      "landing page com um único produto",
+      "páginas em que muitas opções prejudicam foco",
+      "conteúdo regulatório",
+      "explicações longas"
+    ],
+    "good_when": "Os produtos são claros, bem categorizados e cada item tem próximo passo evidente.",
+    "bad_when": "Há excesso de produtos, nomes pouco claros ou CTAs iguais que não ajudam a escolha.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "a página precisa apresentar múltiplos produtos ou soluções",
+        "o usuário ainda está em fase de exploração"
+      ],
+      "removeWhen": [
+        "a página deve converter em um único produto",
+        "a vitrine cria dispersão sem necessidade"
+      ],
+      "improveWhen": [
+        "faltam descrições diferenciadoras",
+        "não há agrupamento por necessidade",
+        "o CTA não indica o próximo passo"
+      ]
+    }
+  },
+  {
+    "id": "module_30",
+    "name": "Icon Showcase",
+    "display_name": "Vitrine de ícones",
+    "generic_type": "Icon Showcase",
+    "description": "Módulo de vitrine visual baseada em ícones, usado para apresentar recursos, benefícios, temas ou diferenciais.",
+    "purpose": "Organizar múltiplas informações curtas usando ícones como elemento de reconhecimento e escaneabilidade.",
+    "synonyms": [
+      "vitrine de ícones",
+      "icon showcase",
+      "showcase de ícones",
+      "ícones com benefícios",
+      "grade de ícones",
+      "lista visual de recursos"
+    ],
+    "detection_hints": [
+      "tem sequência ou grid de ícones",
+      "cada ícone representa um tema ou benefício",
+      "pode ter título e descrição curta por item",
+      "é mais uma vitrine visual que uma lista textual",
+      "não necessariamente usa bolinhas como o Image Icon"
+    ],
+    "common_content": [
+      "ícones",
+      "rótulos",
+      "descrições curtas",
+      "links opcionais",
+      "CTA opcional"
+    ],
+    "common_ui_elements": [
+      "ícones",
+      "grid",
+      "labels",
+      "texto curto",
+      "links"
+    ],
+    "interactions": [
+      "clique em item ou link, se configurado"
+    ],
+    "good_for": [
+      "benefícios",
+      "recursos",
+      "diferenciais",
+      "categorias simples",
+      "visão geral de funcionalidades"
+    ],
+    "bad_for": [
+      "conteúdo longo",
+      "comparação detalhada",
+      "documentos legais",
+      "processos com ordem obrigatória",
+      "mensagem principal da página"
+    ],
+    "good_when": "Os ícones são distintos, os rótulos são claros e o conjunto ajuda o usuário a escanear benefícios rapidamente.",
+    "bad_when": "Os ícones são genéricos, repetitivos ou não têm relação evidente com o texto.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "há vários benefícios curtos para destacar",
+        "o objetivo é escaneabilidade visual"
+      ],
+      "removeWhen": [
+        "o conteúdo exige leitura detalhada",
+        "os ícones não adicionam compreensão"
+      ],
+      "improveWhen": [
+        "os textos são longos demais",
+        "os ícones não são consistentes",
+        "falta hierarquia entre itens"
+      ]
+    }
+  },
+  {
+    "id": "module_31",
+    "name": "Hero Conquista",
+    "display_name": "Hero de conquista",
+    "generic_type": "Aspirational Hero",
+    "description": "Hero ou banner com linguagem orientada a conquista, objetivo, realização ou próximo passo aspiracional do usuário.",
+    "purpose": "Conectar o produto ou serviço a uma meta desejada pelo usuário, tornando a mensagem mais emocional e orientada a resultado.",
+    "synonyms": [
+      "hero conquista",
+      "banner de conquista",
+      "hero aspiracional",
+      "banner aspiracional",
+      "conquista",
+      "próxima conquista"
+    ],
+    "detection_hints": [
+      "tem formato de hero ou banner",
+      "usa linguagem de conquista, realização, objetivo ou futuro desejado",
+      "pode aparecer em páginas de consórcio, crédito, investimento ou produto aspiracional",
+      "normalmente contém imagem emocional ou contextual",
+      "pode usar termos como conquista, sonho, objetivo, realizar, próximo passo ou patrimônio"
+    ],
+    "common_content": [
+      "headline aspiracional",
+      "subheadline",
+      "imagem contextual",
+      "CTA",
+      "benefício principal"
+    ],
+    "common_ui_elements": [
+      "banner",
+      "imagem",
+      "texto em destaque",
+      "botão",
+      "tag opcional"
+    ],
+    "interactions": [
+      "clicar em CTA",
+      "iniciar jornada de simulação ou contratação"
+    ],
+    "good_for": [
+      "produtos aspiracionais",
+      "consórcio",
+      "crédito planejado",
+      "investimentos com objetivo",
+      "campanhas de realização"
+    ],
+    "bad_for": [
+      "conteúdo técnico",
+      "páginas regulatórias",
+      "produtos com jornada puramente operacional",
+      "situações em que linguagem aspiracional pode soar como promessa"
+    ],
+    "good_when": "A conquista é específica, realista e conectada ao produto sem prometer resultado garantido.",
+    "bad_when": "Usa linguagem vaga, emocional demais ou pode sugerir promessa financeira absoluta.",
+    "recommendation_rules": {
+      "keepWhen": [
+        "o produto está ligado a objetivo de vida, patrimônio ou realização",
+        "a página precisa criar conexão emocional antes da explicação"
+      ],
+      "removeWhen": [
+        "o tom aspiracional não combina com o contexto",
+        "a mensagem pode gerar risco de interpretação ou promessa"
+      ],
+      "improveWhen": [
+        "faltam limites e contexto",
+        "o CTA não conecta a aspiração ao próximo passo",
+        "a imagem é genérica ou desalinhada ao público"
+      ]
+    }
   }
 ]
