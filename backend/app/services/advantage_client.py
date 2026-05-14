@@ -31,8 +31,8 @@ class LocalAgentFallback:
                 - business_goal: Optional business goal
                 - target_audience: Optional target audience
                 - constraints: List of constraints
-                - catalogs: Dictionary with modules_catalog, storytelling_patterns,
-                           brand_rules
+                - catalogs: Dictionary with modules_catalog,
+                           storytelling_patterns, brand_rules
         
         Returns:
             Dictionary with analysis results including:
@@ -102,8 +102,8 @@ class LocalAgentFallback:
                 - business_goal: Optional business goal
                 - target_audience: Optional target audience
                 - page_type_hint: Optional page type hint
-                - catalogs: Dictionary with modules_catalog, storytelling_patterns,
-                           brand_rules
+                - catalogs: Dictionary with modules_catalog,
+                           storytelling_patterns, brand_rules
         
         Returns:
             Dictionary with analysis results including:
@@ -138,7 +138,9 @@ class LocalAgentFallback:
         )
         
         # Generate recommendations for URL
-        recommendations = self._generate_url_recommendations(url, business_goal)
+        recommendations = self._generate_url_recommendations(
+            url, business_goal
+        )
         
         # Build module plan
         module_plan = self._build_module_plan(url, catalogs)
@@ -180,7 +182,9 @@ class LocalAgentFallback:
         trace.append({
             "agent": "Orchestrator Agent",
             "status": "completed",
-            "summary": "Analyzed briefing structure and coordinated agent workflow"
+            "summary": (
+                "Analyzed briefing structure and coordinated agent workflow"
+            )
         })
         
         # SEO Agent
@@ -227,14 +231,17 @@ class LocalAgentFallback:
         Calculate simulated scores for different aspects.
         
         Returns:
-            Dictionary with overall, seo, storytelling, modules, brand_safety scores.
+            Dictionary with overall, seo, storytelling, modules,
+            brand_safety scores.
         """
         # Simple heuristic: longer briefings get slightly better scores
         base_score = 70
         length_bonus = min(len(briefing) // 100, 15)
         constraint_penalty = len(constraints) * 2
         
-        seo_score = max(60, min(95, base_score + length_bonus - constraint_penalty))
+        seo_score = max(
+            60, min(95, base_score + length_bonus - constraint_penalty)
+        )
         storytelling_score = max(65, min(95, base_score + length_bonus + 5))
         modules_score = max(60, min(95, base_score + length_bonus))
         brand_safety_score = max(75, min(95, base_score + 15))
@@ -299,8 +306,8 @@ class LocalAgentFallback:
                 "to guide users effectively."
             ),
             "suggestion": (
-                "Structure the page with: problem statement, solution overview, "
-                "key benefits, social proof, and clear CTA."
+                "Structure the page with: problem statement, solution "
+                "overview, key benefits, social proof, and clear CTA."
             ),
             "impact": "high",
             "effort": "medium"
@@ -329,7 +336,10 @@ class LocalAgentFallback:
             "priority": "medium",
             "area": "modules",
             "title": "Add FAQ module to reduce objections",
-            "why": "Addressing common questions builds trust and reduces friction.",
+            "why": (
+                "Addressing common questions builds trust and reduces "
+                "friction."
+            ),
             "suggestion": (
                 "Include FAQ module with 5-7 questions covering pricing, "
                 "implementation, and support."
@@ -394,7 +404,9 @@ class LocalAgentFallback:
         suggestions.append({
             "section": "headline",
             "current": "Generic headline",
-            "suggested": "Benefit-focused headline that addresses user pain point",
+            "suggested": (
+                "Benefit-focused headline that addresses user pain point"
+            ),
             "reason": "Clear value proposition improves engagement"
         })
         
@@ -619,15 +631,23 @@ class LocalAgentFallback:
         suggestions.append({
             "section": "headline",
             "current": "Generic page headline",
-            "suggested": "Clear, benefit-driven headline addressing user needs",
-            "reason": "Strong headlines capture attention and set expectations"
+            "suggested": (
+                "Clear, benefit-driven headline addressing user needs"
+            ),
+            "reason": (
+                "Strong headlines capture attention and set expectations"
+            )
         })
         
         suggestions.append({
             "section": "subheadline",
             "current": "Basic description",
-            "suggested": "Compelling subheadline explaining key value proposition",
-            "reason": "Subheadlines provide context and reinforce main message"
+            "suggested": (
+                "Compelling subheadline explaining key value proposition"
+            ),
+            "reason": (
+                "Subheadlines provide context and reinforce main message"
+            )
         })
         
         suggestions.append({
