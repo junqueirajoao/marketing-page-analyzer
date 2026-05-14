@@ -14,5 +14,5 @@ def analyze_briefing(payload: AnalyzeBriefingRequest):
 
 
 @router.post("/url")
-def analyze_url(payload: AnalyzeUrlRequest):
-    return build_url_analysis_report(payload)
+async def analyze_url(payload: AnalyzeUrlRequest):
+    return await build_url_analysis_report(payload)

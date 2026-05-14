@@ -104,6 +104,7 @@ class LocalAgentFallback:
                 - page_type_hint: Optional page type hint
                 - catalogs: Dictionary with modules_catalog,
                            storytelling_patterns, brand_rules
+                - normalized_page: Normalized page data from scraper
         
         Returns:
             Dictionary with analysis results including:
@@ -115,6 +116,7 @@ class LocalAgentFallback:
                 - copy_suggestions
                 - catalog_context
                 - agent_trace
+                - page_diagnostics
         """
         # Extract payload data
         url = payload.get("url", "")
@@ -122,6 +124,10 @@ class LocalAgentFallback:
         target_audience = payload.get("target_audience", "nao_informado")
         page_type_hint = payload.get("page_type_hint")
         catalogs = payload.get("catalogs", {})
+        normalized_page = payload.get("normalized_page", {})
+        
+        # Build page diagnostics from normalized page
+        page_diagnostics = self._build_page_diagnostics(normalized_page)
         
         # Simulate agent trace for URL analysis
         agent_trace = self._build_url_agent_trace(url)
@@ -159,7 +165,8 @@ class LocalAgentFallback:
             "module_plan": module_plan,
             "copy_suggestions": copy_suggestions,
             "catalog_context": catalog_context,
-            "agent_trace": agent_trace
+            "agent_trace": agent_trace,
+            "page_diagnostics": page_diagnostics
         }
     
     def _generate_analysis_id(self) -> str:
@@ -650,6 +657,42 @@ class LocalAgentFallback:
             )
         })
         
+    def _build_page_diagnostics(
+        self, normalized_page: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Build page diagnostics from normalized page data.
+        
+        Args:
+            normalized_page: Normalized page data containing metadata,
+                           headings, links, images, etc.
+        
+        Returns:
+            Dictionary with page diagnostics including:
+                - has_title: Whether page has a title
+                - has_meta_description: Whether page has meta description
+                - headings_count: Number of headings
+                - links_count: Number of links
+                - images_count: Number of images
+                - has_error: Whether there was an error fetching/parsing
+        """
+        metadata = normalized_page.get("metadata", {})
+        headings = normalized_page.get("headings", [])
+        links = normalized_page.get("links", [])
+        images = normalized_page.get("images", [])
+        error = normalized_page.get("error")
+        
+        return {
+            "has_title": bool(metadata.get("title", "").strip()),
+            "has_meta_description": bool(
+                metadata.get("meta_description", "").strip()
+            ),
+            "headings_count": len(headings),
+            "links_count": len(links),
+            "images_count": len(images),
+            "has_error": error is not None
+        }
+
         suggestions.append({
             "section": "cta",
             "current": "Learn more",
