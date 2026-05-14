@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { analyzeUrl, AnalyzeUrlPayload, AnalysisResponse } from '../lib/api';
 
 interface UrlAnalyzerFormProps {
@@ -19,7 +19,7 @@ export const UrlAnalyzerForm: React.FC<UrlAnalyzerFormProps> = ({ onResult, onEr
     e.preventDefault();
     
     if (!formData.url) {
-      onError('URL is required');
+      onError('URL é obrigatória');
       return;
     }
 
@@ -37,7 +37,7 @@ export const UrlAnalyzerForm: React.FC<UrlAnalyzerFormProps> = ({ onResult, onEr
       const result = await analyzeUrl(payload);
       onResult(result);
     } catch (err: any) {
-      onError(err.response?.data?.detail || err.message || 'Failed to analyze URL');
+      onError(err.response?.data?.detail || err.message || 'Falha ao analisar URL');
     } finally {
       onLoading(false);
     }
@@ -62,42 +62,42 @@ export const UrlAnalyzerForm: React.FC<UrlAnalyzerFormProps> = ({ onResult, onEr
 
       <div>
         <label htmlFor="business_goal" className="block text-sm font-medium text-gray-700 mb-1">
-          Business Goal
+          Objetivo de Negócio
         </label>
         <input
           type="text"
           id="business_goal"
           value={formData.business_goal}
           onChange={(e) => setFormData({ ...formData, business_goal: e.target.value })}
-          placeholder="e.g., increase conversions, generate leads"
+          placeholder="ex: aumentar conversões, gerar leads"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div>
         <label htmlFor="target_audience" className="block text-sm font-medium text-gray-700 mb-1">
-          Target Audience
+          Público-Alvo
         </label>
         <input
           type="text"
           id="target_audience"
           value={formData.target_audience}
           onChange={(e) => setFormData({ ...formData, target_audience: e.target.value })}
-          placeholder="e.g., small business owners, millennials"
+          placeholder="ex: pequenos empresários, millennials"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div>
         <label htmlFor="page_type_hint" className="block text-sm font-medium text-gray-700 mb-1">
-          Page Type Hint
+          Tipo de Página (Dica)
         </label>
         <input
           type="text"
           id="page_type_hint"
           value={formData.page_type_hint}
           onChange={(e) => setFormData({ ...formData, page_type_hint: e.target.value })}
-          placeholder="e.g., product, service, landing page"
+          placeholder="ex: produto, serviço, landing page"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -106,7 +106,7 @@ export const UrlAnalyzerForm: React.FC<UrlAnalyzerFormProps> = ({ onResult, onEr
         type="submit"
         className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
       >
-        Analyze URL
+        Analisar URL
       </button>
     </form>
   );

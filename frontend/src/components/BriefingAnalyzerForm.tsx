@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { analyzeBriefing, AnalyzeBriefingPayload, AnalysisResponse } from '../lib/api';
 
 interface BriefingAnalyzerFormProps {
@@ -19,7 +19,7 @@ export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onRe
     e.preventDefault();
     
     if (!formData.briefing) {
-      onError('Briefing is required');
+      onError('Briefing é obrigatório');
       return;
     }
 
@@ -39,7 +39,7 @@ export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onRe
       const result = await analyzeBriefing(payload);
       onResult(result);
     } catch (err: any) {
-      onError(err.response?.data?.detail || err.message || 'Failed to analyze briefing');
+      onError(err.response?.data?.detail || err.message || 'Falha ao analisar briefing');
     } finally {
       onLoading(false);
     }
@@ -56,7 +56,7 @@ export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onRe
           required
           value={formData.briefing}
           onChange={(e) => setFormData({ ...formData, briefing: e.target.value })}
-          placeholder="Describe your marketing page requirements..."
+          placeholder="Descreva os requisitos da sua página de marketing..."
           rows={6}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -64,42 +64,42 @@ export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onRe
 
       <div>
         <label htmlFor="business_goal_briefing" className="block text-sm font-medium text-gray-700 mb-1">
-          Business Goal
+          Objetivo de Negócio
         </label>
         <input
           type="text"
           id="business_goal_briefing"
           value={formData.business_goal}
           onChange={(e) => setFormData({ ...formData, business_goal: e.target.value })}
-          placeholder="e.g., increase conversions, generate leads"
+          placeholder="ex: aumentar conversões, gerar leads"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div>
         <label htmlFor="target_audience_briefing" className="block text-sm font-medium text-gray-700 mb-1">
-          Target Audience
+          Público-Alvo
         </label>
         <input
           type="text"
           id="target_audience_briefing"
           value={formData.target_audience}
           onChange={(e) => setFormData({ ...formData, target_audience: e.target.value })}
-          placeholder="e.g., small business owners, millennials"
+          placeholder="ex: pequenos empresários, millennials"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div>
         <label htmlFor="constraints" className="block text-sm font-medium text-gray-700 mb-1">
-          Constraints (comma-separated)
+          Restrições (separadas por vírgula)
         </label>
         <input
           type="text"
           id="constraints"
           value={formData.constraints}
           onChange={(e) => setFormData({ ...formData, constraints: e.target.value })}
-          placeholder="e.g., mobile-first, no video, budget limit"
+          placeholder="ex: mobile-first, sem vídeo, limite de orçamento"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -108,7 +108,7 @@ export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onRe
         type="submit"
         className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
       >
-        Analyze Briefing
+        Analisar Briefing
       </button>
     </form>
   );

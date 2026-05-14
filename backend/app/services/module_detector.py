@@ -13,7 +13,8 @@ def detect_modules(
     Detect modules in a normalized page using heuristic analysis.
     
     Args:
-        normalized_page: Normalized page data with metadata, headings, links, etc.
+        normalized_page: Normalized page data with metadata,
+                        headings, links, etc.
         modules_catalog: List of module definitions from catalog
     
     Returns:
@@ -22,7 +23,6 @@ def detect_modules(
     detected_modules = []
     
     # Extract page data
-    metadata = normalized_page.get("metadata", {})
     headings = normalized_page.get("headings", [])
     links = normalized_page.get("links", [])
     images = normalized_page.get("images", [])
@@ -81,7 +81,7 @@ def _detect_hero(
     main_text: str,
     images: List[Dict],
     catalog: Dict[str, Any]
-) -> Dict[str, Any]:
+) -> Dict[str, Any] | None:
     """Detect Hero / Main Banner module."""
     if not headings:
         return None
@@ -117,7 +117,7 @@ def _detect_hero(
     catalog_entry = catalog.get("Main Banner", {})
     
     return {
-        "id": f"detected_hero_0",
+        "id": "detected_hero_0",
         "type": "Hero",
         "matched_catalog_id": catalog_entry.get("id", "module_09"),
         "matched_catalog_name": "Main Banner",
@@ -133,7 +133,7 @@ def _detect_breadcrumb(
     links: List[Dict],
     headings: List[Dict],
     catalog: Dict[str, Any]
-) -> Dict[str, Any]:
+) -> Dict[str, Any] | None:
     """Detect Breadcrumb module."""
     if not links:
         return None
@@ -166,7 +166,9 @@ def _detect_breadcrumb(
         "matched_catalog_id": catalog_entry.get("id", "module_01"),
         "matched_catalog_name": "Breadcrumb Header",
         "title": "Breadcrumb navigation",
-        "text": " > ".join([l.get("text", "") for l in breadcrumb_links[:3]]),
+        "text": " > ".join(
+            [link.get("text", "") for link in breadcrumb_links[:3]]
+        ),
         "position": 0,
         "confidence": round(confidence, 2),
         "evidence": [
@@ -196,7 +198,10 @@ def _detect_faq(
     question_headings = []
     for heading in headings:
         text = heading.get("text", "").lower()
-        if any(text.startswith(q) for q in ["como", "o que", "qual", "quando", "posso", "por que"]):
+        question_starters = [
+            "como", "o que", "qual", "quando", "posso", "por que"
+        ]
+        if any(text.startswith(q) for q in question_starters):
             question_headings.append(heading)
     
     if has_faq_keyword or len(question_headings) >= 3:
@@ -210,12 +215,18 @@ def _detect_faq(
             "matched_catalog_id": catalog_entry.get("id", "module_04"),
             "matched_catalog_name": "Accordion",
             "title": "FAQ section",
-            "text": f"Detected {len(question_headings)} question-like headings",
+            "text": (
+                f"Detected {len(question_headings)} "
+                "question-like headings"
+            ),
             "position": 0,
             "confidence": round(confidence, 2),
             "evidence": [
                 f"Found {len(question_headings)} question headings",
-                "FAQ keywords present" if has_faq_keyword else "Question patterns detected"
+                (
+                    "FAQ keywords present" if has_faq_keyword
+                    else "Question patterns detected"
+                )
             ]
         })
     
@@ -253,7 +264,10 @@ def _detect_cta(
         
         catalog_entry = catalog.get("Call to Action", {})
         
-        cta_text = cta_links[0].get("text", "CTA detected") if cta_links else "CTA section"
+        if cta_links:
+            cta_text = cta_links[0].get("text", "CTA detected")
+        else:
+            cta_text = "CTA section"
         
         cta_modules.append({
             "id": "detected_cta_0",
@@ -265,7 +279,10 @@ def _detect_cta(
             "position": 0,
             "confidence": round(confidence, 2),
             "evidence": [
-                f"Found {len(cta_links)} CTA links" if cta_links else f"Found {cta_count} CTA verbs",
+                (
+                    f"Found {len(cta_links)} CTA links" if cta_links
+                    else f"Found {cta_count} CTA verbs"
+                ),
                 "Action verbs detected"
             ]
         })
@@ -318,7 +335,10 @@ def _detect_benefits(
             "confidence": round(confidence, 2),
             "evidence": [
                 f"Found {len(list_headings)} list-style headings",
-                f"Images present: {len(images)}" if images else "Benefit keywords detected"
+                (
+                    f"Images present: {len(images)}" if images
+                    else "Benefit keywords detected"
+                )
             ]
         })
     
@@ -356,7 +376,10 @@ def _detect_richtext(
                 "confidence": round(confidence, 2),
                 "evidence": [
                     f"Substantial text content ({len(main_text)} chars)",
-                    f"Multiple paragraphs detected ({sentence_count} sentences)"
+                    (
+                        f"Multiple paragraphs detected "
+                        f"({sentence_count} sentences)"
+                    )
                 ]
             })
     

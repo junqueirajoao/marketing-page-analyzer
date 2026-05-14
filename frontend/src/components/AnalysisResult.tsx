@@ -1,0 +1,311 @@
+import { AnalysisResponse } from '../lib/api';
+
+interface AnalysisResultProps {
+  data: AnalysisResponse;
+}
+
+export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return 'text-green-600 bg-green-50 border-green-200';
+    if (score >= 60) return 'text-orange-600 bg-orange-50 border-orange-200';
+    return 'text-red-600 bg-red-50 border-red-200';
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority.toLowerCase()) {
+      case 'high':
+      case 'alta':
+        return 'bg-orange-100 text-orange-800 border-orange-300';
+      case 'medium':
+      case 'média':
+        return 'bg-blue-100 text-blue-800 border-blue-300';
+      case 'low':
+      case 'baixa':
+        return 'bg-gray-100 text-gray-800 border-gray-300';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-300';
+    }
+  };
+
+  return (
+    <div className="mt-8 space-y-6">
+      {/* Header with Overall Score - Dashboard executivo */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Análise Concluída</h2>
+            <p className="text-blue-100">ID: {data.analysis_id}</p>
+          </div>
+          <div className="text-center">
+            <div className="text-5xl font-bold">{data.score.overall}</div>
+            <div className="text-sm text-blue-100 mt-1">Pontuação Geral</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Score Breakdown - Cards de SEO, storytelling, módulos e segurança de marca */}
+      <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <span className="text-2xl">📊</span>
+          Detalhamento de Pontuação
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Object.entries(data.score).map(([key, value]) => {
+            if (key === 'overall') return null;
+            const icons: Record<string, string> = {
+              seo: '🔍',
+              storytelling: '📖',
+              modules: '🧩',
+              brand_safety: '🛡️'
+            };
+            const labels: Record<string, string> = {
+              seo: 'SEO',
+              storytelling: 'Storytelling',
+              modules: 'Módulos',
+              brand_safety: 'Segurança de Marca'
+            };
+            return (
+              <div key={key} className={`border-2 rounded-xl p-4 transition-all hover:shadow-lg ${getScoreColor(value)}`}>
+                <div className="text-3xl mb-2">{icons[key] || '📈'}</div>
+                <div className="text-2xl font-bold">{value}</div>
+                <div className="text-sm font-medium mt-1">
+                  {labels[key] || key}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Page Summary - Resumo executivo */}
+      <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <span className="text-2xl">📋</span>
+          Resumo Executivo
+        </h3>
+        <div className="space-y-3">
+          <div className="flex items-start">
+            <span className="font-semibold text-gray-700 w-32">Tipo:</span>
+            <span className="text-gray-900">{data.page_summary.detected_type}</span>
+          </div>
+          <div className="flex items-start">
+            <span className="font-semibold text-gray-700 w-32">Objetivo:</span>
+            <span className="text-gray-900">{data.page_summary.primary_goal}</span>
+          </div>
+          <div className="flex items-start">
+            <span className="font-semibold text-gray-700 w-32">Tema Principal:</span>
+            <span className="text-gray-900">{data.page_summary.main_topic}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Recommendations - Top prioridades */}
+      {data.recommendations && data.recommendations.length > 0 && (
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="text-2xl">⭐</span>
+            Principais Prioridades ({data.recommendations.length})
+          </h3>
+          <div className="space-y-4">
+            {data.recommendations.map((rec, index) => (
+              <div key={index} className="border-2 border-gray-200 rounded-xl p-5 hover:shadow-lg transition-all hover:border-blue-300">
+                <div className="flex items-start justify-between mb-3">
+                  <h4 className="font-semibold text-gray-900 flex-1 text-lg">{rec.title}</h4>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold border-2 ${getPriorityColor(rec.priority)}`}>
+                    {rec.priority}
+                  </span>
+                </div>
+                <div className="text-sm text-gray-600 mb-2">
+                  <span className="font-medium">Área:</span> {rec.area}
+                </div>
+                <div className="text-sm text-gray-700 mb-2">
+                  <span className="font-medium">Por quê:</span> {rec.why}
+                </div>
+                <div className="text-sm text-gray-700 mb-2">
+                  <span className="font-medium">Sugestão:</span> {rec.suggestion}
+                </div>
+                <div className="flex gap-4 text-xs text-gray-600 mt-3">
+                  <span><span className="font-medium">Impacto:</span> {rec.impact}</span>
+                  <span><span className="font-medium">Esforço:</span> {rec.effort}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Module Plan - Mapa de módulos com manter, remover, mover e adicionar */}
+      {data.module_plan && (
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="text-2xl">🗺️</span>
+            Mapa de Módulos
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            {data.module_plan.keep && data.module_plan.keep.length > 0 && (
+              <div className="border-2 border-green-300 rounded-xl p-4 bg-green-50">
+                <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                  <span>✅</span> Manter ({data.module_plan.keep.length})
+                </h4>
+                <ul className="text-sm text-green-800 space-y-1">
+                  {data.module_plan.keep.map((item: any, idx: number) => (
+                    <li key={idx}>• {typeof item === 'string' ? item : item.name || JSON.stringify(item)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {data.module_plan.remove && data.module_plan.remove.length > 0 && (
+              <div className="border-2 border-red-300 rounded-xl p-4 bg-red-50">
+                <h4 className="font-semibold text-red-900 mb-2 flex items-center gap-2">
+                  <span>❌</span> Remover ({data.module_plan.remove.length})
+                </h4>
+                <ul className="text-sm text-red-800 space-y-1">
+                  {data.module_plan.remove.map((item: any, idx: number) => (
+                    <li key={idx}>• {typeof item === 'string' ? item : item.name || JSON.stringify(item)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {data.module_plan.add && data.module_plan.add.length > 0 && (
+              <div className="border-2 border-blue-300 rounded-xl p-4 bg-blue-50">
+                <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                  <span>➕</span> Adicionar ({data.module_plan.add.length})
+                </h4>
+                <ul className="text-sm text-blue-800 space-y-1">
+                  {data.module_plan.add.map((item: any, idx: number) => (
+                    <li key={idx}>• {typeof item === 'string' ? item : item.name || JSON.stringify(item)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {data.module_plan.reorder && data.module_plan.reorder.length > 0 && (
+              <div className="border-2 border-orange-300 rounded-xl p-4 bg-orange-50">
+                <h4 className="font-semibold text-orange-900 mb-2 flex items-center gap-2">
+                  <span>🔄</span> Reordenar ({data.module_plan.reorder.length})
+                </h4>
+                <ul className="text-sm text-yellow-800 space-y-1">
+                  {data.module_plan.reorder.map((item: any, idx: number) => (
+                    <li key={idx}>• {typeof item === 'string' ? item : item.name || JSON.stringify(item)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Copy Suggestions - Antes/depois de copy */}
+      {data.copy_suggestions && data.copy_suggestions.length > 0 && (
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="text-2xl">✍️</span>
+            Sugestões de Copy - Antes/Depois ({data.copy_suggestions.length})
+          </h3>
+          <div className="space-y-4">
+            {data.copy_suggestions.map((suggestion, index) => (
+              <div key={index} className="border-2 border-gray-200 rounded-xl p-5 hover:shadow-lg transition-all">
+                <div className="font-semibold text-gray-900 mb-3 text-lg">{suggestion.section}</div>
+                <div className="grid md:grid-cols-2 gap-4 mb-3">
+                  <div>
+                    <div className="text-xs font-bold text-gray-500 mb-2 uppercase">Antes:</div>
+                    <div className="text-sm text-gray-700 bg-red-50 p-3 rounded-lg border border-red-200">{suggestion.current}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-gray-500 mb-2 uppercase">Depois:</div>
+                    <div className="text-sm text-gray-700 bg-green-50 p-3 rounded-lg border border-green-200">{suggestion.suggested}</div>
+                  </div>
+                </div>
+                <div className="text-sm text-gray-600">
+                  <span className="font-medium">Motivo:</span> {suggestion.reason}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Page Diagnostics - Checklist final */}
+      {data.page_diagnostics && (
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="text-2xl">✔️</span>
+            Checklist Final
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="flex items-center gap-2">
+              <span className={`w-3 h-3 rounded-full ${data.page_diagnostics.has_title ? 'bg-green-500' : 'bg-red-500'}`}></span>
+              <span className="text-sm text-gray-700">Tag de Título</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`w-3 h-3 rounded-full ${data.page_diagnostics.has_meta_description ? 'bg-green-500' : 'bg-red-500'}`}></span>
+              <span className="text-sm text-gray-700">Meta Descrição</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-700">Cabeçalhos: {data.page_diagnostics.headings_count}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-700">Links: {data.page_diagnostics.links_count}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-700">Imagens: {data.page_diagnostics.images_count}</span>
+            </div>
+            {data.page_diagnostics.modules_detected_count !== undefined && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700">Módulos: {data.page_diagnostics.modules_detected_count}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Catalog Context */}
+      <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <span className="text-2xl">📚</span>
+          Contexto do Catálogo
+        </h3>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="text-center p-4 bg-blue-50 rounded-xl border-2 border-blue-200">
+            <div className="text-4xl font-bold text-blue-600">{data.catalog_context.modules_available_count}</div>
+            <div className="text-sm text-gray-700 mt-2 font-medium">Módulos Disponíveis</div>
+          </div>
+          <div className="text-center p-4 bg-orange-50 rounded-xl border-2 border-orange-200">
+            <div className="text-4xl font-bold text-orange-600">{data.catalog_context.storytelling_patterns_count}</div>
+            <div className="text-sm text-gray-700 mt-2 font-medium">Padrões de Storytelling</div>
+          </div>
+          <div className="text-center p-4 bg-blue-50 rounded-xl border-2 border-blue-200">
+            <div className="text-4xl font-bold text-blue-600">{data.catalog_context.brand_rules_count}</div>
+            <div className="text-sm text-gray-700 mt-2 font-medium">Regras de Marca</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Agent Trace */}
+      {data.agent_trace && data.agent_trace.length > 0 && (
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="text-2xl">🤖</span>
+            Rastreamento de Agentes
+          </h3>
+          <div className="space-y-2">
+            {data.agent_trace.map((trace, index) => (
+              <div key={index} className="flex items-start gap-3 text-sm">
+                <span className={`px-2 py-1 rounded text-xs font-medium ${
+                  trace.status === 'success' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {trace.status}
+                </span>
+                <div className="flex-1">
+                  <span className="font-medium text-gray-900">{trace.agent}:</span>
+                  <span className="text-gray-700 ml-2">{trace.summary}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Made with Bob

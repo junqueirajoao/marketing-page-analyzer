@@ -187,46 +187,52 @@ class LocalAgentFallback:
         
         # Orchestrator Agent
         trace.append({
-            "agent": "Orchestrator Agent",
-            "status": "completed",
+            "agent": "Agente Orquestrador",
+            "status": "concluído",
             "summary": (
-                "Analyzed briefing structure and coordinated agent workflow"
+                "Analisou estrutura do briefing e coordenou fluxo de agentes"
             )
         })
         
         # SEO Agent
         trace.append({
-            "agent": "SEO Agent",
-            "status": "completed",
-            "summary": "Evaluated SEO potential and keyword opportunities"
+            "agent": "Agente SEO",
+            "status": "concluído",
+            "summary": (
+                "Avaliou potencial de SEO e "
+                "oportunidades de palavras-chave"
+            )
         })
         
         # Module Strategy Agent
         trace.append({
-            "agent": "Module Strategy Agent",
-            "status": "completed",
-            "summary": "Recommended module composition based on page goals"
+            "agent": "Agente de Estratégia de Módulos",
+            "status": "concluído",
+            "summary": (
+                "Recomendou composição de módulos "
+                "baseada nos objetivos da página"
+            )
         })
         
         # Storytelling Agent
         trace.append({
-            "agent": "Storytelling Agent",
-            "status": "completed",
-            "summary": "Analyzed narrative flow and storytelling structure"
+            "agent": "Agente de Storytelling",
+            "status": "concluído",
+            "summary": "Analisou fluxo narrativo e estrutura de storytelling"
         })
         
         # Brand Safety Agent
         trace.append({
-            "agent": "Brand Safety Agent",
-            "status": "completed",
-            "summary": "Verified compliance with brand guidelines"
+            "agent": "Agente de Segurança de Marca",
+            "status": "concluído",
+            "summary": "Verificou conformidade com diretrizes da marca"
         })
         
         # Recommendation Agent
         trace.append({
-            "agent": "Recommendation Agent",
-            "status": "completed",
-            "summary": "Synthesized insights and prioritized recommendations"
+            "agent": "Agente de Recomendações",
+            "status": "concluído",
+            "summary": "Sintetizou insights e priorizou recomendações"
         })
         
         return trace
@@ -289,7 +295,7 @@ class LocalAgentFallback:
         return {
             "detected_type": detected_type,
             "primary_goal": business_goal,
-            "main_topic": "Topic extracted from briefing analysis"
+            "main_topic": "Tópico extraído da análise do briefing"
         }
     
     def _generate_recommendations(
@@ -305,54 +311,56 @@ class LocalAgentFallback:
         
         # Storytelling recommendation
         recommendations.append({
-            "priority": "high",
+            "priority": "alta",
             "area": "storytelling",
-            "title": "Organize page narrative structure",
+            "title": "Organizar estrutura narrativa da página",
             "why": (
-                "The briefing needs clearer problem-solution-action flow "
-                "to guide users effectively."
+                "O briefing precisa de um fluxo "
+                "problema-solução-ação mais claro "
+                "para guiar os usuários efetivamente."
             ),
             "suggestion": (
-                "Structure the page with: problem statement, solution "
-                "overview, key benefits, social proof, and clear CTA."
+                "Estruture a página com: declaração do problema, "
+                "visão geral da solução, principais benefícios, "
+                "prova social e CTA claro."
             ),
-            "impact": "high",
-            "effort": "medium"
+            "impact": "alto",
+            "effort": "médio"
         })
         
         # SEO recommendation
         if len(briefing) < 200:
             recommendations.append({
-                "priority": "medium",
+                "priority": "média",
                 "area": "seo",
-                "title": "Expand content for better SEO coverage",
+                "title": "Expandir conteúdo para melhor cobertura de SEO",
                 "why": (
-                    "Brief content may limit keyword opportunities and "
-                    "search visibility."
+                    "Conteúdo breve pode limitar oportunidades "
+                    "de palavras-chave e visibilidade em buscas."
                 ),
                 "suggestion": (
-                    "Add detailed sections covering user questions, "
-                    "use cases, and benefits."
+                    "Adicione seções detalhadas cobrindo "
+                    "perguntas dos usuários, casos de uso e benefícios."
                 ),
-                "impact": "medium",
-                "effort": "high"
+                "impact": "médio",
+                "effort": "alto"
             })
         
         # Module recommendation
         recommendations.append({
-            "priority": "medium",
-            "area": "modules",
-            "title": "Add FAQ module to reduce objections",
+            "priority": "média",
+            "area": "módulos",
+            "title": "Adicionar módulo de FAQ para reduzir objeções",
             "why": (
-                "Addressing common questions builds trust and reduces "
-                "friction."
+                "Responder perguntas comuns constrói confiança e reduz "
+                "fricção."
             ),
             "suggestion": (
-                "Include FAQ module with 5-7 questions covering pricing, "
-                "implementation, and support."
+                "Inclua módulo de FAQ com 5-7 perguntas cobrindo preços, "
+                "implementação e suporte."
             ),
-            "impact": "medium",
-            "effort": "low"
+            "impact": "médio",
+            "effort": "baixo"
         })
         
         return recommendations
@@ -376,7 +384,7 @@ class LocalAgentFallback:
             if module.get("name") == "FAQ":
                 add_suggestions.append({
                     "module_type": "FAQ",
-                    "reason": "Helps reduce objections before conversion."
+                    "reason": "Ajuda a reduzir objeções antes da conversão."
                 })
                 break
         
@@ -384,8 +392,8 @@ class LocalAgentFallback:
         for module in modules_catalog:
             if module.get("name") == "Testimonials":
                 add_suggestions.append({
-                    "module_type": "Testimonials",
-                    "reason": "Social proof increases trust and credibility."
+                    "module_type": "Depoimentos",
+                    "reason": "Prova social aumenta confiança e credibilidade."
                 })
                 break
         
@@ -409,19 +417,20 @@ class LocalAgentFallback:
         
         # Generic copy suggestions
         suggestions.append({
-            "section": "headline",
-            "current": "Generic headline",
+            "section": "título",
+            "current": "Título genérico",
             "suggested": (
-                "Benefit-focused headline that addresses user pain point"
+                "Título focado em benefícios que aborda "
+                "o ponto de dor do usuário"
             ),
-            "reason": "Clear value proposition improves engagement"
+            "reason": "Proposta de valor clara melhora o engajamento"
         })
         
         suggestions.append({
             "section": "cta",
-            "current": "Click here",
-            "suggested": "Start your free trial today",
-            "reason": "Action-oriented CTAs with value increase conversions"
+            "current": "Clique aqui",
+            "suggested": "Comece seu teste grátis hoje",
+            "reason": "CTAs orientados a ação com valor aumentam conversões"
         })
         
         return suggestions
@@ -458,44 +467,47 @@ class LocalAgentFallback:
         
         # Orchestrator Agent
         trace.append({
-            "agent": "Orchestrator Agent",
-            "status": "completed",
-            "summary": "Analyzed URL structure and coordinated workflow"
+            "agent": "Agente Orquestrador",
+            "status": "concluído",
+            "summary": (
+                "Analisou estrutura da URL e "
+                "coordenou fluxo de trabalho"
+            )
         })
         
         # SEO Agent
         trace.append({
-            "agent": "SEO Agent",
-            "status": "completed",
-            "summary": "Evaluated URL SEO potential and metadata"
+            "agent": "Agente SEO",
+            "status": "concluído",
+            "summary": "Avaliou potencial de SEO da URL e metadados"
         })
         
         # Module Strategy Agent
         trace.append({
-            "agent": "Module Strategy Agent",
-            "status": "completed",
-            "summary": "Analyzed page modules and structure"
+            "agent": "Agente de Estratégia de Módulos",
+            "status": "concluído",
+            "summary": "Analisou módulos e estrutura da página"
         })
         
         # Storytelling Agent
         trace.append({
-            "agent": "Storytelling Agent",
-            "status": "completed",
-            "summary": "Evaluated narrative flow from URL context"
+            "agent": "Agente de Storytelling",
+            "status": "concluído",
+            "summary": "Avaliou fluxo narrativo a partir do contexto da URL"
         })
         
         # Brand Safety Agent
         trace.append({
-            "agent": "Brand Safety Agent",
-            "status": "completed",
-            "summary": "Verified brand compliance"
+            "agent": "Agente de Segurança de Marca",
+            "status": "concluído",
+            "summary": "Verificou conformidade com a marca"
         })
         
         # Recommendation Agent
         trace.append({
-            "agent": "Recommendation Agent",
-            "status": "completed",
-            "summary": "Generated actionable recommendations"
+            "agent": "Agente de Recomendações",
+            "status": "concluído",
+            "summary": "Gerou recomendações acionáveis"
         })
         
         return trace
@@ -555,10 +567,10 @@ class LocalAgentFallback:
             elif "event" in url_lower or "evento" in url_lower:
                 detected_type = "evento"
             else:
-                detected_type = "unknown"
+                detected_type = "desconhecido"
         
         # Extract topic from URL
-        main_topic = f"Topic identified from URL: {url}"
+        main_topic = f"Tópico identificado da URL: {url}"
         
         return {
             "detected_type": detected_type,
@@ -579,47 +591,47 @@ class LocalAgentFallback:
         
         # SEO recommendation
         recommendations.append({
-            "priority": "high",
+            "priority": "alta",
             "area": "seo",
-            "title": "Optimize page metadata and structure",
+            "title": "Otimizar metadados e estrutura da página",
             "why": (
-                "Well-structured metadata improves search visibility "
-                "and click-through rates."
+                "Metadados bem estruturados melhoram a visibilidade em buscas "
+                "e taxas de cliques."
             ),
             "suggestion": (
-                "Add descriptive title tags, meta descriptions, "
-                "and structured data markup."
+                "Adicione tags de título descritivas, meta descrições "
+                "e marcação de dados estruturados."
             ),
-            "impact": "high",
-            "effort": "medium"
+            "impact": "alto",
+            "effort": "médio"
         })
         
         # Content recommendation
         recommendations.append({
-            "priority": "medium",
+            "priority": "média",
             "area": "storytelling",
-            "title": "Enhance content narrative flow",
-            "why": "Clear storytelling guides users toward conversion.",
+            "title": "Melhorar fluxo narrativo do conteúdo",
+            "why": "Storytelling claro guia usuários em direção à conversão.",
             "suggestion": (
-                "Structure content with problem-solution-action flow "
-                "and clear value propositions."
+                "Estruture o conteúdo com fluxo problema-solução-ação "
+                "e propostas de valor claras."
             ),
-            "impact": "high",
-            "effort": "medium"
+            "impact": "alto",
+            "effort": "médio"
         })
         
         # Module recommendation
         recommendations.append({
-            "priority": "medium",
-            "area": "modules",
-            "title": "Add social proof elements",
-            "why": "Testimonials and case studies build credibility.",
+            "priority": "média",
+            "area": "módulos",
+            "title": "Adicionar elementos de prova social",
+            "why": "Depoimentos e estudos de caso constroem credibilidade.",
             "suggestion": (
-                "Include customer testimonials, case studies, "
-                "or trust badges."
+                "Inclua depoimentos de clientes, estudos de caso "
+                "ou selos de confiança."
             ),
-            "impact": "medium",
-            "effort": "low"
+            "impact": "médio",
+            "effort": "baixo"
         })
         
         return recommendations
@@ -636,27 +648,43 @@ class LocalAgentFallback:
         suggestions = []
         
         suggestions.append({
-            "section": "headline",
-            "current": "Generic page headline",
+            "section": "título",
+            "current": "Título genérico da página",
             "suggested": (
-                "Clear, benefit-driven headline addressing user needs"
+                "Título claro focado em benefícios "
+                "que atende necessidades do usuário"
             ),
             "reason": (
-                "Strong headlines capture attention and set expectations"
+                "Títulos fortes capturam atenção "
+                "e estabelecem expectativas"
             )
         })
         
         suggestions.append({
-            "section": "subheadline",
-            "current": "Basic description",
+            "section": "subtítulo",
+            "current": "Descrição básica",
             "suggested": (
-                "Compelling subheadline explaining key value proposition"
+                "Subtítulo convincente explicando "
+                "a proposta de valor principal"
             ),
             "reason": (
-                "Subheadlines provide context and reinforce main message"
+                "Subtítulos fornecem contexto "
+                "e reforçam a mensagem principal"
             )
         })
         
+        suggestions.append({
+            "section": "cta",
+            "current": "Saiba mais",
+            "suggested": "Comece com seu teste grátis",
+            "reason": (
+                "CTAs específicos com valor claro "
+                "geram conversões mais altas"
+            )
+        })
+        
+        return suggestions
+    
     def _build_page_diagnostics(
         self, normalized_page: Dict[str, Any]
     ) -> Dict[str, Any]:
@@ -695,15 +723,6 @@ class LocalAgentFallback:
             "has_error": error is not None,
             "modules_detected_count": len(modules)
         }
-
-        suggestions.append({
-            "section": "cta",
-            "current": "Learn more",
-            "suggested": "Get started with your free trial",
-            "reason": "Specific CTAs with clear value drive higher conversions"
-        })
-        
-        return suggestions
 
 
 # Made with Bob

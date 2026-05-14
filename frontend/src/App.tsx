@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UrlAnalyzerForm } from './components/UrlAnalyzerForm';
 import { BriefingAnalyzerForm } from './components/BriefingAnalyzerForm';
-import { JsonResult } from './components/JsonResult';
+import { AnalysisResult } from './components/AnalysisResult';
 import { AnalysisResponse } from './lib/api';
 
 type TabType = 'url' | 'briefing';
@@ -35,7 +35,7 @@ function App() {
             Marketing Page Analyzer
           </h1>
           <p className="text-gray-600">
-            Analyze your marketing pages or briefings to get actionable insights and recommendations.
+            Analise suas páginas de marketing ou briefings para obter insights e recomendações acionáveis.
           </p>
         </div>
 
@@ -54,7 +54,7 @@ function App() {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Analyze by URL
+              Analisar por URL
             </button>
             <button
               onClick={() => {
@@ -68,7 +68,7 @@ function App() {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Analyze by Briefing
+              Analisar por Briefing
             </button>
           </div>
 
@@ -91,7 +91,7 @@ function App() {
           {loading && (
             <div className="mt-6 text-center">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <p className="mt-2 text-gray-600">Analyzing...</p>
+              <p className="mt-2 text-gray-600">Analisando...</p>
             </div>
           )}
 
@@ -103,12 +103,12 @@ function App() {
           )}
 
           {/* Result */}
-          {result && !loading && <JsonResult data={result} />}
+          {result && !loading && <AnalysisResult data={result} />}
         </div>
 
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>Bob-a-thon Marketing Page Analyzer</p>
+          <p>Marketing Page Analyzer - Bob-a-thon</p>
         </div>
       </div>
     </div>
