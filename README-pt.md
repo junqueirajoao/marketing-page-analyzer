@@ -714,13 +714,7 @@ Para documentação detalhada da integração, consulte `backend/ICA_INTEGRATION
 - Catálogos de módulos e storytelling.
 - Melhorias de UI.
 
-### Fase 3
 
-- Mockups.
-- Histórico.
-- Exportação.
-- RAG.
-- Benchmarking.
 
 ## Observações
 

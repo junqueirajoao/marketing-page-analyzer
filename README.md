@@ -544,23 +544,6 @@ class LocalAgentFallback:
 - Create agent prompts.
 - Create demo script.
 
-### P1
-
-- Add Playwright for JavaScript pages.
-- Add mockup upload.
-- Add analysis history.
-- Add Markdown export.
-- Add unit tests.
-- Add loading states and error handling.
-
-### P2
-
-- Add RAG with approved pages.
-- Add competitor benchmarking.
-- Add before/after comparison.
-- Add suggested wireframe generation.
-- Add visual prioritization by impact and effort.
-
 ## Prompts for IBM Bob
 
 ### Backend
