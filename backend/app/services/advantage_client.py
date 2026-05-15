@@ -6,6 +6,23 @@ from app.services.storytelling_pattern_service import (
     find_best_storytelling_pattern,
     get_storytelling_patterns,
 )
+from app.services.scoring_service import calculate_scores
+from app.utils.analysis_messages import (
+    AGENT_NAMES,
+    AGENT_SUMMARIES,
+    RECOMMENDATION_MESSAGES,
+    NARRATIVE_INSIGHT_MESSAGES,
+    NARRATIVE_INSIGHT_TYPES,
+    SEVERITY_LEVELS,
+    MODULE_PLAN_MESSAGES,
+    PAGE_SUMMARY_MESSAGES,
+    STATUS_MESSAGES,
+    PRIORITY_LEVELS,
+    IMPACT_LEVELS,
+    EFFORT_LEVELS,
+    AREA_NAMES,
+    format_message
+)
 
 
 class LocalAgentFallback:
@@ -47,7 +64,7 @@ class LocalAgentFallback:
                 - page_summary
                 - recommendations
                 - module_plan
-                - copy_suggestions
+                - narrative_insights
                 - catalog_context
                 - agent_trace
         """
@@ -71,7 +88,6 @@ class LocalAgentFallback:
 
         agent_trace = self._build_agent_trace(briefing, business_goal)
         analysis_id = self._generate_analysis_id()
-        scores = self._calculate_scores(briefing, constraints)
         page_summary = self._build_page_summary(
             briefing, business_goal, target_audience
         )
@@ -86,18 +102,38 @@ class LocalAgentFallback:
             pattern=storytelling_pattern,
             detected_modules=[],
         )
-        copy_suggestions = self._generate_copy_suggestions(
-            pattern=storytelling_pattern
+        narrative_insights = self._generate_narrative_insights(
+            pattern=storytelling_pattern,
+            detected_modules=[],
+            catalogs=catalogs,
         )
         catalog_context = self._build_catalog_context(catalogs)
+        
+        # Calculate dynamic scores
+        scoring_result = calculate_scores(
+            normalized_page={
+                "metadata": {},
+                "headings": [],
+                "images": [],
+                "links": [],
+                "main_text": briefing,
+            },
+            detected_modules=[],
+            module_plan=module_plan,
+            storytelling_analysis=storytelling_analysis,
+            narrative_insights=narrative_insights,
+            brand_rules=catalogs.get("brand_rules", []),
+            pattern=storytelling_pattern,
+        )
 
         return {
             "analysis_id": analysis_id,
-            "score": scores,
+            "score": scoring_result["score"],
+            "score_breakdown": scoring_result["score_breakdown"],
             "page_summary": page_summary,
             "recommendations": recommendations,
             "module_plan": module_plan,
-            "copy_suggestions": copy_suggestions,
+            "narrative_insights": narrative_insights,
             "catalog_context": catalog_context,
             "agent_trace": agent_trace,
             "storytelling_analysis": storytelling_analysis,
@@ -125,7 +161,7 @@ class LocalAgentFallback:
                 - page_summary
                 - recommendations
                 - module_plan
-                - copy_suggestions
+                - narrative_insights
                 - catalog_context
                 - agent_trace
                 - page_diagnostics
@@ -157,7 +193,6 @@ class LocalAgentFallback:
         page_diagnostics = self._build_page_diagnostics(normalized_page)
         agent_trace = self._build_url_agent_trace(url)
         analysis_id = self._generate_analysis_id()
-        scores = self._calculate_url_scores(url)
         page_summary = self._build_url_page_summary(
             url, business_goal, target_audience, page_type_hint
         )
@@ -172,18 +207,32 @@ class LocalAgentFallback:
             pattern=storytelling_pattern,
             detected_modules=normalized_page.get("modules", []),
         )
-        copy_suggestions = self._generate_copy_suggestions(
-            pattern=storytelling_pattern
+        narrative_insights = self._generate_narrative_insights(
+            pattern=storytelling_pattern,
+            detected_modules=normalized_page.get("modules", []),
+            catalogs=catalogs,
         )
         catalog_context = self._build_catalog_context(catalogs)
+        
+        # Calculate dynamic scores
+        scoring_result = calculate_scores(
+            normalized_page=normalized_page,
+            detected_modules=normalized_page.get("modules", []),
+            module_plan=module_plan,
+            storytelling_analysis=storytelling_analysis,
+            narrative_insights=narrative_insights,
+            brand_rules=catalogs.get("brand_rules", []),
+            pattern=storytelling_pattern,
+        )
 
         return {
             "analysis_id": analysis_id,
-            "score": scores,
+            "score": scoring_result["score"],
+            "score_breakdown": scoring_result["score_breakdown"],
             "page_summary": page_summary,
             "recommendations": recommendations,
             "module_plan": module_plan,
-            "copy_suggestions": copy_suggestions,
+            "narrative_insights": narrative_insights,
             "catalog_context": catalog_context,
             "agent_trace": agent_trace,
             "page_diagnostics": page_diagnostics,
@@ -209,89 +258,48 @@ class LocalAgentFallback:
         
         # Orchestrator Agent
         trace.append({
-            "agent": "Agente Orquestrador",
-            "status": "concluído",
-            "summary": (
-                "Analisou estrutura do briefing e coordenou fluxo de agentes"
-            )
+            "agent": AGENT_NAMES["orchestrator"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["orchestrator_briefing"]
         })
         
         # SEO Agent
         trace.append({
-            "agent": "Agente SEO",
-            "status": "concluído",
-            "summary": (
-                "Avaliou potencial de SEO e "
-                "oportunidades de palavras-chave"
-            )
+            "agent": AGENT_NAMES["seo"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["seo_briefing"]
         })
         
         # Module Strategy Agent
         trace.append({
-            "agent": "Agente de Estratégia de Módulos",
-            "status": "concluído",
-            "summary": (
-                "Recomendou composição de módulos "
-                "baseada nos objetivos da página"
-            )
+            "agent": AGENT_NAMES["module_strategy"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["module_strategy_briefing"]
         })
         
         # Storytelling Agent
         trace.append({
-            "agent": "Agente de Storytelling",
-            "status": "concluído",
-            "summary": "Analisou fluxo narrativo e estrutura de storytelling"
+            "agent": AGENT_NAMES["storytelling"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["storytelling_briefing"]
         })
         
         # Brand Safety Agent
         trace.append({
-            "agent": "Agente de Segurança de Marca",
-            "status": "concluído",
-            "summary": "Verificou conformidade com diretrizes da marca"
+            "agent": AGENT_NAMES["brand_safety"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["brand_safety"]
         })
         
         # Recommendation Agent
         trace.append({
-            "agent": "Agente de Recomendações",
-            "status": "concluído",
-            "summary": "Sintetizou insights e priorizou recomendações"
+            "agent": AGENT_NAMES["recommendation"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["recommendation"]
         })
         
         return trace
     
-    def _calculate_scores(
-        self, briefing: str, constraints: List[str]
-    ) -> Dict[str, int]:
-        """
-        Calculate simulated scores for different aspects.
-        
-        Returns:
-            Dictionary with overall, seo, storytelling, modules,
-            brand_safety scores.
-        """
-        # Simple heuristic: longer briefings get slightly better scores
-        base_score = 70
-        length_bonus = min(len(briefing) // 100, 15)
-        constraint_penalty = len(constraints) * 2
-        
-        seo_score = max(
-            60, min(95, base_score + length_bonus - constraint_penalty)
-        )
-        storytelling_score = max(65, min(95, base_score + length_bonus + 5))
-        modules_score = max(60, min(95, base_score + length_bonus))
-        brand_safety_score = max(75, min(95, base_score + 15))
-        
-        overall_score = (
-            seo_score + storytelling_score + modules_score + brand_safety_score
-        ) // 4
-        
-        return {
-            "overall": overall_score,
-            "seo": seo_score,
-            "storytelling": storytelling_score,
-            "modules": modules_score,
-            "brand_safety": brand_safety_score
-        }
     
     def _build_page_summary(
         self, briefing: str, business_goal: str, target_audience: str
@@ -340,19 +348,16 @@ class LocalAgentFallback:
 
         if narrative_steps:
             recommendations.append({
-                "priority": "alta",
-                "area": "storytelling",
-                "title": "Aplicar sequência narrativa recomendada",
-                "why": (
-                    "O pattern detectado define uma progressão narrativa "
-                    "mais aderente ao objetivo da página."
+                "priority": PRIORITY_LEVELS["high"],
+                "area": AREA_NAMES["storytelling"],
+                "title": RECOMMENDATION_MESSAGES["narrative_title"],
+                "why": RECOMMENDATION_MESSAGES["narrative_why"],
+                "suggestion": format_message(
+                    RECOMMENDATION_MESSAGES["narrative_suggestion"],
+                    sequence=" → ".join(narrative_steps)
                 ),
-                "suggestion": (
-                    "Organize a página na sequência: "
-                    + " → ".join(narrative_steps)
-                ),
-                "impact": "alto",
-                "effort": "médio"
+                "impact": IMPACT_LEVELS["high"],
+                "effort": EFFORT_LEVELS["medium"]
             })
 
         cta_examples = []
@@ -360,18 +365,16 @@ class LocalAgentFallback:
             cta_examples = list(pattern.get("cta_examples") or [])
         if cta_examples:
             recommendations.append({
-                "priority": "alta",
-                "area": "conversão",
-                "title": "Usar CTAs aderentes ao pattern detectado",
-                "why": (
-                    "Chamadas para ação alinhadas ao storytelling reduzem "
-                    "fricção e tornam a conversão mais clara."
+                "priority": PRIORITY_LEVELS["high"],
+                "area": AREA_NAMES["conversion"],
+                "title": RECOMMENDATION_MESSAGES["cta_title"],
+                "why": RECOMMENDATION_MESSAGES["cta_why"],
+                "suggestion": format_message(
+                    RECOMMENDATION_MESSAGES["cta_suggestion"],
+                    examples="; ".join(cta_examples[:3])
                 ),
-                "suggestion": (
-                    "Teste CTAs como: " + "; ".join(cta_examples[:3])
-                ),
-                "impact": "alto",
-                "effort": "baixo"
+                "impact": IMPACT_LEVELS["high"],
+                "effort": EFFORT_LEVELS["low"]
             })
 
         compliance_guidelines = []
@@ -385,25 +388,26 @@ class LocalAgentFallback:
             safety_parts = []
             if compliance_guidelines:
                 safety_parts.append(
-                    "Siga estas diretrizes: "
-                    + "; ".join(compliance_guidelines[:3])
+                    format_message(
+                        RECOMMENDATION_MESSAGES["brand_safety_compliance"],
+                        guidelines="; ".join(compliance_guidelines[:3])
+                    )
                 )
             if avoid_copy:
                 safety_parts.append(
-                    "Evite expressões como: "
-                    + "; ".join(avoid_copy[:3])
+                    format_message(
+                        RECOMMENDATION_MESSAGES["brand_safety_avoid"],
+                        avoid="; ".join(avoid_copy[:3])
+                    )
                 )
             recommendations.append({
-                "priority": "alta",
-                "area": "brand_safety",
-                "title": "Ajustar copy para compliance e segurança de marca",
-                "why": (
-                    "O pattern inclui regras específicas de linguagem e "
-                    "conformidade para este contexto."
-                ),
+                "priority": PRIORITY_LEVELS["high"],
+                "area": AREA_NAMES["brand_safety"],
+                "title": RECOMMENDATION_MESSAGES["brand_safety_title"],
+                "why": RECOMMENDATION_MESSAGES["brand_safety_why"],
                 "suggestion": " ".join(safety_parts),
-                "impact": "alto",
-                "effort": "baixo"
+                "impact": IMPACT_LEVELS["high"],
+                "effort": EFFORT_LEVELS["low"]
             })
 
         avoid_modules_when = []
@@ -416,50 +420,46 @@ class LocalAgentFallback:
             reason = str(avoid_rule.get("reason") or "").strip()
             if module_name and reason:
                 recommendations.append({
-                    "priority": "média",
-                    "area": "módulos",
-                    "title": f"Evitar módulo {module_name} neste contexto",
-                    "why": reason,
-                    "suggestion": (
-                        f"Reavalie o uso de {module_name} e priorize os "
-                        "módulos recomendados pelo pattern."
+                    "priority": PRIORITY_LEVELS["medium"],
+                    "area": AREA_NAMES["modules"],
+                    "title": format_message(
+                        RECOMMENDATION_MESSAGES["avoid_module_title"],
+                        module=module_name
                     ),
-                    "impact": "médio",
-                    "effort": "baixo"
+                    "why": reason,
+                    "suggestion": format_message(
+                        RECOMMENDATION_MESSAGES["avoid_module_suggestion"],
+                        module=module_name
+                    ),
+                    "impact": IMPACT_LEVELS["medium"],
+                    "effort": EFFORT_LEVELS["low"]
                 })
 
         if len(text_context) < 200:
             recommendations.append({
-                "priority": "média",
-                "area": "seo",
-                "title": "Expandir contexto textual da página",
-                "why": (
-                    "Pouco conteúdo textual pode limitar clareza da proposta "
-                    "e cobertura orgânica."
-                ),
+                "priority": PRIORITY_LEVELS["medium"],
+                "area": AREA_NAMES["seo"],
+                "title": RECOMMENDATION_MESSAGES["expand_content_title"],
+                "why": RECOMMENDATION_MESSAGES["expand_content_why"],
                 "suggestion": (
-                    "Detalhe melhor a proposta de valor, a jornada e o CTA "
-                    "sem fugir da estrutura do pattern."
+                    RECOMMENDATION_MESSAGES["expand_content_suggestion"]
                 ),
-                "impact": "médio",
-                "effort": "médio"
+                "impact": IMPACT_LEVELS["medium"],
+                "effort": EFFORT_LEVELS["medium"]
             })
 
         if constraints:
             recommendations.append({
-                "priority": "baixa",
-                "area": "execução",
-                "title": "Validar restrições do briefing na implementação",
-                "why": (
-                    "Restrições explícitas podem afetar a ordem narrativa e "
-                    "a composição de módulos."
+                "priority": PRIORITY_LEVELS["low"],
+                "area": AREA_NAMES["execution"],
+                "title": RECOMMENDATION_MESSAGES["validate_constraints_title"],
+                "why": RECOMMENDATION_MESSAGES["validate_constraints_why"],
+                "suggestion": format_message(
+                    RECOMMENDATION_MESSAGES["validate_constraints_suggestion"],
+                    constraints="; ".join(constraints[:3])
                 ),
-                "suggestion": (
-                    "Confirme que os módulos e a copy final respeitam: "
-                    + "; ".join(constraints[:3])
-                ),
-                "impact": "médio",
-                "effort": "baixo"
+                "impact": IMPACT_LEVELS["medium"],
+                "effort": EFFORT_LEVELS["low"]
             })
 
         return recommendations
@@ -506,10 +506,7 @@ class LocalAgentFallback:
                 reorder.append({
                     "module_type": module_name,
                     "suggested_position": index,
-                    "reason": (
-                        "Módulo recomendado pelo storytelling pattern "
-                        "detectado."
-                    )
+                    "reason": MODULE_PLAN_MESSAGES["reorder_reason"]
                 })
 
         add = []
@@ -517,10 +514,7 @@ class LocalAgentFallback:
             if module_name not in detected_name_set:
                 add.append({
                     "module_type": module_name,
-                    "reason": (
-                        "Módulo obrigatório no pattern detectado para "
-                        "sustentar a narrativa."
-                    )
+                    "reason": MODULE_PLAN_MESSAGES["add_required_reason"]
                 })
 
         for module_name in optional_modules:
@@ -530,9 +524,7 @@ class LocalAgentFallback:
             ):
                 add.append({
                     "module_type": module_name,
-                    "reason": (
-                        "Módulo opcional recomendado pelo pattern detectado."
-                    )
+                    "reason": MODULE_PLAN_MESSAGES["add_optional_reason"]
                 })
 
         remove = []
@@ -555,8 +547,7 @@ class LocalAgentFallback:
                     add.append({
                         "module_type": module_name,
                         "reason": (
-                            "Módulo obrigatório sugerido porque nenhum módulo "
-                            "foi detectado na página."
+                            MODULE_PLAN_MESSAGES["add_no_modules_reason"]
                         )
                     })
 
@@ -567,50 +558,219 @@ class LocalAgentFallback:
             "add": add
         }
 
-    def _generate_copy_suggestions(
-        self, pattern: Optional[Dict[str, Any]]
-    ) -> List[Dict[str, str]]:
+    def _generate_narrative_insights(
+        self,
+        pattern: Optional[Dict[str, Any]],
+        detected_modules: List[Dict[str, Any]],
+        catalogs: Dict[str, Any],
+    ) -> List[Dict[str, Any]]:
         """
-        Generate copy improvement suggestions.
+        Generate narrative insights based on storytelling pattern analysis.
+        
+        Args:
+            pattern: The detected storytelling pattern
+            detected_modules: List of detected modules from the page
+            catalogs: Dictionary with all catalogs
         
         Returns:
-            List of copy suggestion dictionaries.
+            List of narrative insight dictionaries with structured feedback
         """
-        suggestions = []
-
-        headlines = []
-        ctas = []
-        tones = []
-        if pattern:
-            headlines = list(pattern.get("headline_examples") or [])
-            ctas = list(pattern.get("cta_examples") or [])
-            tones = list(pattern.get("tone_guidelines") or [])
-
-        if headlines:
-            suggestions.append({
-                "section": "título",
-                "current": "Título atual",
-                "suggested": headlines[0],
-                "reason": "Exemplo de headline recomendado pelo pattern"
+        insights: List[Dict[str, Any]] = []
+        
+        if not pattern:
+            return insights
+        
+        # Extract pattern data
+        narrative_steps = pattern.get("narrative_steps", [])
+        required_modules = pattern.get("required_modules", [])
+        recommended_order = pattern.get("recommended_module_order", [])
+        compliance_guidelines = pattern.get("compliance_guidelines", [])
+        avoid_modules_when = pattern.get("avoid_modules_when", [])
+        emotional_journey = pattern.get("emotional_journey", [])
+        
+        # Get detected module names
+        detected_module_names = {
+            str(m.get("matched_catalog_name", "")).strip()
+            for m in detected_modules
+            if isinstance(m, dict)
+        }
+        
+        # Check for missing required modules (module_gap)
+        for required_module in required_modules:
+            if required_module not in detected_module_names:
+                insights.append({
+                    "id": f"insight_missing_module_{required_module.lower().replace(' ', '_')}",
+                    "type": NARRATIVE_INSIGHT_TYPES["module_gap"],
+                    "severity": SEVERITY_LEVELS["high"],
+                    "title": format_message(
+                        NARRATIVE_INSIGHT_MESSAGES["module_gap_title"]
+                    ),
+                    "description": format_message(
+                        NARRATIVE_INSIGHT_MESSAGES["module_gap_description"],
+                        module_name=required_module
+                    ),
+                    "related_modules": [required_module],
+                    "recommended_actions": [
+                        f"Adicionar módulo '{required_module}'",
+                        "Revisar arquitetura da página",
+                        "Validar com o storytelling pattern"
+                    ]
+                })
+        
+        # Check for missing narrative steps (missing_step)
+        for step in narrative_steps:
+            if not isinstance(step, dict):
+                continue
+            step_name = str(step.get("name", "")).strip()
+            step_modules = step.get("recommended_modules", [])
+            
+            # Check if any of the step's recommended modules are present
+            has_step_module = any(
+                mod in detected_module_names for mod in step_modules
+            )
+            
+            if not has_step_module and step_modules:
+                insights.append({
+                    "id": f"insight_missing_step_{step_name.lower().replace(' ', '_')}",
+                    "type": NARRATIVE_INSIGHT_TYPES["missing_step"],
+                    "severity": SEVERITY_LEVELS["high"],
+                    "title": format_message(
+                        NARRATIVE_INSIGHT_MESSAGES["missing_step_title"],
+                        step_name=step_name
+                    ),
+                    "description": format_message(
+                        NARRATIVE_INSIGHT_MESSAGES["missing_step_description"],
+                        step_name=step_name
+                    ),
+                    "related_modules": step_modules,
+                    "recommended_actions": [
+                        f"Adicionar etapa narrativa: {step_name}",
+                        f"Considerar módulos: {', '.join(step_modules[:3])}",
+                        "Revisar progressão do storytelling"
+                    ]
+                })
+        
+        # Check for missing objection handling (FAQ/Accordion)
+        has_faq = any(
+            "accordion" in str(m.get("matched_catalog_name", "")).lower()
+            or "faq" in str(m.get("matched_catalog_name", "")).lower()
+            for m in detected_modules
+        )
+        
+        if not has_faq and "Accordion" in required_modules:
+            insights.append({
+                "id": "insight_missing_objection_handling",
+                "type": NARRATIVE_INSIGHT_TYPES["missing_objection_handling"],
+                "severity": SEVERITY_LEVELS["high"],
+                "title": NARRATIVE_INSIGHT_MESSAGES["missing_objection_handling_title"],
+                "description": NARRATIVE_INSIGHT_MESSAGES["missing_objection_handling_description"],
+                "related_modules": ["Accordion", "FAQ"],
+                "recommended_actions": [
+                    "Adicionar seção de FAQ",
+                    "Incluir perguntas sobre segurança e condições",
+                    "Reduzir incertezas antes da conversão"
+                ]
             })
-
-        if ctas:
-            suggestions.append({
-                "section": "cta",
-                "current": "CTA atual",
-                "suggested": ctas[0],
-                "reason": "CTA alinhado ao storytelling detectado"
+        
+        # Check for poor module order (narrative_break)
+        if detected_modules and recommended_order:
+            detected_order = [
+                str(m.get("matched_catalog_name", "")).strip()
+                for m in detected_modules
+                if isinstance(m, dict)
+            ]
+            
+            # Simple check: if modules are present but not in recommended order
+            order_issues = []
+            for i, module_name in enumerate(detected_order):
+                if module_name in recommended_order:
+                    recommended_pos = recommended_order.index(module_name)
+                    if i > 0 and recommended_pos < len(recommended_order) - 1:
+                        # Check if previous module should come after
+                        prev_module = detected_order[i-1]
+                        if prev_module in recommended_order:
+                            prev_recommended_pos = recommended_order.index(prev_module)
+                            if prev_recommended_pos > recommended_pos:
+                                order_issues.append(module_name)
+            
+            if order_issues:
+                insights.append({
+                    "id": "insight_narrative_break",
+                    "type": NARRATIVE_INSIGHT_TYPES["narrative_break"],
+                    "severity": SEVERITY_LEVELS["medium"],
+                    "title": NARRATIVE_INSIGHT_MESSAGES["narrative_break_title"],
+                    "description": NARRATIVE_INSIGHT_MESSAGES["narrative_break_description"],
+                    "related_modules": order_issues[:3],
+                    "recommended_actions": [
+                        "Reorganizar módulos conforme storytelling pattern",
+                        f"Seguir ordem recomendada: {' → '.join(recommended_order[:5])}",
+                        "Validar progressão narrativa"
+                    ]
+                })
+        
+        # Check for compliance risks
+        brand_rules = catalogs.get("brand_rules", [])
+        if brand_rules and compliance_guidelines:
+            insights.append({
+                "id": "insight_compliance_check",
+                "type": NARRATIVE_INSIGHT_TYPES["compliance_risk"],
+                "severity": SEVERITY_LEVELS["medium"],
+                "title": NARRATIVE_INSIGHT_MESSAGES["compliance_risk_title"],
+                "description": format_message(
+                    NARRATIVE_INSIGHT_MESSAGES["compliance_risk_description"],
+                    issue="Validar conformidade com diretrizes de marca"
+                ),
+                "related_modules": [],
+                "recommended_actions": [
+                    f"Seguir: {'; '.join(compliance_guidelines[:3])}",
+                    "Revisar copy contra regras de marca",
+                    "Evitar promessas absolutas"
+                ]
             })
-
-        if tones:
-            suggestions.append({
-                "section": "tom",
-                "current": "Tom atual",
-                "suggested": ", ".join(tones[:3]),
-                "reason": "Diretriz de tom definida no storytelling pattern"
+        
+        # Check for weak value proposition (missing benefit modules)
+        has_benefits = any(
+            "card" in str(m.get("matched_catalog_name", "")).lower()
+            or "icon" in str(m.get("matched_catalog_name", "")).lower()
+            or "benefit" in str(m.get("matched_catalog_name", "")).lower()
+            for m in detected_modules
+        )
+        
+        if not has_benefits:
+            insights.append({
+                "id": "insight_weak_value_proposition",
+                "type": NARRATIVE_INSIGHT_TYPES["weak_value_proposition"],
+                "severity": SEVERITY_LEVELS["medium"],
+                "title": NARRATIVE_INSIGHT_MESSAGES["weak_value_proposition_title"],
+                "description": NARRATIVE_INSIGHT_MESSAGES["weak_value_proposition_description"],
+                "related_modules": ["Card with icon", "Image Icon"],
+                "recommended_actions": [
+                    "Adicionar módulo de benefícios escaneáveis",
+                    "Destacar vantagens práticas",
+                    "Usar ícones para facilitar leitura"
+                ]
             })
-
-        return suggestions
+        
+        # Check for poor emotional journey alignment
+        if emotional_journey and len(emotional_journey) > 0:
+            insights.append({
+                "id": "insight_emotional_journey",
+                "type": NARRATIVE_INSIGHT_TYPES["poor_module_order"],
+                "severity": SEVERITY_LEVELS["low"],
+                "title": NARRATIVE_INSIGHT_MESSAGES["poor_module_order_title"],
+                "description": format_message(
+                    NARRATIVE_INSIGHT_MESSAGES["poor_module_order_description"],
+                    journey=" → ".join(emotional_journey)
+                ),
+                "related_modules": recommended_order[:3],
+                "recommended_actions": [
+                    f"Seguir jornada emocional: {' → '.join(emotional_journey)}",
+                    "Alinhar módulos com progressão emocional",
+                    "Validar fluxo narrativo"
+                ]
+            })
+        
+        return insights
     
     def _build_catalog_context(
         self, catalogs: Dict[str, Any]
@@ -644,80 +804,48 @@ class LocalAgentFallback:
         
         # Orchestrator Agent
         trace.append({
-            "agent": "Agente Orquestrador",
-            "status": "concluído",
-            "summary": (
-                "Analisou estrutura da URL e "
-                "coordenou fluxo de trabalho"
-            )
+            "agent": AGENT_NAMES["orchestrator"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["orchestrator_url"]
         })
         
         # SEO Agent
         trace.append({
-            "agent": "Agente SEO",
-            "status": "concluído",
-            "summary": "Avaliou potencial de SEO da URL e metadados"
+            "agent": AGENT_NAMES["seo"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["seo_url"]
         })
         
         # Module Strategy Agent
         trace.append({
-            "agent": "Agente de Estratégia de Módulos",
-            "status": "concluído",
-            "summary": "Analisou módulos e estrutura da página"
+            "agent": AGENT_NAMES["module_strategy"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["module_strategy_url"]
         })
         
         # Storytelling Agent
         trace.append({
-            "agent": "Agente de Storytelling",
-            "status": "concluído",
-            "summary": "Avaliou fluxo narrativo a partir do contexto da URL"
+            "agent": AGENT_NAMES["storytelling"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["storytelling_url"]
         })
         
         # Brand Safety Agent
         trace.append({
-            "agent": "Agente de Segurança de Marca",
-            "status": "concluído",
-            "summary": "Verificou conformidade com a marca"
+            "agent": AGENT_NAMES["brand_safety"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["brand_safety_url"]
         })
         
         # Recommendation Agent
         trace.append({
-            "agent": "Agente de Recomendações",
-            "status": "concluído",
-            "summary": "Gerou recomendações acionáveis"
+            "agent": AGENT_NAMES["recommendation"],
+            "status": STATUS_MESSAGES["completed"],
+            "summary": AGENT_SUMMARIES["recommendation_url"]
         })
         
         return trace
     
-    def _calculate_url_scores(self, url: str) -> Dict[str, int]:
-        """
-        Calculate scores for URL analysis.
-        
-        Returns:
-            Dictionary with scores.
-        """
-        # Simple heuristic based on URL characteristics
-        base_score = 75
-        
-        # URLs with https get bonus
-        https_bonus = 5 if url.startswith("https://") else 0
-        
-        seo_score = max(65, min(95, base_score + https_bonus))
-        storytelling_score = max(70, min(95, base_score))
-        modules_score = max(65, min(95, base_score))
-        brand_safety_score = max(80, min(95, base_score + 10))
-        
-        overall_score = (
-            seo_score + storytelling_score + modules_score + brand_safety_score
-        ) // 4
-        
-        return {
-            "overall": overall_score,
-            "seo": seo_score,
-            "storytelling": storytelling_score,
-            "modules": modules_score,
-            "brand_safety": brand_safety_score
-        }
     
     def _build_url_page_summary(
         self,
@@ -747,7 +875,10 @@ class LocalAgentFallback:
                 detected_type = "desconhecido"
         
         # Extract topic from URL
-        main_topic = f"Tópico identificado da URL: {url}"
+        main_topic = format_message(
+            PAGE_SUMMARY_MESSAGES["main_topic_url"],
+            url=url
+        )
         
         return {
             "detected_type": detected_type,

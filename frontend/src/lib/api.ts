@@ -29,6 +29,29 @@ export interface DetectedModule {
   evidence: string[];
 }
 
+export interface NarrativeInsight {
+  id: string;
+  type: string;
+  severity: 'high' | 'medium' | 'low';
+  title: string;
+  description: string;
+  related_modules: string[];
+  recommended_actions: string[];
+}
+
+export interface ScoreBreakdownItem {
+  criterion: string;
+  impact: number;
+  reason: string;
+}
+
+export interface ScoreBreakdown {
+  seo: ScoreBreakdownItem[];
+  storytelling: ScoreBreakdownItem[];
+  modules: ScoreBreakdownItem[];
+  brand_safety: ScoreBreakdownItem[];
+}
+
 export interface AnalysisResponse {
   analysis_id: string;
   score: {
@@ -38,6 +61,7 @@ export interface AnalysisResponse {
     modules: number;
     brand_safety: number;
   };
+  score_breakdown?: ScoreBreakdown;
   page_summary: {
     detected_type: string;
     primary_goal: string;
@@ -58,12 +82,7 @@ export interface AnalysisResponse {
     reorder: any[];
     add: any[];
   };
-  copy_suggestions: Array<{
-    section: string;
-    current: string;
-    suggested: string;
-    reason: string;
-  }>;
+  narrative_insights: NarrativeInsight[];
   catalog_context: {
     modules_available_count: number;
     storytelling_patterns_count: number;

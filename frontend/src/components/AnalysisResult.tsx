@@ -1,5 +1,7 @@
 import { AnalysisResponse } from '../lib/api';
 import { ModuleMap } from './ModuleMap';
+import { NarrativeInsights } from './NarrativeInsights';
+import { ScoreBreakdown } from './ScoreBreakdown';
 
 interface AnalysisResultProps {
   data: AnalysisResponse;
@@ -78,6 +80,9 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
         </div>
       </div>
 
+      {/* Score Breakdown - Detalhamento de pontuação */}
+      {data.score_breakdown && <ScoreBreakdown breakdown={data.score_breakdown} />}
+
       {/* Page Summary - Resumo executivo */}
       <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -141,35 +146,8 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
         modulePlan={data.module_plan}
       />
 
-      {/* Copy Suggestions - Antes/depois de copy */}
-      {data.copy_suggestions && data.copy_suggestions.length > 0 && (
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="text-2xl">✍️</span>
-            Sugestões de Copy - Antes/Depois ({data.copy_suggestions.length})
-          </h3>
-          <div className="space-y-4">
-            {data.copy_suggestions.map((suggestion, index) => (
-              <div key={index} className="border-2 border-gray-200 rounded-xl p-5 hover:shadow-lg transition-all">
-                <div className="font-semibold text-gray-900 mb-3 text-lg">{suggestion.section}</div>
-                <div className="grid md:grid-cols-2 gap-4 mb-3">
-                  <div>
-                    <div className="text-xs font-bold text-gray-500 mb-2 uppercase">Antes:</div>
-                    <div className="text-sm text-gray-700 bg-red-50 p-3 rounded-lg border border-red-200">{suggestion.current}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-gray-500 mb-2 uppercase">Depois:</div>
-                    <div className="text-sm text-gray-700 bg-green-50 p-3 rounded-lg border border-green-200">{suggestion.suggested}</div>
-                  </div>
-                </div>
-                <div className="text-sm text-gray-600">
-                  <span className="font-medium">Motivo:</span> {suggestion.reason}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Narrative Insights - Insights estruturais e narrativos */}
+      <NarrativeInsights insights={data.narrative_insights} />
 
       {/* Page Diagnostics - Checklist final */}
       {data.page_diagnostics && (

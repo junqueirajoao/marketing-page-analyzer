@@ -5,6 +5,13 @@ Maps detected blocks to official catalog modules.
 from typing import Dict, List, Any
 import re
 
+from app.utils.analysis_messages import (
+    MODULE_EVIDENCE,
+    MODULE_TITLES,
+    MODULE_TEXT,
+    format_message
+)
+
 
 def detect_modules(
     normalized_page: Dict[str, Any],
@@ -164,8 +171,11 @@ def _detect_breadcrumb(
     confidence = 0.7 if len(breadcrumb_links) >= 3 else 0.5
     
     evidence = [
-        f"Found {len(breadcrumb_links)} breadcrumb-like links",
-        "Links contain navigation keywords"
+        format_message(
+            MODULE_EVIDENCE["breadcrumb_links_found"],
+            count=len(breadcrumb_links)
+        ),
+        MODULE_EVIDENCE["breadcrumb_keywords"]
     ]
     
     breadcrumb_text = " > ".join(
@@ -175,7 +185,7 @@ def _detect_breadcrumb(
     return _create_detected_module(
         module_id="detected_breadcrumb_0",
         catalog_entry=catalog_entry,
-        title="Breadcrumb navigation",
+        title=MODULE_TITLES["breadcrumb"],
         text=breadcrumb_text,
         confidence=confidence,
         evidence=evidence
@@ -226,13 +236,13 @@ def _detect_hero(
     if has_cta:
         confidence += 0.1
     
-    evidence = ["H1 found at beginning"]
+    evidence = [MODULE_EVIDENCE["hero_h1_found"]]
     if has_hero_keyword:
-        evidence.append("Hero keywords detected")
+        evidence.append(MODULE_EVIDENCE["hero_keywords"])
     if has_images:
-        evidence.append("Images present")
+        evidence.append(MODULE_EVIDENCE["hero_images"])
     if has_cta:
-        evidence.append("CTA detected")
+        evidence.append(MODULE_EVIDENCE["hero_cta"])
     
     return _create_detected_module(
         module_id="detected_hero_0",
@@ -265,14 +275,20 @@ def _detect_richtext(
     confidence = 0.6
     
     evidence = [
-        f"Substantial text content ({len(main_text)} chars)",
-        f"Multiple paragraphs detected ({sentence_count} sentences)"
+        format_message(
+            MODULE_EVIDENCE["richtext_content"],
+            chars=len(main_text)
+        ),
+        format_message(
+            MODULE_EVIDENCE["richtext_paragraphs"],
+            count=sentence_count
+        )
     ]
     
     return _create_detected_module(
         module_id="detected_richtext_0",
         catalog_entry=catalog_entry,
-        title="Text content section",
+        title=MODULE_TITLES["richtext"],
         text=main_text[:200],
         confidence=confidence,
         evidence=evidence
@@ -306,15 +322,18 @@ def _detect_image_with_text(
     confidence = 0.65
     
     evidence = [
-        f"Images present: {len(images)}",
-        "Benefit keywords detected",
-        "Text and image combination"
+        format_message(
+            MODULE_EVIDENCE["image_text_images"],
+            count=len(images)
+        ),
+        MODULE_EVIDENCE["image_text_benefits"],
+        MODULE_EVIDENCE["image_text_combination"]
     ]
     
     return _create_detected_module(
         module_id="detected_image_text_0",
         catalog_entry=catalog_entry,
-        title="Image with text section",
+        title=MODULE_TITLES["image_text"],
         text=main_text[:200],
         confidence=confidence,
         evidence=evidence
@@ -353,18 +372,24 @@ def _detect_accordion(
     confidence = 0.8 if len(question_headings) >= 3 else 0.6
     
     evidence = [
-        f"Found {len(question_headings)} question headings"
+        format_message(
+            MODULE_EVIDENCE["accordion_questions"],
+            count=len(question_headings)
+        )
     ]
     if has_faq_keyword:
-        evidence.append("FAQ keywords present")
+        evidence.append(MODULE_EVIDENCE["accordion_faq_keywords"])
     else:
-        evidence.append("Question patterns detected")
+        evidence.append(MODULE_EVIDENCE["accordion_question_patterns"])
     
     return _create_detected_module(
         module_id="detected_accordion_0",
         catalog_entry=catalog_entry,
-        title="FAQ section",
-        text=f"Detected {len(question_headings)} question-like headings",
+        title=MODULE_TITLES["accordion"],
+        text=format_message(
+            MODULE_TEXT["accordion"],
+            count=len(question_headings)
+        ),
         confidence=confidence,
         evidence=evidence
     )
@@ -394,16 +419,19 @@ def _detect_carousel(
     confidence = 0.7 if has_carousel_keyword else 0.5
     
     evidence = [
-        f"Multiple images present: {len(images)}"
+        format_message(
+            MODULE_EVIDENCE["carousel_images"],
+            count=len(images)
+        )
     ]
     if has_carousel_keyword:
-        evidence.append("Carousel keywords detected")
+        evidence.append(MODULE_EVIDENCE["carousel_keywords"])
     
     return _create_detected_module(
         module_id="detected_carousel_0",
         catalog_entry=catalog_entry,
-        title="Carousel section",
-        text=f"Detected {len(images)} images",
+        title=MODULE_TITLES["carousel"],
+        text=format_message(MODULE_TEXT["carousel"], count=len(images)),
         confidence=confidence,
         evidence=evidence
     )
@@ -435,17 +463,26 @@ def _detect_image_icon(
     confidence = 0.65 if has_benefit else 0.5
     
     evidence = [
-        f"Found {len(list_headings)} list-style headings",
-        f"Images present: {len(images)}"
+        format_message(
+            MODULE_EVIDENCE["image_icon_headings"],
+            count=len(list_headings)
+        ),
+        format_message(
+            MODULE_EVIDENCE["image_icon_images"],
+            count=len(images)
+        )
     ]
     if has_benefit:
-        evidence.append("Benefit keywords detected")
+        evidence.append(MODULE_EVIDENCE["image_icon_benefits"])
     
     return _create_detected_module(
         module_id="detected_image_icon_0",
         catalog_entry=catalog_entry,
-        title="Icon list section",
-        text=f"Detected {len(list_headings)} items",
+        title=MODULE_TITLES["image_icon"],
+        text=format_message(
+            MODULE_TEXT["image_icon"],
+            count=len(list_headings)
+        ),
         confidence=confidence,
         evidence=evidence
     )
@@ -479,15 +516,23 @@ def _detect_contracts(
     
     evidence = []
     if pdf_links:
-        evidence.append(f"Found {len(pdf_links)} PDF links")
+        evidence.append(
+            format_message(
+                MODULE_EVIDENCE["contracts_pdf_links"],
+                count=len(pdf_links)
+            )
+        )
     if has_contract_keyword:
-        evidence.append("Contract/tariff keywords detected")
+        evidence.append(MODULE_EVIDENCE["contracts_keywords"])
     
     return _create_detected_module(
         module_id="detected_contracts_0",
         catalog_entry=catalog_entry,
-        title="Contracts and documents",
-        text=f"Detected {len(pdf_links)} documents",
+        title=MODULE_TITLES["contracts"],
+        text=format_message(
+            MODULE_TEXT["contracts"],
+            count=len(pdf_links)
+        ),
         confidence=confidence,
         evidence=evidence
     )
@@ -522,18 +567,26 @@ def _detect_card_with_icon(
     confidence = 0.7 if has_card_keyword and len(images) >= 2 else 0.55
     
     evidence = [
-        f"Found {len(list_headings)} card-like headings"
+        format_message(
+            MODULE_EVIDENCE["card_icon_headings"],
+            count=len(list_headings)
+        )
     ]
     if has_card_keyword:
-        evidence.append("Card keywords detected")
+        evidence.append(MODULE_EVIDENCE["card_icon_keywords"])
     if images:
-        evidence.append(f"Images present: {len(images)}")
+        evidence.append(
+            format_message(
+                MODULE_EVIDENCE["card_icon_images"],
+                count=len(images)
+            )
+        )
     
     return _create_detected_module(
         module_id="detected_card_icon_0",
         catalog_entry=catalog_entry,
-        title="Cards with icons",
-        text=f"Detected {len(list_headings)} cards",
+        title=MODULE_TITLES["card_icon"],
+        text=format_message(MODULE_TEXT["card_icon"], count=len(list_headings)),
         confidence=confidence,
         evidence=evidence
     )
@@ -566,17 +619,22 @@ def _detect_media_with_steps(
     
     evidence = []
     if has_step_keyword:
-        evidence.append("Step keywords detected")
+        evidence.append(MODULE_EVIDENCE["media_steps_keywords"])
     if numbered_pattern:
-        evidence.append(f"Found {len(numbered_pattern)} numbered items")
+        evidence.append(
+            format_message(
+                MODULE_EVIDENCE["media_steps_numbered"],
+                count=len(numbered_pattern)
+            )
+        )
     if images:
-        evidence.append("Media present")
+        evidence.append(MODULE_EVIDENCE["media_steps_media"])
     
     return _create_detected_module(
         module_id="detected_media_steps_0",
         catalog_entry=catalog_entry,
-        title="Step-by-step guide",
-        text="Process with sequential steps",
+        title=MODULE_TITLES["media_steps"],
+        text=MODULE_TEXT["media_steps"],
         confidence=confidence,
         evidence=evidence
     )
@@ -610,15 +668,20 @@ def _detect_whatsapp(
     
     evidence = []
     if whatsapp_links:
-        evidence.append(f"Found {len(whatsapp_links)} WhatsApp links")
+        evidence.append(
+            format_message(
+                MODULE_EVIDENCE["whatsapp_links"],
+                count=len(whatsapp_links)
+            )
+        )
     if has_whatsapp:
-        evidence.append("WhatsApp keywords detected")
+        evidence.append(MODULE_EVIDENCE["whatsapp_keywords"])
     
     return _create_detected_module(
         module_id="detected_whatsapp_0",
         catalog_entry=catalog_entry,
-        title="WhatsApp contact",
-        text="WhatsApp button detected",
+        title=MODULE_TITLES["whatsapp"],
+        text=MODULE_TEXT["whatsapp"],
         confidence=confidence,
         evidence=evidence
     )
@@ -656,15 +719,20 @@ def _detect_qr_codes(
     
     evidence = []
     if qr_images:
-        evidence.append(f"Found {len(qr_images)} QR code images")
+        evidence.append(
+            format_message(
+                MODULE_EVIDENCE["qr_images"],
+                count=len(qr_images)
+            )
+        )
     if has_qr:
-        evidence.append("QR code keywords detected")
+        evidence.append(MODULE_EVIDENCE["qr_keywords"])
     
     qr_module = _create_detected_module(
         module_id="detected_qr_0",
         catalog_entry=catalog_entry,
-        title="QR Code",
-        text="QR code detected",
+        title=MODULE_TITLES["qr"],
+        text=MODULE_TEXT["qr"],
         confidence=confidence,
         evidence=evidence
     )

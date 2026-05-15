@@ -6,7 +6,7 @@ interface JsonResultProps {
 export const JsonResult: React.FC<JsonResultProps> = ({ data }) => {
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-2">Analysis Result:</h3>
+      <h3 className="text-lg font-semibold mb-2">Resultado da Análise:</h3>
       <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-96 text-sm">
         {JSON.stringify(data, null, 2)}
       </pre>
