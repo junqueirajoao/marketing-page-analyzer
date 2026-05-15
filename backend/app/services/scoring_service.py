@@ -12,6 +12,7 @@ def calculate_scores(
     storytelling_analysis: Dict[str, Any],
     narrative_insights: List[Dict[str, Any]],
     brand_rules: List[Dict[str, Any]],
+    seo_rules: List[Dict[str, Any]],
     pattern: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """
@@ -20,7 +21,9 @@ def calculate_scores(
     Returns:
         Dictionary with scores and score_breakdown
     """
-    seo_score, seo_breakdown = calculate_seo_score(normalized_page)
+    seo_score, seo_breakdown = calculate_seo_score(
+        normalized_page, seo_rules
+    )
     
     storytelling_score, storytelling_breakdown = (
         calculate_storytelling_score(
@@ -71,10 +74,12 @@ def calculate_scores(
 
 
 def calculate_seo_score(
-    normalized_page: Dict[str, Any]
+    normalized_page: Dict[str, Any],
+    seo_rules: List[Dict[str, Any]]
 ) -> tuple[int, List[Dict[str, Any]]]:
     """
     Calculate SEO score based on page metadata and structure.
+    Uses seo_rules catalog for data-driven scoring.
     Starts at 100 and deducts points for issues.
     """
     score = 100
@@ -86,105 +91,182 @@ def calculate_seo_score(
     links = normalized_page.get("links", [])
     main_text = normalized_page.get("main_text", "")
     
-    # Title checks
+    # Helper to find rule by ID
+    def get_rule(rule_id: str) -> Optional[Dict[str, Any]]:
+        for rule in seo_rules:
+            if rule.get("id") == rule_id:
+                return rule
+        return None
+    
+    # Title checks (seo_rule_001)
     title = metadata.get("title", "").strip()
+    title_rule = get_rule("seo_rule_001")
     if not title:
-        score -= 20
+        impact = -20
+        if title_rule:
+            impact = title_rule.get("score_impact", {}).get("missing", -20)
+        score -= abs(impact)
         breakdown.append({
             "criterion": "title_missing",
-            "impact": -20,
-            "reason": "Tag de título ausente."
+            "impact": impact,
+            "reason": "Tag de título ausente.",
+            "rule_id": "seo_rule_001"
         })
     elif len(title) < 30 or len(title) > 60:
-        score -= 8
+        impact = -8
+        if title_rule:
+            if len(title) < 30:
+                impact = title_rule.get("score_impact", {}).get(
+                    "too_short", -8
+                )
+            else:
+                impact = title_rule.get("score_impact", {}).get(
+                    "too_long", -8
+                )
+        score -= abs(impact)
         breakdown.append({
             "criterion": "title_length",
-            "impact": -8,
-            "reason": f"Título com {len(title)} caracteres (ideal: 30-60)."
+            "impact": impact,
+            "reason": f"Título com {len(title)} caracteres (ideal: 30-60).",
+            "rule_id": "seo_rule_001"
         })
     
-    # Meta description checks
+    # Meta description checks (seo_rule_002)
     meta_desc = metadata.get("meta_description", "").strip()
+    desc_rule = get_rule("seo_rule_002")
     if not meta_desc:
-        score -= 15
+        impact = -15
+        if desc_rule:
+            impact = desc_rule.get("score_impact", {}).get("missing", -15)
+        score -= abs(impact)
         breakdown.append({
             "criterion": "meta_description_missing",
-            "impact": -15,
-            "reason": "Meta description ausente."
+            "impact": impact,
+            "reason": "Meta description ausente.",
+            "rule_id": "seo_rule_002"
         })
     elif len(meta_desc) < 120 or len(meta_desc) > 160:
-        score -= 8
+        impact = -8
+        if desc_rule:
+            if len(meta_desc) < 120:
+                impact = desc_rule.get("score_impact", {}).get(
+                    "too_short", -8
+                )
+            else:
+                impact = desc_rule.get("score_impact", {}).get(
+                    "too_long", -8
+                )
+        score -= abs(impact)
         breakdown.append({
             "criterion": "meta_description_length",
-            "impact": -8,
+            "impact": impact,
             "reason": (
                 f"Meta description com {len(meta_desc)} caracteres "
                 "(ideal: 120-160)."
-            )
+            ),
+            "rule_id": "seo_rule_002"
         })
     
-    # H1 checks
+    # H1 checks (seo_rule_003)
     h1_count = sum(1 for h in headings if h.get("level") == 1)
+    h1_rule = get_rule("seo_rule_003")
     if h1_count == 0:
-        score -= 20
+        impact = -20
+        if h1_rule:
+            impact = h1_rule.get("score_impact", {}).get("missing", -20)
+        score -= abs(impact)
         breakdown.append({
             "criterion": "h1_missing",
-            "impact": -20,
-            "reason": "H1 ausente na página."
+            "impact": impact,
+            "reason": "H1 ausente na página.",
+            "rule_id": "seo_rule_003"
         })
     elif h1_count > 1:
-        score -= 8
+        impact = -8
+        if h1_rule:
+            impact = h1_rule.get("score_impact", {}).get("multiple", -8)
+        score -= abs(impact)
         breakdown.append({
             "criterion": "multiple_h1",
-            "impact": -8,
-            "reason": f"Múltiplos H1 detectados ({h1_count})."
+            "impact": impact,
+            "reason": f"Múltiplos H1 detectados ({h1_count}).",
+            "rule_id": "seo_rule_003"
         })
     
-    # H2 checks
+    # H2 checks (seo_rule_004)
     h2_count = sum(1 for h in headings if h.get("level") == 2)
+    h2_rule = get_rule("seo_rule_004")
     if h2_count == 0:
-        score -= 6
+        impact = -6
+        if h2_rule:
+            impact = h2_rule.get("score_impact", {}).get("missing_h2", -6)
+        score -= abs(impact)
         breakdown.append({
             "criterion": "h2_missing",
-            "impact": -6,
-            "reason": "Ausência de H2 para estruturar conteúdo."
+            "impact": impact,
+            "reason": "Ausência de H2 para estruturar conteúdo.",
+            "rule_id": "seo_rule_004"
         })
     
-    # Image alt checks
+    # Image alt checks (seo_rule_009)
     images_without_alt = sum(
         1 for img in images
         if not img.get("alt", "").strip()
     )
     if images_without_alt > 0:
+        img_rule = get_rule("seo_rule_009")
         penalty = min(15, images_without_alt * 3)
+        if img_rule:
+            per_image = abs(
+                img_rule.get("score_impact", {}).get("missing_alt_each", -3)
+            )
+            max_penalty = abs(
+                img_rule.get("score_impact", {}).get("max_penalty", -15)
+            )
+            penalty = min(max_penalty, images_without_alt * per_image)
         score -= penalty
         breakdown.append({
             "criterion": "images_without_alt",
             "impact": -penalty,
             "reason": (
                 f"{images_without_alt} imagens sem atributo alt."
-            )
+            ),
+            "rule_id": "seo_rule_009"
         })
     
-    # Internal links check
+    # Internal links check (seo_rule_010)
+    links_rule = get_rule("seo_rule_010")
     if len(links) < 3:
-        score -= 5
+        impact = -5
+        if links_rule:
+            impact = links_rule.get("score_impact", {}).get(
+                "few_internal_links", -5
+            )
+        score -= abs(impact)
         breakdown.append({
             "criterion": "few_internal_links",
-            "impact": -5,
-            "reason": "Poucos links internos detectados."
+            "impact": impact,
+            "reason": "Poucos links internos detectados.",
+            "rule_id": "seo_rule_010"
         })
     
-    # Main text length check
+    # Main text length check (seo_rule_015)
+    content_rule = get_rule("seo_rule_015")
     if len(main_text) < 300:
-        score -= 10
+        impact = -10
+        if content_rule:
+            impact = content_rule.get("score_impact", {}).get(
+                "too_short", -10
+            )
+        score -= abs(impact)
         breakdown.append({
             "criterion": "short_content",
-            "impact": -10,
+            "impact": impact,
             "reason": (
                 f"Conteúdo textual muito curto ({len(main_text)} "
                 "caracteres)."
-            )
+            ),
+            "rule_id": "seo_rule_015"
         })
     
     return max(0, min(100, score)), breakdown
@@ -561,49 +643,57 @@ def calculate_brand_safety_score(
     main_text = normalized_page.get("main_text", "").lower()
     
     # Check for prohibited terms from brand rules
+    detected_rules = set()
     for rule in brand_rules:
         if not isinstance(rule, dict):
             continue
-        bad_examples = rule.get("bad_examples", [])
-        for bad_term in bad_examples:
-            if str(bad_term).lower() in main_text:
-                score -= 20
-                breakdown.append({
-                    "criterion": "prohibited_term",
-                    "impact": -20,
-                    "reason": (
-                        f"Termo proibido detectado: '{bad_term}' "
-                        f"({rule.get('rule', 'regra de marca')})."
-                    )
-                })
-    
-    # Check for financial promises
-    dangerous_terms = [
-        "garantido", "sem risco", "aprovação garantida",
-        "lucro garantido", "renda garantida", "100% seguro"
-    ]
-    for term in dangerous_terms:
-        if term in main_text:
-            score -= 25
+        
+        rule_id = rule.get("id", "")
+        severity = rule.get("severity", "medium")
+        
+        # Check detection_keywords first (more specific)
+        detection_keywords = rule.get("detection_keywords", [])
+        detected = False
+        for keyword in detection_keywords:
+            if str(keyword).lower() in main_text:
+                detected = True
+                break
+        
+        # If not detected by keywords, check bad_examples
+        if not detected:
+            bad_examples = rule.get("bad_examples", [])
+            for bad_term in bad_examples:
+                if str(bad_term).lower() in main_text:
+                    detected = True
+                    break
+        
+        if detected and rule_id not in detected_rules:
+            detected_rules.add(rule_id)
+            
+            # Use risk_score_impact from agent_guidance if available
+            agent_guidance = rule.get("agent_guidance", {})
+            impact = agent_guidance.get("risk_score_impact", 0)
+            
+            # Fallback to severity-based impact
+            if impact == 0:
+                if severity == "high":
+                    impact = 25
+                elif severity == "medium":
+                    impact = 15
+                else:
+                    impact = 8
+            
+            score -= impact
             breakdown.append({
-                "criterion": "financial_promise",
-                "impact": -25,
-                "reason": f"Promessa financeira absoluta: '{term}'."
+                "criterion": "brand_rule_violation",
+                "impact": -impact,
+                "reason": (
+                    f"{rule.get('rule_name', 'Regra de marca')}: "
+                    f"{rule.get('description', '')}"
+                ),
+                "rule_id": rule_id,
+                "severity": severity
             })
-    
-    # Check for artificial urgency
-    urgency_terms = [
-        "última chance", "só hoje", "corre", "rápido",
-        "não perca", "oferta expira"
-    ]
-    urgency_count = sum(1 for term in urgency_terms if term in main_text)
-    if urgency_count > 2:
-        score -= 15
-        breakdown.append({
-            "criterion": "artificial_urgency",
-            "impact": -15,
-            "reason": "Urgência artificial excessiva detectada."
-        })
     
     # Check compliance insights
     compliance_insights = [

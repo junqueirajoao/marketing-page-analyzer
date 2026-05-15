@@ -1,0 +1,898 @@
+[
+  {
+    "id": "seo_rule_001",
+    "category": "metadata",
+    "severity": "high",
+    "rule_name": "Title claro, único e específico",
+    "description": "Toda página deve ter um title descritivo, único e alinhado ao produto, serviço ou intenção principal de busca.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "field": "title",
+      "required": true,
+      "min_length": 30,
+      "max_length": 60,
+      "unique_recommended": true
+    },
+    "bad_examples": [
+      "Home",
+      "Soluções financeiras",
+      "Banco | Produtos",
+      "Tudo para você"
+    ],
+    "good_examples": [
+      "Crédito pessoal: simule opções para o seu momento",
+      "Conta digital para organizar sua vida financeira",
+      "Seguro residencial: coberturas, condições e cotação"
+    ],
+    "recommended_action": "Reescrever o title com palavra-chave principal, contexto e proposta clara.",
+    "score_impact": {
+      "missing": -20,
+      "too_short": -8,
+      "too_long": -8,
+      "generic": -10
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "high",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_002",
+    "category": "metadata",
+    "severity": "high",
+    "rule_name": "Meta description útil e orientada ao clique qualificado",
+    "description": "A meta description deve resumir o valor da página, sinalizar contexto financeiro e ajudar o usuário a decidir se aquele resultado atende à busca.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "field": "meta_description",
+      "required": true,
+      "min_length": 120,
+      "max_length": 160
+    },
+    "bad_examples": [
+      "Conheça nossas soluções.",
+      "Veja mais sobre nossos produtos financeiros.",
+      "Página sobre crédito."
+    ],
+    "good_examples": [
+      "Simule opções de crédito pessoal, veja condições e escolha uma alternativa alinhada ao seu momento financeiro.",
+      "Conheça uma conta digital com Pix, cartão e recursos para cuidar da sua rotina pelo app."
+    ],
+    "recommended_action": "Criar descrição com benefício, contexto, palavra-chave principal e CTA suave.",
+    "score_impact": {
+      "missing": -15,
+      "too_short": -8,
+      "too_long": -8,
+      "generic": -8
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "high",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_003",
+    "category": "headings",
+    "severity": "high",
+    "rule_name": "H1 único e alinhado à intenção",
+    "description": "A página deve ter um único H1 que comunique a proposta principal e esteja alinhado ao title e ao objetivo de negócio.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "field": "h1",
+      "required": true,
+      "max_count": 1
+    },
+    "bad_examples": [
+      "Conheça nossas soluções",
+      "Olá, cliente",
+      "Produtos"
+    ],
+    "good_examples": [
+      "Crédito pessoal para organizar seus planos",
+      "Conta digital para cuidar do seu dinheiro pelo app",
+      "Investimentos para diferentes perfis e objetivos"
+    ],
+    "recommended_action": "Garantir H1 único, específico e conectado à proposta principal.",
+    "score_impact": {
+      "missing": -20,
+      "multiple": -8,
+      "generic": -10
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "high",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_004",
+    "category": "headings",
+    "severity": "medium",
+    "rule_name": "Hierarquia de H2 e H3 compreensível",
+    "description": "Headings devem organizar a página em seções úteis para leitura, rastreamento e compreensão semântica.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "required_h2": true,
+      "avoid_skipped_levels": true,
+      "avoid_heading_for_style_only": true
+    },
+    "bad_examples": [
+      "Página com apenas H1 e parágrafos longos",
+      "Uso de H4 sem H2/H3 anterior",
+      "Headings usados só para estilo visual"
+    ],
+    "good_examples": [
+      "Como funciona",
+      "Benefícios",
+      "Condições",
+      "Dúvidas frequentes",
+      "Contratos e tarifas"
+    ],
+    "recommended_action": "Criar H2 claros para seções principais e H3 para subtópicos relacionados.",
+    "score_impact": {
+      "missing_h2": -6,
+      "confusing_hierarchy": -5
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_005",
+    "category": "search_intent",
+    "severity": "high",
+    "rule_name": "Alinhar conteúdo à intenção de busca",
+    "description": "A página deve responder à intenção dominante: informar, comparar, simular, contratar, consultar condições ou obter suporte.",
+    "applies_to": [
+      "all"
+    ],
+    "intent_types": [
+      "informacional",
+      "comercial",
+      "transacional",
+      "navegacional",
+      "suporte"
+    ],
+    "bad_examples": [
+      "Página de contratação que só educa e não apresenta próximo passo",
+      "Página educativa que força conversão antes de explicar o tema",
+      "Página de produto sem benefícios ou condições claras"
+    ],
+    "good_examples": [
+      "Página de crédito com simulação, funcionamento, condições e FAQ",
+      "Página de seguro com coberturas, acionamento, condições e cotação",
+      "Página de educação financeira com explicação, exemplos e links relacionados"
+    ],
+    "recommended_action": "Identificar intenção dominante e ajustar conteúdo, módulos e CTA a essa intenção.",
+    "score_impact": {
+      "intent_mismatch": -15,
+      "missing_next_step": -8
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "high",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_006",
+    "category": "content_quality",
+    "severity": "high",
+    "rule_name": "Conteúdo útil para decisões financeiras",
+    "description": "Páginas financeiras devem ajudar o usuário a entender benefícios, funcionamento, condições, riscos, custos e próximos passos.",
+    "applies_to": [
+      "credito_pessoal",
+      "cartao_credito",
+      "conta_digital",
+      "investimentos",
+      "seguros",
+      "financiamento_imobiliario",
+      "empresas_pj"
+    ],
+    "checks": {
+      "requires_clear_value_proposition": true,
+      "requires_conditions_context": true,
+      "requires_user_benefit": true
+    },
+    "bad_examples": [
+      "Texto promocional sem explicar condições",
+      "Página que pede conversão sem explicar funcionamento",
+      "Conteúdo genérico que poderia servir para qualquer produto"
+    ],
+    "good_examples": [
+      "Explica o que é o produto, para quem serve, como funciona, condições principais e dúvidas comuns",
+      "Apresenta benefícios sem omitir riscos, análise ou critérios relevantes"
+    ],
+    "recommended_action": "Adicionar conteúdo prático, confiável e orientado à tomada de decisão.",
+    "score_impact": {
+      "thin_content": -10,
+      "missing_conditions": -12,
+      "unclear_value": -10
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "high",
+      "human_review_recommended": true
+    }
+  },
+  {
+    "id": "seo_rule_007",
+    "category": "financial_ymyl",
+    "severity": "high",
+    "rule_name": "Reforçar confiança em conteúdo financeiro",
+    "description": "Conteúdos que podem impactar decisões financeiras exigem clareza, precisão, transparência e sinais de confiabilidade.",
+    "applies_to": [
+      "investimentos",
+      "credito_pessoal",
+      "financiamento_imobiliario",
+      "seguros",
+      "cartao_credito",
+      "empresas_pj"
+    ],
+    "checks": {
+      "requires_risk_context": true,
+      "requires_conditions": true,
+      "requires_trust_signals": true
+    },
+    "required_context": [
+      "custos",
+      "condições",
+      "riscos",
+      "documentos",
+      "elegibilidade",
+      "canais oficiais"
+    ],
+    "good_examples": [
+      "Links para contratos, tarifas, regulamentos ou políticas quando aplicável",
+      "FAQ com análise, taxas, riscos, documentos e prazos"
+    ],
+    "bad_examples": [
+      "Promessa de rentabilidade sem risco",
+      "Oferta de crédito sem informar análise",
+      "Seguro sem explicar coberturas e exclusões"
+    ],
+    "recommended_action": "Incluir sinais de transparência, documentos e contexto regulatório quando necessário.",
+    "score_impact": {
+      "missing_trust_signals": -10,
+      "missing_risk_context": -15,
+      "missing_financial_conditions": -15
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "high",
+      "human_review_recommended": true
+    }
+  },
+  {
+    "id": "seo_rule_008",
+    "category": "keywords",
+    "severity": "medium",
+    "rule_name": "Palavra-chave principal natural e alinhada à intenção",
+    "description": "A página deve ter uma palavra-chave principal clara, usada de forma natural em title, H1, introdução e seções relevantes.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "requires_primary_keyword": true,
+      "avoid_keyword_stuffing": true
+    },
+    "bad_examples": [
+      "Repetir 'empréstimo pessoal' muitas vezes sem contexto",
+      "Lista artificial de cidades, produtos ou termos financeiros",
+      "Title cheio de variações da mesma palavra-chave"
+    ],
+    "good_examples": [
+      "Usar 'crédito pessoal' no title, H1 e texto de forma natural",
+      "Usar termos secundários em seções relevantes, como condições, simulação e dúvidas"
+    ],
+    "recommended_action": "Definir palavra-chave principal e variações semânticas sem repetição artificial.",
+    "score_impact": {
+      "missing_primary_keyword": -8,
+      "keyword_stuffing": -15
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_009",
+    "category": "images",
+    "severity": "medium",
+    "rule_name": "Alt text descritivo para imagens relevantes",
+    "description": "Imagens informativas devem ter texto alternativo claro. Imagens decorativas podem usar alt vazio.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "requires_alt_for_relevant_images": true,
+      "ignore_decorative_images": true
+    },
+    "bad_examples": [
+      "alt='imagem'",
+      "alt='banner'",
+      "alt='foto'",
+      "alt vazio em imagem informativa"
+    ],
+    "good_examples": [
+      "alt='Pessoa usando aplicativo de conta digital no celular'",
+      "alt='Família planejando financiamento imobiliário'",
+      "alt='Tela de simulação de crédito pessoal'"
+    ],
+    "recommended_action": "Adicionar alt text claro para imagens informativas e manter vazio apenas em imagens decorativas.",
+    "score_impact": {
+      "missing_alt_each": -3,
+      "max_penalty": -15
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_010",
+    "category": "internal_links",
+    "severity": "medium",
+    "rule_name": "Links internos úteis e âncoras descritivas",
+    "description": "Links internos devem apoiar a jornada com destinos claros para condições, documentos, produtos relacionados ou conteúdos complementares.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "requires_contextual_links": true,
+      "avoid_generic_anchor": true
+    },
+    "bad_examples": [
+      "Clique aqui",
+      "Saiba mais",
+      "Acesse",
+      "Links sem contexto ou destino claro"
+    ],
+    "good_examples": [
+      "Ver tabela de tarifas",
+      "Conhecer opções de cartão",
+      "Consultar condições do financiamento",
+      "Entender perfil de investidor"
+    ],
+    "recommended_action": "Adicionar links internos com âncoras descritivas e relacionadas à jornada.",
+    "score_impact": {
+      "few_internal_links": -5,
+      "generic_anchor_text": -5
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_011",
+    "category": "structured_data",
+    "severity": "medium",
+    "rule_name": "Dados estruturados quando aplicável",
+    "description": "Páginas com FAQ, breadcrumb, artigo, organização ou produto financeiro podem se beneficiar de dados estruturados adequados.",
+    "applies_to": [
+      "educacao_financeira",
+      "institucional",
+      "credito_pessoal",
+      "seguros",
+      "investimentos",
+      "empresas_pj",
+      "cartao_credito"
+    ],
+    "recommended_schema_types": [
+      "Organization",
+      "FAQPage",
+      "Article",
+      "BreadcrumbList",
+      "Product",
+      "FinancialProduct"
+    ],
+    "recommended_action": "Avaliar conteúdo compatível com marcação estruturada e sugerir implementação técnica.",
+    "score_impact": {
+      "missing_when_applicable": -5
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_012",
+    "category": "breadcrumb",
+    "severity": "low",
+    "rule_name": "Breadcrumb em páginas profundas",
+    "description": "Páginas dentro de arquiteturas complexas devem usar breadcrumb para orientar o usuário e reforçar a hierarquia.",
+    "applies_to": [
+      "credito_pessoal",
+      "cartao_credito",
+      "investimentos",
+      "seguros",
+      "financiamento_imobiliario",
+      "empresas_pj",
+      "institucional"
+    ],
+    "recommended_modules": [
+      "Breadcrumb Header"
+    ],
+    "bad_examples": [
+      "Página profunda sem caminho de navegação",
+      "Breadcrumb com rótulos genéricos",
+      "Breadcrumb que repete o header sem agregar orientação"
+    ],
+    "good_examples": [
+      "Início > Para você > Crédito pessoal",
+      "Início > Empresas > Conta PJ",
+      "Início > Investimentos > Renda fixa"
+    ],
+    "recommended_action": "Adicionar ou melhorar breadcrumb em páginas com navegação hierárquica.",
+    "score_impact": {
+      "missing_on_deep_page": -4
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "low",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_013",
+    "category": "faq",
+    "severity": "medium",
+    "rule_name": "FAQ para dúvidas financeiras recorrentes",
+    "description": "Produtos financeiros devem responder dúvidas comuns sobre funcionamento, elegibilidade, custos, riscos, documentos e contratação.",
+    "applies_to": [
+      "credito_pessoal",
+      "cartao_credito",
+      "investimentos",
+      "seguros",
+      "financiamento_imobiliario",
+      "empresas_pj"
+    ],
+    "recommended_modules": [
+      "Accordion"
+    ],
+    "good_questions": [
+      "Como funciona?",
+      "Quais são as condições?",
+      "Existe análise de crédito?",
+      "Quais documentos são necessários?",
+      "Quais taxas podem ser cobradas?",
+      "Como cancelar ou alterar?",
+      "Quais são os riscos?"
+    ],
+    "bad_examples": [
+      "FAQ com perguntas genéricas",
+      "FAQ que só repete conteúdo promocional",
+      "Respostas longas demais e pouco objetivas"
+    ],
+    "recommended_action": "Adicionar FAQ específico para reduzir dúvidas e cobrir intenção informacional.",
+    "score_impact": {
+      "missing_when_expected": -8,
+      "generic_faq": -5
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_014",
+    "category": "legal_transparency",
+    "severity": "high",
+    "rule_name": "Documentos, tarifas e condições acessíveis",
+    "description": "Páginas de produtos financeiros devem facilitar acesso a contratos, tarifas, regulamentos, condições ou documentos relacionados.",
+    "applies_to": [
+      "credito_pessoal",
+      "cartao_credito",
+      "investimentos",
+      "seguros",
+      "financiamento_imobiliario",
+      "empresas_pj",
+      "campanha_promocional"
+    ],
+    "recommended_modules": [
+      "Contract and tariffs"
+    ],
+    "bad_examples": [
+      "Condições escondidas em links genéricos",
+      "Ausência de documentos em produto regulado",
+      "Links para PDF sem nome claro"
+    ],
+    "good_examples": [
+      "Contrato de crédito pessoal",
+      "Tabela de tarifas",
+      "Condições gerais do seguro",
+      "Regulamento da campanha",
+      "Documento de informações essenciais"
+    ],
+    "recommended_action": "Adicionar seção de contratos, tarifas ou documentos com nomes claros e links acessíveis.",
+    "score_impact": {
+      "missing_documents_when_expected": -12,
+      "unclear_document_links": -6
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "high",
+      "human_review_recommended": true
+    }
+  },
+  {
+    "id": "seo_rule_015",
+    "category": "content_depth",
+    "severity": "medium",
+    "rule_name": "Profundidade suficiente sem excesso",
+    "description": "A página deve ter conteúdo suficiente para explicar a proposta, sem blocos densos que prejudiquem leitura e conversão.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "min_main_text_length": 300,
+      "avoid_dense_blocks": true
+    },
+    "bad_examples": [
+      "Página com menos de 300 caracteres úteis",
+      "Textos longos sem subtítulos",
+      "Parágrafos extensos com linguagem jurídica"
+    ],
+    "good_examples": [
+      "Seções curtas com benefício, funcionamento, condições e FAQ",
+      "Texto escaneável com H2, bullets e módulos adequados"
+    ],
+    "recommended_action": "Equilibrar profundidade, escaneabilidade e estrutura modular.",
+    "score_impact": {
+      "too_short": -10,
+      "too_dense": -6
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_016",
+    "category": "conversion_seo",
+    "severity": "medium",
+    "rule_name": "CTA coerente com intenção e estágio da jornada",
+    "description": "O CTA deve ser claro, específico e alinhado à intenção de busca e ao estágio da jornada.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Clique aqui",
+      "Saiba mais",
+      "Enviar",
+      "Continuar"
+    ],
+    "good_examples": [
+      "Simular crédito",
+      "Abrir conta",
+      "Ver condições",
+      "Solicitar cotação",
+      "Conhecer investimentos",
+      "Baixar app"
+    ],
+    "recommended_action": "Substituir CTAs genéricos por ações específicas e coerentes com a página.",
+    "score_impact": {
+      "missing_cta": -8,
+      "generic_cta": -5,
+      "intent_mismatch_cta": -8
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_017",
+    "category": "canonical_indexing",
+    "severity": "medium",
+    "rule_name": "Canonical e indexação consistentes",
+    "description": "Páginas públicas relevantes devem ter sinalização consistente de canonical e não devem bloquear indexação sem motivo.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "canonical_recommended": true,
+      "detect_noindex": true,
+      "detect_robots_block": true
+    },
+    "bad_examples": [
+      "Página pública com noindex sem justificativa",
+      "Canonical apontando para URL não relacionada",
+      "Variações duplicadas sem canonical"
+    ],
+    "good_examples": [
+      "Canonical apontando para a versão principal da página",
+      "Página de campanha indexável quando faz parte da estratégia de aquisição"
+    ],
+    "recommended_action": "Validar canonical, robots e meta robots para garantir rastreabilidade correta.",
+    "score_impact": {
+      "missing_canonical": -4,
+      "wrong_canonical": -12,
+      "unexpected_noindex": -20
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": true
+    }
+  },
+  {
+    "id": "seo_rule_018",
+    "category": "performance_experience",
+    "severity": "medium",
+    "rule_name": "Evitar peso excessivo de mídia",
+    "description": "Imagens, vídeos e scripts pesados podem prejudicar experiência, carregamento e desempenho orgânico.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "large_images": true,
+      "lazy_loading_recommended": true,
+      "avoid_unnecessary_scripts": true
+    },
+    "bad_examples": [
+      "Hero com imagem muito pesada",
+      "Carrossel com muitas imagens grandes",
+      "Vídeos carregados automaticamente sem necessidade"
+    ],
+    "good_examples": [
+      "Imagens comprimidas e dimensionadas",
+      "Lazy loading em imagens fora da primeira dobra",
+      "Mídias relevantes próximas ao conteúdo relacionado"
+    ],
+    "recommended_action": "Otimizar imagens, reduzir scripts desnecessários e carregar mídias progressivamente.",
+    "score_impact": {
+      "large_media_detected": -8,
+      "excessive_carousel_media": -6
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_019",
+    "category": "spam_prevention",
+    "severity": "high",
+    "rule_name": "Evitar keyword stuffing",
+    "description": "A página não deve repetir palavras-chave artificialmente para manipular relevância ou ranking.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Crédito pessoal, crédito pessoal online, crédito pessoal rápido, crédito pessoal fácil...",
+      "Lista de cidades sem valor real para o usuário",
+      "Blocos repetitivos de termos financeiros"
+    ],
+    "good_examples": [
+      "Uso natural da palavra-chave em title, H1, introdução e seções relevantes",
+      "Variações semânticas apenas quando ajudam a explicar o conteúdo"
+    ],
+    "recommended_action": "Remover repetições artificiais e reescrever com linguagem natural orientada ao usuário.",
+    "score_impact": {
+      "keyword_stuffing_detected": -15
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "high",
+      "human_review_recommended": true
+    }
+  },
+  {
+    "id": "seo_rule_020",
+    "category": "localization",
+    "severity": "low",
+    "rule_name": "Idioma PT-BR consistente",
+    "description": "Páginas em português devem usar PT-BR consistente em titles, descriptions, CTAs, labels e textos visíveis.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Learn more",
+      "Apply now",
+      "Benefits",
+      "Detected modules",
+      "Confidence"
+    ],
+    "good_examples": [
+      "Conhecer mais",
+      "Solicitar agora",
+      "Benefícios",
+      "Módulos detectados",
+      "Confiança"
+    ],
+    "recommended_action": "Padronizar textos visíveis em PT-BR, preservando apenas IDs e nomes técnicos quando necessário.",
+    "score_impact": {
+      "mixed_language": -5
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "low",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_021",
+    "category": "mobile_experience",
+    "severity": "medium",
+    "rule_name": "Experiência mobile equivalente",
+    "description": "Conteúdo importante, links, CTAs, dados estruturados e informações legais devem estar disponíveis também no mobile.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "FAQ disponível só no desktop",
+      "Documentos ocultos no mobile",
+      "CTA mobile sem alternativa ao QR Code",
+      "Texto crítico cortado em carrossel"
+    ],
+    "good_examples": [
+      "Botão mobile equivalente ao QR Code",
+      "FAQ e documentos acessíveis em todos os devices",
+      "CTAs e links internos visíveis no mobile"
+    ],
+    "recommended_action": "Garantir equivalência de conteúdo e ação entre desktop e mobile.",
+    "score_impact": {
+      "missing_mobile_equivalent": -10,
+      "mobile_cta_missing": -6
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_022",
+    "category": "page_modules",
+    "severity": "medium",
+    "rule_name": "Módulos devem apoiar a intenção orgânica",
+    "description": "A composição modular deve facilitar entendimento do tema pesquisado, não apenas criar apelo visual.",
+    "applies_to": [
+      "all"
+    ],
+    "checks": {
+      "compare_detected_modules_with_intent": true,
+      "avoid_critical_content_hidden": true
+    },
+    "bad_examples": [
+      "Carrossel escondendo condições essenciais",
+      "Hero genérico sem palavra-chave ou benefício",
+      "Cards decorativos sem conteúdo útil"
+    ],
+    "good_examples": [
+      "Main Banner com proposta clara",
+      "Accordion para dúvidas recorrentes",
+      "Contract and tariffs para documentos",
+      "Media with steps para funcionamento"
+    ],
+    "recommended_action": "Reordenar ou adicionar módulos que resolvam intenção de busca e reduzam dúvidas.",
+    "score_impact": {
+      "module_intent_mismatch": -8,
+      "missing_support_module": -6
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_023",
+    "category": "freshness",
+    "severity": "medium",
+    "rule_name": "Sinalizar atualização quando houver informação sensível ao tempo",
+    "description": "Conteúdos com taxas, campanhas, condições, regulamentos ou informações de mercado devem indicar vigência, data ou versão quando relevante.",
+    "applies_to": [
+      "campanha_promocional",
+      "credito_pessoal",
+      "cartao_credito",
+      "investimentos",
+      "seguros",
+      "financiamento_imobiliario"
+    ],
+    "bad_examples": [
+      "Oferta sem período de validade",
+      "Tabela sem data",
+      "Regulamento sem versão",
+      "Conteúdo de investimento sem data de referência"
+    ],
+    "good_examples": [
+      "Condições válidas de DD/MM/AAAA a DD/MM/AAAA",
+      "Tabela vigente a partir de DD/MM/AAAA",
+      "Regulamento da campanha versão X"
+    ],
+    "recommended_action": "Adicionar data, vigência ou versão em informações sensíveis ao tempo.",
+    "score_impact": {
+      "missing_validity_date": -8,
+      "missing_document_version": -6
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": true
+    }
+  },
+  {
+    "id": "seo_rule_024",
+    "category": "page_summary",
+    "severity": "low",
+    "rule_name": "Resumo inicial deve explicar a proposta sem depender de contexto externo",
+    "description": "A primeira dobra deve permitir que o usuário entenda rapidamente o tema, valor e próximo passo da página.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Headline institucional vaga",
+      "Imagem decorativa sem texto suficiente",
+      "CTA antes de explicar benefício"
+    ],
+    "good_examples": [
+      "H1 específico, subheadline contextual e CTA coerente",
+      "Resumo claro antes de módulos detalhados"
+    ],
+    "recommended_action": "Fortalecer a primeira dobra com proposta de valor, contexto e CTA.",
+    "score_impact": {
+      "unclear_first_fold": -8
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  },
+  {
+    "id": "seo_rule_025",
+    "category": "trust_links",
+    "severity": "medium",
+    "rule_name": "Links de confiança para canais oficiais e suporte",
+    "description": "Páginas financeiras devem facilitar acesso a canais oficiais, atendimento, segurança, privacidade e documentos relacionados.",
+    "applies_to": [
+      "all"
+    ],
+    "good_examples": [
+      "Central de ajuda",
+      "Política de privacidade",
+      "Segurança",
+      "Tabela de tarifas",
+      "Contrato",
+      "Regulamento",
+      "Fale conosco"
+    ],
+    "bad_examples": [
+      "Página sem canal de suporte",
+      "Links legais ausentes",
+      "Documentos em links genéricos"
+    ],
+    "recommended_action": "Adicionar links de confiança relacionados ao produto e à jornada.",
+    "score_impact": {
+      "missing_trust_links": -6
+    },
+    "agent_guidance": {
+      "agent": "SEO Agent",
+      "recommendation_priority": "medium",
+      "human_review_recommended": false
+    }
+  }
+]

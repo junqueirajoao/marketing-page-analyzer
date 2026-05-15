@@ -1,10 +1,10 @@
-# Marketing Page Analyzer
+# Financial Marketing Pages Analyzer
 
-Multi-agent web application for analyzing and recommending improvements to digital marketing pages for a financial institution.
+Multi-agent web application for analyzing and recommending improvements to financial marketing pages.
 
 ## Overview
 
-Marketing Page Analyzer helps Digital Marketing, UX, Content, and digital channel teams evaluate pages faster, more consistently, and with more actionable outputs. The solution analyzes URLs, natural-language briefings, and, in a future evolution, mockups, returning recommendations about SEO, modular structure, narrative, content clarity, and brand safety.
+Financial Marketing Pages Analyzer helps Digital Marketing, UX, Content, and digital channel teams evaluate financial marketing pages faster, more consistently, and with more actionable outputs. The solution analyzes URLs, natural-language briefings, and, in a future evolution, mockups, returning recommendations about SEO, modular structure, narrative, content clarity, and brand safety.
 
 The project was designed for a hackathon using two main tools:
 

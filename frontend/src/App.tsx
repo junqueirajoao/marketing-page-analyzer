@@ -32,10 +32,10 @@ function App() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Marketing Page Analyzer
+            Financial Marketing Pages Analyzer
           </h1>
           <p className="text-gray-600">
-            Analise suas páginas de marketing ou briefings para obter insights e recomendações acionáveis.
+            Analise suas páginas de marketing financeiro ou briefings para obter insights e recomendações acionáveis.
           </p>
         </div>
 
@@ -108,7 +108,7 @@ function App() {
 
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>Marketing Page Analyzer - Bob-a-thon</p>
+          <p>Financial Marketing Pages Analyzer - Bob-a-thon</p>
         </div>
       </div>
     </div>

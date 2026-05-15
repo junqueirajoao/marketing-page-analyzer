@@ -1,17 +1,808 @@
 [
   {
-    "rule": "Evitar promessas financeiras absolutas",
-    "bad_examples": ["lucro garantido", "renda garantida", "sem risco", "melhor investimento"],
-    "suggestion": "Use linguagem educativa, contextual e sem promessa de resultado."
+    "id": "brand_rule_001",
+    "category": "compliance",
+    "subcategory": "promessas_financeiras",
+    "severity": "high",
+    "rule_name": "Evitar promessas financeiras absolutas",
+    "description": "Comunicações de produtos financeiros não devem prometer aprovação, ganho, proteção, rentabilidade, economia ou resultado como certeza.",
+    "applies_to": [
+      "credito_pessoal",
+      "cartao_credito",
+      "financiamento_imobiliario",
+      "investimentos",
+      "seguros",
+      "empresas_pj",
+      "campanha_promocional"
+    ],
+    "bad_examples": [
+      "Aprovação garantida",
+      "Lucro garantido",
+      "Retorno certo",
+      "Sem risco",
+      "O melhor investimento para você",
+      "Crédito aprovado para todos"
+    ],
+    "safe_alternatives": [
+      "Sujeito à análise",
+      "Consulte condições",
+      "Conforme seu perfil",
+      "Avalie as possibilidades",
+      "As condições podem variar",
+      "Produtos financeiros envolvem riscos e critérios de elegibilidade"
+    ],
+    "detection_keywords": [
+      "garantido",
+      "garantida",
+      "sem risco",
+      "lucro certo",
+      "retorno certo",
+      "aprovação certa",
+      "aprovado para todos",
+      "melhor investimento",
+      "rentabilidade garantida"
+    ],
+    "recommended_action": "Reescrever o trecho usando linguagem contextual, transparente e condicionada aos critérios do produto.",
+    "recommended_modules": [
+      "Accordion",
+      "Contract and tariffs"
+    ],
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": true,
+      "risk_score_impact": 25
+    }
   },
   {
-    "rule": "Usar linguagem simples",
-    "bad_examples": ["liquidez diaria em alocacao estrategica sem suitability"],
-    "suggestion": "Explique termos financeiros com exemplos praticos."
+    "id": "brand_rule_002",
+    "category": "compliance",
+    "subcategory": "investimentos",
+    "severity": "high",
+    "rule_name": "Sinalizar riscos e limites em investimentos",
+    "description": "Conteúdos de investimento devem evitar promessa de rentabilidade e indicar riscos, perfil do investidor, condições, taxas e documentos quando aplicável.",
+    "applies_to": [
+      "investimentos",
+      "educacao_financeira"
+    ],
+    "bad_examples": [
+      "Invista sem risco",
+      "Ganhe mais todos os meses",
+      "Rentabilidade superior garantida",
+      "Esse produto é ideal para todos"
+    ],
+    "safe_alternatives": [
+      "Conheça opções alinhadas ao seu perfil",
+      "Rentabilidade passada não garante rentabilidade futura",
+      "Investimentos estão sujeitos a riscos",
+      "Avalie prazos, liquidez, custos e perfil antes de investir"
+    ],
+    "detection_keywords": [
+      "sem risco",
+      "rentabilidade garantida",
+      "ganhe mais",
+      "ideal para todos",
+      "lucro garantido",
+      "renda garantida"
+    ],
+    "required_context": [
+      "riscos",
+      "perfil do investidor",
+      "liquidez",
+      "taxas",
+      "documentos",
+      "prazo",
+      "tributação quando aplicável"
+    ],
+    "recommended_action": "Adicionar contexto de risco e adequação ao perfil, evitando recomendação personalizada sem base.",
+    "recommended_modules": [
+      "Richtext",
+      "Accordion",
+      "Contract and tariffs",
+      "Card Comparative"
+    ],
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": true,
+      "risk_score_impact": 25
+    }
   },
   {
-    "rule": "Deixar CTA claro",
-    "bad_examples": ["Saiba mais", "Clique aqui"],
-    "suggestion": "Prefira CTAs especificos, como Simule seu credito ou Conheca as opcoes."
+    "id": "brand_rule_003",
+    "category": "compliance",
+    "subcategory": "credito",
+    "severity": "high",
+    "rule_name": "Informar análise, custos e condições em crédito",
+    "description": "Páginas de crédito, empréstimo e financiamento devem deixar claro que a contratação pode depender de análise e que existem custos, taxas, prazos e condições.",
+    "applies_to": [
+      "credito_pessoal",
+      "financiamento_imobiliario",
+      "cartao_credito",
+      "empresas_pj"
+    ],
+    "bad_examples": [
+      "Crédito liberado na hora para todos",
+      "Empréstimo sem análise",
+      "Dinheiro garantido",
+      "Financiamento aprovado imediatamente"
+    ],
+    "safe_alternatives": [
+      "Sujeito à análise de crédito",
+      "Consulte taxas, prazos e condições",
+      "O Custo Efetivo Total pode variar conforme a operação",
+      "Simule para conhecer as opções disponíveis"
+    ],
+    "detection_keywords": [
+      "sem análise",
+      "liberado na hora",
+      "dinheiro garantido",
+      "aprovado imediatamente",
+      "aprovado para todos"
+    ],
+    "required_context": [
+      "análise de crédito",
+      "taxas",
+      "CET",
+      "IOF quando aplicável",
+      "prazo",
+      "condições de contratação"
+    ],
+    "recommended_action": "Adicionar transparência sobre análise e custos antes de incentivar a conversão.",
+    "recommended_modules": [
+      "Media with steps",
+      "Accordion",
+      "Contract and tariffs",
+      "Micro Frontend"
+    ],
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": true,
+      "risk_score_impact": 24
+    }
+  },
+  {
+    "id": "brand_rule_004",
+    "category": "compliance",
+    "subcategory": "seguros",
+    "severity": "high",
+    "rule_name": "Não prometer cobertura total em seguros",
+    "description": "Páginas de seguros devem explicar coberturas, carências, exclusões e condições contratuais, sem sugerir proteção absoluta.",
+    "applies_to": [
+      "seguros"
+    ],
+    "bad_examples": [
+      "Proteção total contra tudo",
+      "Nunca mais se preocupe",
+      "Cobertura garantida em qualquer situação",
+      "Seguro sem exclusões"
+    ],
+    "safe_alternatives": [
+      "Confira coberturas e condições",
+      "Consulte exclusões e carências",
+      "A cobertura depende das condições contratadas",
+      "Veja como acionar o seguro"
+    ],
+    "detection_keywords": [
+      "proteção total",
+      "contra tudo",
+      "nunca mais se preocupe",
+      "cobertura garantida",
+      "sem exclusões"
+    ],
+    "required_context": [
+      "coberturas",
+      "exclusões",
+      "carência",
+      "acionamento",
+      "condições gerais"
+    ],
+    "recommended_action": "Inserir explicações claras de cobertura e direcionar para condições gerais.",
+    "recommended_modules": [
+      "Card with icon",
+      "Accordion",
+      "Contract and tariffs"
+    ],
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": true,
+      "risk_score_impact": 22
+    }
+  },
+  {
+    "id": "brand_rule_005",
+    "category": "tone_of_voice",
+    "subcategory": "clareza",
+    "severity": "medium",
+    "rule_name": "Usar linguagem clara e acessível",
+    "description": "A comunicação deve facilitar entendimento de termos financeiros, evitando jargões sem explicação.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Operação sujeita à política de elegibilidade e alçadas internas",
+      "Alocação estratégica com duration e marcação a mercado",
+      "Encargos remuneratórios incidentes no saldo devedor"
+    ],
+    "safe_alternatives": [
+      "A contratação depende de análise",
+      "O valor pode oscilar ao longo do tempo",
+      "Podem existir juros, tarifas e impostos"
+    ],
+    "detection_keywords": [
+      "alçada",
+      "duration",
+      "marcação a mercado",
+      "saldo devedor",
+      "encargos remuneratórios",
+      "suitability",
+      "liquidez"
+    ],
+    "recommended_action": "Explicar termos técnicos com frases curtas, exemplos ou links de apoio.",
+    "recommended_modules": [
+      "Richtext",
+      "Accordion",
+      "Duo Text Link"
+    ],
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": false,
+      "risk_score_impact": 8
+    }
+  },
+  {
+    "id": "brand_rule_006",
+    "category": "tone_of_voice",
+    "subcategory": "tom_institucional",
+    "severity": "medium",
+    "rule_name": "Manter tom humano, confiável e institucional",
+    "description": "O tom deve equilibrar proximidade e segurança, sem parecer frio, agressivo ou sensacionalista.",
+    "applies_to": [
+      "all"
+    ],
+    "preferred_attributes": [
+      "claro",
+      "empático",
+      "consultivo",
+      "transparente",
+      "educativo",
+      "objetivo",
+      "responsável"
+    ],
+    "avoid_attributes": [
+      "agressivo",
+      "alarmista",
+      "sensacionalista",
+      "excessivamente informal",
+      "excessivamente corporativo",
+      "pressionador"
+    ],
+    "bad_examples": [
+      "Corra antes que acabe",
+      "Você não pode perder",
+      "O banco definitivo para enriquecer",
+      "A solução perfeita"
+    ],
+    "safe_alternatives": [
+      "Conheça as condições",
+      "Veja se faz sentido para o seu momento",
+      "Compare opções",
+      "Entenda antes de contratar"
+    ],
+    "recommended_action": "Ajustar tom para transmitir segurança, autonomia do usuário e transparência.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": false,
+      "human_review_recommended": false,
+      "risk_score_impact": 7
+    }
+  },
+  {
+    "id": "brand_rule_007",
+    "category": "cta",
+    "subcategory": "especificidade",
+    "severity": "medium",
+    "rule_name": "Usar CTAs específicos e honestos",
+    "description": "CTAs devem deixar clara a ação e não prometer resultado após o clique.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Clique aqui",
+      "Saiba mais",
+      "Garanta agora",
+      "Aproveite sem risco",
+      "Receba seu dinheiro"
+    ],
+    "safe_alternatives": [
+      "Simular crédito",
+      "Ver condições",
+      "Conhecer opções",
+      "Solicitar cotação",
+      "Abrir conta",
+      "Baixar app",
+      "Comparar cartões"
+    ],
+    "detection_keywords": [
+      "clique aqui",
+      "saiba mais",
+      "garanta agora",
+      "aproveite sem risco"
+    ],
+    "recommended_action": "Trocar CTAs genéricos ou agressivos por ações específicas alinhadas à jornada.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": false,
+      "risk_score_impact": 6
+    }
+  },
+  {
+    "id": "brand_rule_008",
+    "category": "compliance",
+    "subcategory": "urgencia",
+    "severity": "high",
+    "rule_name": "Evitar urgência artificial",
+    "description": "Campanhas financeiras não devem pressionar decisão com urgência falsa ou excessiva.",
+    "applies_to": [
+      "campanha_promocional",
+      "credito_pessoal",
+      "cartao_credito",
+      "seguros",
+      "investimentos"
+    ],
+    "bad_examples": [
+      "Última chance",
+      "Só hoje",
+      "Agora ou nunca",
+      "Oferta acaba em minutos",
+      "Não perca ou você vai se arrepender"
+    ],
+    "safe_alternatives": [
+      "Consulte o período da campanha",
+      "Confira disponibilidade",
+      "Condições válidas conforme regulamento",
+      "Veja se a oferta está disponível para você"
+    ],
+    "detection_keywords": [
+      "última chance",
+      "só hoje",
+      "agora ou nunca",
+      "acaba em minutos",
+      "corra"
+    ],
+    "recommended_action": "Substituir pressão por informação de prazo, elegibilidade e regulamento.",
+    "recommended_modules": [
+      "Accordion",
+      "Contract and tariffs"
+    ],
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": true,
+      "risk_score_impact": 18
+    }
+  },
+  {
+    "id": "brand_rule_009",
+    "category": "transparencia",
+    "subcategory": "documentos",
+    "severity": "high",
+    "rule_name": "Disponibilizar documentos e condições em produtos regulados",
+    "description": "Produtos financeiros devem facilitar acesso a documentos, tarifas, contratos, regulamentos e condições aplicáveis.",
+    "applies_to": [
+      "credito_pessoal",
+      "cartao_credito",
+      "investimentos",
+      "seguros",
+      "financiamento_imobiliario",
+      "empresas_pj",
+      "campanha_promocional"
+    ],
+    "required_information": [
+      "contratos",
+      "tarifas",
+      "condições gerais",
+      "regulamento",
+      "documentos essenciais",
+      "políticas aplicáveis"
+    ],
+    "recommended_modules": [
+      "Contract and tariffs",
+      "Accordion",
+      "Duo Text Link"
+    ],
+    "bad_examples": [
+      "Consulte condições em outro canal",
+      "Termos genéricos sem link",
+      "PDF sem nome claro",
+      "Regulamento escondido no rodapé"
+    ],
+    "safe_alternatives": [
+      "Ver tabela de tarifas",
+      "Acessar condições gerais",
+      "Consultar regulamento da campanha",
+      "Baixar contrato"
+    ],
+    "recommended_action": "Adicionar seção de documentos com links claros, nomes compreensíveis e localização no final da jornada.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": false,
+      "human_review_recommended": true,
+      "risk_score_impact": 16
+    }
+  },
+  {
+    "id": "brand_rule_010",
+    "category": "storytelling",
+    "subcategory": "contexto_antes_conversao",
+    "severity": "medium",
+    "rule_name": "Evitar conversão antes de contexto mínimo",
+    "description": "A página deve explicar proposta, benefícios, funcionamento ou condições antes de solicitar contratação, simulação ou dados pessoais.",
+    "applies_to": [
+      "credito_pessoal",
+      "investimentos",
+      "seguros",
+      "financiamento_imobiliario",
+      "empresas_pj"
+    ],
+    "bad_patterns": [
+      "formulário antes da proposta de valor",
+      "CTA principal sem explicação",
+      "pedido de dados antes de informar condições"
+    ],
+    "recommended_modules_before_cta": [
+      "Main Banner",
+      "Card with icon",
+      "Media with steps",
+      "Accordion"
+    ],
+    "recommended_action": "Reposicionar CTA ou formulário depois de uma explicação mínima da jornada.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": false,
+      "human_review_recommended": false,
+      "risk_score_impact": 8
+    }
+  },
+  {
+    "id": "brand_rule_011",
+    "category": "accessibility",
+    "subcategory": "informacao_critica",
+    "severity": "medium",
+    "rule_name": "Não esconder informação crítica em interação secundária",
+    "description": "Informações essenciais sobre custo, risco, condição ou elegibilidade não devem depender apenas de carrossel, hover, modal ou interação pouco evidente.",
+    "applies_to": [
+      "all"
+    ],
+    "avoid_modules_usage": [
+      {
+        "module": "Carrossel",
+        "restriction": "Não usar para condições essenciais, taxas, riscos ou documentos obrigatórios."
+      },
+      {
+        "module": "Accordion",
+        "restriction": "Não esconder informação crítica que precisa aparecer antes da decisão."
+      }
+    ],
+    "recommended_action": "Exibir informações críticas de forma visível e acessível na página.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": false,
+      "human_review_recommended": false,
+      "risk_score_impact": 8
+    }
+  },
+  {
+    "id": "brand_rule_012",
+    "category": "privacy",
+    "subcategory": "dados_pessoais",
+    "severity": "high",
+    "rule_name": "Contextualizar coleta de dados pessoais",
+    "description": "Quando a página solicita dados, deve explicar finalidade, próximo passo e relação com a jornada.",
+    "applies_to": [
+      "credito_pessoal",
+      "financiamento_imobiliario",
+      "seguros",
+      "empresas_pj",
+      "conta_digital",
+      "cartao_credito"
+    ],
+    "bad_examples": [
+      "Informe seus dados para continuar",
+      "Preencha tudo para receber oferta",
+      "Digite seu CPF sem explicar finalidade"
+    ],
+    "safe_alternatives": [
+      "Informe seus dados para iniciar a simulação",
+      "Usaremos as informações para avaliar opções disponíveis",
+      "Consulte nossa política de privacidade"
+    ],
+    "required_context": [
+      "finalidade",
+      "próximo passo",
+      "política de privacidade",
+      "canal seguro"
+    ],
+    "recommended_action": "Adicionar microcopy explicando por que os dados são solicitados e como serão usados na jornada.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": true,
+      "risk_score_impact": 14
+    }
+  },
+  {
+    "id": "brand_rule_013",
+    "category": "brand_tone",
+    "subcategory": "inclusao",
+    "severity": "medium",
+    "rule_name": "Evitar linguagem excludente ou elitista",
+    "description": "Comunicação financeira deve evitar reforçar exclusão, vergonha ou superioridade social.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Para quem entende de dinheiro de verdade",
+      "Pare de errar com seu dinheiro",
+      "Só para clientes premium de verdade",
+      "Saia do vermelho agora ou fique para trás"
+    ],
+    "safe_alternatives": [
+      "Para diferentes momentos financeiros",
+      "Entenda opções para sua rotina",
+      "Conheça alternativas disponíveis",
+      "Organize seus planos com mais clareza"
+    ],
+    "recommended_action": "Reescrever com linguagem inclusiva, respeitosa e orientada à autonomia.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": false,
+      "risk_score_impact": 8
+    }
+  },
+  {
+    "id": "brand_rule_014",
+    "category": "claims",
+    "subcategory": "superlativos",
+    "severity": "medium",
+    "rule_name": "Evitar superlativos sem comprovação",
+    "description": "Claims como 'melhor', 'maior', 'mais seguro' ou 'número 1' exigem base verificável e contexto.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "O melhor banco",
+      "A conta mais completa",
+      "O cartão mais vantajoso",
+      "A menor taxa do mercado",
+      "O seguro mais seguro"
+    ],
+    "safe_alternatives": [
+      "Uma opção para sua rotina",
+      "Conheça benefícios e condições",
+      "Compare alternativas",
+      "Veja se combina com seu momento"
+    ],
+    "detection_keywords": [
+      "melhor",
+      "maior",
+      "menor taxa",
+      "número 1",
+      "mais completo",
+      "mais seguro"
+    ],
+    "recommended_action": "Remover superlativos ou incluir evidência clara, data, fonte e contexto.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": true,
+      "risk_score_impact": 12
+    }
+  },
+  {
+    "id": "brand_rule_015",
+    "category": "compliance",
+    "subcategory": "comparacao",
+    "severity": "medium",
+    "rule_name": "Comparações devem usar critérios claros",
+    "description": "Comparações entre produtos, planos ou alternativas precisam usar critérios paralelos e evitar indução enganosa.",
+    "applies_to": [
+      "cartao_credito",
+      "investimentos",
+      "seguros",
+      "empresas_pj",
+      "credito_pessoal"
+    ],
+    "bad_examples": [
+      "Esse é melhor para todos",
+      "Mais barato sem explicar critério",
+      "Compare e escolha o melhor sem mostrar condições"
+    ],
+    "safe_alternatives": [
+      "Compare benefícios, custos e condições",
+      "Veja qual opção combina com seu perfil",
+      "Avalie critérios como prazo, custo, cobertura e elegibilidade"
+    ],
+    "recommended_modules": [
+      "Card Comparative",
+      "Double Box",
+      "Accordion"
+    ],
+    "recommended_action": "Estruturar comparativo com critérios equivalentes e linguagem neutra.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": false,
+      "human_review_recommended": false,
+      "risk_score_impact": 8
+    }
+  },
+  {
+    "id": "brand_rule_016",
+    "category": "support",
+    "subcategory": "atendimento",
+    "severity": "low",
+    "rule_name": "Oferecer suporte sem competir com CTA principal",
+    "description": "Botões de ajuda ou WhatsApp devem apoiar a jornada, sem gerar ambiguidade com a ação principal.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Botão flutuante cobrindo CTA",
+      "Dois CTAs principais conflitantes",
+      "WhatsApp sem explicar finalidade"
+    ],
+    "safe_alternatives": [
+      "Precisa de ajuda? Fale com atendimento",
+      "Tire dúvidas sobre este produto",
+      "Continuar pelo WhatsApp"
+    ],
+    "recommended_modules": [
+      "Button Help WhatsApp"
+    ],
+    "recommended_action": "Manter suporte contextual e claramente secundário quando houver CTA principal.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": false,
+      "human_review_recommended": false,
+      "risk_score_impact": 4
+    }
+  },
+  {
+    "id": "brand_rule_017",
+    "category": "content_quality",
+    "subcategory": "escaneabilidade",
+    "severity": "low",
+    "rule_name": "Priorizar leitura escaneável",
+    "description": "Páginas financeiras devem organizar informação complexa em títulos, bullets, cards e FAQs.",
+    "applies_to": [
+      "all"
+    ],
+    "recommended_limits": {
+      "max_paragraph_lines": 4,
+      "max_bullets_per_section": 5,
+      "max_primary_ctas_per_viewport": 1
+    },
+    "bad_examples": [
+      "Parágrafos longos sem subtítulos",
+      "Bloco jurídico antes do benefício",
+      "Múltiplas chamadas competindo na primeira dobra"
+    ],
+    "safe_alternatives": [
+      "Dividir em seções curtas",
+      "Usar cards para benefícios",
+      "Usar FAQ para dúvidas recorrentes"
+    ],
+    "recommended_action": "Reorganizar conteúdo denso em módulos adequados e hierarquia clara.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": false,
+      "human_review_recommended": false,
+      "risk_score_impact": 4
+    }
+  },
+  {
+    "id": "brand_rule_018",
+    "category": "localization",
+    "subcategory": "idioma",
+    "severity": "low",
+    "rule_name": "Manter idioma PT-BR consistente",
+    "description": "Textos visíveis ao usuário devem estar em português brasileiro, preservando apenas nomes técnicos quando necessário.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Learn more",
+      "Apply now",
+      "Detected modules",
+      "Confidence",
+      "Evidence"
+    ],
+    "safe_alternatives": [
+      "Conhecer mais",
+      "Solicitar agora",
+      "Módulos detectados",
+      "Confiança",
+      "Evidências"
+    ],
+    "recommended_action": "Traduzir labels, evidências e mensagens visíveis para PT-BR.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": false,
+      "risk_score_impact": 3
+    }
+  },
+  {
+    "id": "brand_rule_019",
+    "category": "accessibility",
+    "subcategory": "compreensao",
+    "severity": "medium",
+    "rule_name": "Não depender apenas de imagem para comunicar informação financeira",
+    "description": "Informações relevantes de oferta, taxa, condição, risco ou prazo devem estar em texto acessível, não apenas em banners ou imagens.",
+    "applies_to": [
+      "all"
+    ],
+    "bad_examples": [
+      "Condição exibida apenas dentro da imagem do banner",
+      "Texto legal em imagem sem alternativa",
+      "Oferta em arte sem descrição textual"
+    ],
+    "safe_alternatives": [
+      "Repetir condição principal em texto HTML",
+      "Adicionar alt descritivo quando a imagem comunica informação",
+      "Usar seção textual para regras importantes"
+    ],
+    "recommended_action": "Garantir que informações críticas estejam em texto rastreável e acessível.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": false,
+      "human_review_recommended": false,
+      "risk_score_impact": 6
+    }
+  },
+  {
+    "id": "brand_rule_020",
+    "category": "recommendation_safety",
+    "subcategory": "aconselhamento_financeiro",
+    "severity": "high",
+    "rule_name": "Evitar recomendação financeira personalizada sem contexto",
+    "description": "Conteúdo geral não deve afirmar que um produto é a melhor escolha para o usuário sem conhecer perfil, objetivos e condições.",
+    "applies_to": [
+      "investimentos",
+      "credito_pessoal",
+      "cartao_credito",
+      "seguros",
+      "financiamento_imobiliario"
+    ],
+    "bad_examples": [
+      "Este investimento é ideal para você",
+      "Esse crédito é a melhor opção",
+      "Contrate este seguro agora",
+      "Esse cartão combina com qualquer pessoa"
+    ],
+    "safe_alternatives": [
+      "Conheça opções e avalie conforme seu perfil",
+      "Compare condições antes de decidir",
+      "Veja se a opção faz sentido para seus objetivos",
+      "Consulte critérios de elegibilidade"
+    ],
+    "detection_keywords": [
+      "ideal para você",
+      "melhor opção para você",
+      "combina com qualquer pessoa",
+      "recomendamos este produto"
+    ],
+    "recommended_action": "Trocar recomendação direta por orientação comparativa e contextual.",
+    "agent_guidance": {
+      "agent": "Brand and Compliance Agent",
+      "rewrite_required": true,
+      "human_review_recommended": true,
+      "risk_score_impact": 20
+    }
   }
 ]

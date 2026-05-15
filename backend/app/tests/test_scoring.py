@@ -9,10 +9,13 @@ from app.services.scoring_service import (
     calculate_brand_safety_score,
     calculate_overall_score,
 )
+from app.services.catalog_loader import load_seo_rules
 
 
 def test_seo_score_decreases_without_title():
     """SEO score should decrease when title is missing."""
+    seo_rules = load_seo_rules()
+    
     normalized_page_with_title = {
         "metadata": {"title": "Test Page", "meta_description": "Test"},
         "headings": [{"level": 1, "text": "H1"}],
@@ -29,8 +32,12 @@ def test_seo_score_decreases_without_title():
         "main_text": "A" * 500,
     }
     
-    score_with, _ = calculate_seo_score(normalized_page_with_title)
-    score_without, _ = calculate_seo_score(normalized_page_without_title)
+    score_with, _ = calculate_seo_score(
+        normalized_page_with_title, seo_rules
+    )
+    score_without, _ = calculate_seo_score(
+        normalized_page_without_title, seo_rules
+    )
     
     assert score_without < score_with
     assert score_without <= score_with - 12  # At least 12 points penalty
@@ -38,6 +45,8 @@ def test_seo_score_decreases_without_title():
 
 def test_seo_score_decreases_without_meta_description():
     """SEO score should decrease when meta description is missing."""
+    seo_rules = load_seo_rules()
+    
     normalized_page_with_meta = {
         "metadata": {"title": "Test", "meta_description": "A" * 130},
         "headings": [{"level": 1, "text": "H1"}],
@@ -54,14 +63,20 @@ def test_seo_score_decreases_without_meta_description():
         "main_text": "A" * 500,
     }
     
-    score_with, _ = calculate_seo_score(normalized_page_with_meta)
-    score_without, _ = calculate_seo_score(normalized_page_without_meta)
+    score_with, _ = calculate_seo_score(
+        normalized_page_with_meta, seo_rules
+    )
+    score_without, _ = calculate_seo_score(
+        normalized_page_without_meta, seo_rules
+    )
     
     assert score_without < score_with
 
 
 def test_seo_score_decreases_without_h1():
     """SEO score should decrease when H1 is missing."""
+    seo_rules = load_seo_rules()
+    
     normalized_page_with_h1 = {
         "metadata": {"title": "Test", "meta_description": "Test"},
         "headings": [{"level": 1, "text": "H1"}],
@@ -78,8 +93,10 @@ def test_seo_score_decreases_without_h1():
         "main_text": "A" * 500,
     }
     
-    score_with, _ = calculate_seo_score(normalized_page_with_h1)
-    score_without, _ = calculate_seo_score(normalized_page_without_h1)
+    score_with, _ = calculate_seo_score(normalized_page_with_h1, seo_rules)
+    score_without, _ = calculate_seo_score(
+        normalized_page_without_h1, seo_rules
+    )
     
     assert score_without < score_with
     assert score_without <= score_with - 12
@@ -377,6 +394,8 @@ def test_overall_score_is_weighted_average():
 
 def test_score_breakdown_explains_losses():
     """Score breakdown should explain why points were lost."""
+    seo_rules = load_seo_rules()
+    
     normalized_page = {
         "metadata": {"title": "", "meta_description": ""},
         "headings": [],
@@ -385,7 +404,7 @@ def test_score_breakdown_explains_losses():
         "main_text": "Short",
     }
     
-    _, breakdown = calculate_seo_score(normalized_page)
+    _, breakdown = calculate_seo_score(normalized_page, seo_rules)
     
     assert len(breakdown) > 0
     assert any(item["criterion"] == "title_missing" for item in breakdown)
@@ -399,6 +418,11 @@ def test_score_breakdown_explains_losses():
 
 def test_calculate_scores_returns_complete_structure():
     """calculate_scores should return score and score_breakdown."""
+    from app.services.catalog_loader import load_brand_rules
+    
+    seo_rules = load_seo_rules()
+    brand_rules = load_brand_rules()
+    
     result = calculate_scores(
         normalized_page={
             "metadata": {"title": "Test", "meta_description": "Test"},
@@ -411,7 +435,8 @@ def test_calculate_scores_returns_complete_structure():
         module_plan={"add": [], "remove": [], "reorder": [], "keep": []},
         storytelling_analysis={},
         narrative_insights=[],
-        brand_rules=[],
+        brand_rules=brand_rules,
+        seo_rules=seo_rules,
         pattern={"required_modules": ["Main Banner"], "narrative_steps": []},
     )
     

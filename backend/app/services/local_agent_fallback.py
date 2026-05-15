@@ -127,6 +127,7 @@ class LocalAgentFallback:
             storytelling_analysis=storytelling_analysis,
             narrative_insights=narrative_insights,
             brand_rules=catalogs.get("brand_rules", []),
+            seo_rules=catalogs.get("seo_rules", []),
             pattern=storytelling_pattern,
         )
 
@@ -226,6 +227,7 @@ class LocalAgentFallback:
             storytelling_analysis=storytelling_analysis,
             narrative_insights=narrative_insights,
             brand_rules=catalogs.get("brand_rules", []),
+            seo_rules=catalogs.get("seo_rules", []),
             pattern=storytelling_pattern,
         )
 

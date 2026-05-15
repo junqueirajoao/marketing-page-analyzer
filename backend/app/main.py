@@ -3,7 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes.health import router as health_router
 from app.routes.analyze import router as analyze_router
 
-app = FastAPI(title="Marketing Page Analyzer")
+app = FastAPI(
+    title="Financial Marketing Pages Analyzer",
+    description="Análise inteligente de páginas de marketing financeiro",
+    version="1.0.0"
+)
 
 # Configure CORS
 app.add_middleware(

@@ -199,12 +199,21 @@ def load_brand_rules() -> List[Dict[str, Any]]:
     return _ensure_list(raw_data, "brand_rules")
 
 
+def load_seo_rules() -> List[Dict[str, Any]]:
+    """Load SEO rules from JSON file."""
+    data_dir = _get_data_dir()
+    rules_path = data_dir / "seo_rules.json"
+    raw_data = _load_json_file(rules_path, "seo_rules")
+    return _ensure_list(raw_data, "seo_rules")
+
+
 def load_all_catalogs() -> Dict[str, Any]:
     """Load all catalogs at once."""
     return {
         "modules_catalog": load_modules_catalog(),
         "storytelling_patterns": load_storytelling_patterns(),
-        "brand_rules": load_brand_rules()
+        "brand_rules": load_brand_rules(),
+        "seo_rules": load_seo_rules()
     }
 
 
