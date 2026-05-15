@@ -1,6 +1,7 @@
 """
 Catalog Context Builder
-Builds relevant, compact catalog context for ICA agents without requiring Knowledge Base.
+Builds relevant, compact catalog context for ICA agents without
+requiring Knowledge Base.
 """
 from typing import Dict, Any, List, Optional
 import logging
@@ -22,8 +23,8 @@ def build_catalog_context(
     Build compact, relevant catalog context for ICA agents.
     
     Args:
-        catalogs: Dictionary with all catalogs (modules_catalog, storytelling_patterns, 
-                  seo_rules, brand_rules)
+        catalogs: Dictionary with all catalogs (modules_catalog,
+                  storytelling_patterns, seo_rules, brand_rules)
         page_type: Page type (e.g., "credito_pessoal", "investimentos")
         business_goal: Business goal (e.g., "conversao", "educacao")
         target_audience: Target audience (e.g., "pessoa_fisica", "empresas")
@@ -90,7 +91,8 @@ def build_catalog_context(
     
     logger.info(
         f"[CATALOG_CONTEXT] Selected {len(relevant_modules)} modules, "
-        f"{len(relevant_storytelling)} patterns, {len(relevant_seo)} SEO rules, "
+        f"{len(relevant_storytelling)} patterns, "
+        f"{len(relevant_seo)} SEO rules, "
         f"{len(relevant_brand)} brand rules"
     )
     
@@ -109,7 +111,10 @@ def _select_relevant_modules(
     page_type: Optional[str],
     max_items: int
 ) -> List[Dict[str, Any]]:
-    """Select relevant modules based on detected modules and storytelling patterns."""
+    """
+    Select relevant modules based on detected modules and
+    storytelling patterns.
+    """
     relevant_module_ids = set()
     
     # Add detected modules
@@ -151,7 +156,10 @@ def _select_relevant_storytelling_patterns(
     target_audience: Optional[str],
     max_items: int
 ) -> List[Dict[str, Any]]:
-    """Select relevant storytelling patterns based on page type, goal, and audience."""
+    """
+    Select relevant storytelling patterns based on page type,
+    goal, and audience.
+    """
     scored_patterns = []
     
     for pattern in storytelling_patterns:
@@ -166,7 +174,8 @@ def _select_relevant_storytelling_patterns(
             score += 50
         
         # Match on target_audience
-        if target_audience and pattern.get("target_audience") == target_audience:
+        pattern_audience = pattern.get("target_audience")
+        if target_audience and pattern_audience == target_audience:
             score += 30
         
         # Partial match on page_type (contains)
@@ -199,7 +208,10 @@ def _select_relevant_seo_rules(
     score_breakdown: Dict[str, Any],
     max_items: int
 ) -> List[Dict[str, Any]]:
-    """Select relevant SEO rules based on severity, page type, and score issues."""
+    """
+    Select relevant SEO rules based on severity, page type,
+    and score issues.
+    """
     scored_rules = []
     
     # Extract rule IDs mentioned in score breakdown
@@ -253,8 +265,13 @@ def _select_relevant_seo_rules(
     
     # If no matches, return top high severity rules as fallback
     if not relevant_rules:
-        logger.info("[CATALOG_CONTEXT] No matching SEO rules, using high severity fallback")
-        high_severity = [r for r in seo_rules if r.get("severity") == "high"]
+        logger.info(
+            "[CATALOG_CONTEXT] No matching SEO rules, "
+            "using high severity fallback"
+        )
+        high_severity = [
+            r for r in seo_rules if r.get("severity") == "high"
+        ]
         for rule in high_severity[:max_items]:
             relevant_rules.append(_compact_seo_rule(rule))
     
@@ -268,7 +285,10 @@ def _select_relevant_brand_rules(
     narrative_insights: List[Dict[str, Any]],
     max_items: int
 ) -> List[Dict[str, Any]]:
-    """Select relevant brand rules based on severity, page type, and detected issues."""
+    """
+    Select relevant brand rules based on severity, page type,
+    and detected issues.
+    """
     scored_rules = []
     
     # Extract keywords from narrative insights
@@ -335,8 +355,13 @@ def _select_relevant_brand_rules(
     
     # If no matches, return top high severity rules as fallback
     if not relevant_rules:
-        logger.info("[CATALOG_CONTEXT] No matching brand rules, using high severity fallback")
-        high_severity = [r for r in brand_rules if r.get("severity") == "high"]
+        logger.info(
+            "[CATALOG_CONTEXT] No matching brand rules, "
+            "using high severity fallback"
+        )
+        high_severity = [
+            r for r in brand_rules if r.get("severity") == "high"
+        ]
         for rule in high_severity[:max_items]:
             relevant_rules.append(_compact_brand_rule(rule))
     
@@ -369,7 +394,9 @@ def _compact_storytelling_pattern(pattern: Dict[str, Any]) -> Dict[str, Any]:
         "target_audience": pattern.get("target_audience"),
         "narrative_steps": pattern.get("narrative_steps", []),
         "required_modules": pattern.get("required_modules", []),
-        "recommended_module_order": pattern.get("recommended_module_order", []),
+        "recommended_module_order": pattern.get(
+            "recommended_module_order", []
+        ),
         "tone_guidelines": pattern.get("tone_guidelines", []),
         "agent_evaluation_rules": pattern.get("agent_evaluation_rules", {})
     }

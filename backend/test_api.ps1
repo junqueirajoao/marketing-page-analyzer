@@ -1,5 +1,10 @@
 # Script de teste para a API do Financial Marketing Pages Analyzer
 
+# Configure UTF-8 encoding for PowerShell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
+
 Write-Host "=== Testando API do Financial Marketing Pages Analyzer ===" -ForegroundColor Cyan
 Write-Host ""
 
@@ -26,7 +31,7 @@ $briefingPayload = @{
 } | ConvertTo-Json
 
 try {
-    $briefingResponse = Invoke-RestMethod -Uri "http://localhost:8000/analyze/briefing" -Method Post -Body $briefingPayload -ContentType "application/json"
+    $briefingResponse = Invoke-RestMethod -Uri "http://localhost:8000/analyze/briefing" -Method Post -Body $briefingPayload -ContentType "application/json; charset=utf-8"
     Write-Host "   OK: Analise concluida" -ForegroundColor Green
     Write-Host "   - Score Geral: $($briefingResponse.score.overall)" -ForegroundColor Gray
     Write-Host "   - Score SEO: $($briefingResponse.score.seo)" -ForegroundColor Gray

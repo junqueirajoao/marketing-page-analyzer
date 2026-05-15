@@ -66,7 +66,9 @@ class ICAClient:
             Dictionary with ICA response or None if failed
         """
         if not self.enabled:
-            logger.info("[ICA] Client not enabled, skipping orchestration call")
+            logger.info(
+                "[ICA] Client not enabled, skipping orchestration call"
+            )
             return None
         
         try:
@@ -75,7 +77,10 @@ class ICAClient:
             )
             
             # Build request URL
-            url = f"{self.base_url}/orchestrations/{self.orchestrator_id}/execute"
+            url = (
+                f"{self.base_url}/orchestrations/"
+                f"{self.orchestrator_id}/execute"
+            )
             
             # Prepare headers
             headers = {
@@ -124,7 +129,9 @@ class ICAClient:
             return None
             
         except ValueError as e:
-            logger.warning(f"[ICA] JSON decode error: {str(e)}, using fallback")
+            logger.warning(
+                f"[ICA] JSON decode error: {str(e)}, using fallback"
+            )
             return None
             
         except Exception as e:
@@ -244,10 +251,14 @@ class ICAClient:
             payload["catalog_context"] = catalog_context
             logger.info(
                 f"[ICA] Added catalog_context with "
-                f"{len(catalog_context.get('relevant_modules', []))} modules, "
-                f"{len(catalog_context.get('relevant_storytelling_patterns', []))} patterns, "
-                f"{len(catalog_context.get('relevant_seo_rules', []))} SEO rules, "
-                f"{len(catalog_context.get('relevant_brand_rules', []))} brand rules"
+                f"{len(catalog_context.get('relevant_modules', []))} "
+                f"modules, "
+                f"{len(catalog_context.get('relevant_storytelling_patterns', []))} "  # noqa: E501
+                f"patterns, "
+                f"{len(catalog_context.get('relevant_seo_rules', []))} "
+                f"SEO rules, "
+                f"{len(catalog_context.get('relevant_brand_rules', []))} "
+                f"brand rules"
             )
         
         return payload
