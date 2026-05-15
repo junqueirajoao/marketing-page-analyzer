@@ -16,6 +16,19 @@ export interface AnalyzeBriefingPayload {
   constraints?: string[];
 }
 
+export interface DetectedModule {
+  id: string;
+  type: string;
+  matched_catalog_id: string;
+  matched_catalog_name: string;
+  display_name: string;
+  title: string;
+  text: string;
+  position: number;
+  confidence: number;
+  evidence: string[];
+}
+
 export interface AnalysisResponse {
   analysis_id: string;
   score: {
@@ -70,6 +83,7 @@ export interface AnalysisResponse {
     has_error: boolean;
     modules_detected_count?: number;
   };
+  detected_modules?: DetectedModule[];
 }
 
 export async function analyzeUrl(payload: AnalyzeUrlPayload): Promise<AnalysisResponse> {

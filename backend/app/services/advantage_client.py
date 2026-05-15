@@ -1,5 +1,11 @@
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
+
+from app.services.storytelling_pattern_service import (
+    build_storytelling_analysis,
+    find_best_storytelling_pattern,
+    get_storytelling_patterns,
+)
 
 
 class LocalAgentFallback:
@@ -52,34 +58,39 @@ class LocalAgentFallback:
         constraints = payload.get("constraints", [])
         catalogs = payload.get("catalogs", {})
         
-        # Simulate agent trace
+        storytelling_pattern = self._select_storytelling_pattern(
+            catalogs=catalogs,
+            page_type=None,
+            business_goal=business_goal,
+            target_audience=target_audience,
+            text_context=briefing,
+        )
+        storytelling_analysis = build_storytelling_analysis(
+            storytelling_pattern
+        )
+
         agent_trace = self._build_agent_trace(briefing, business_goal)
-        
-        # Build analysis response
         analysis_id = self._generate_analysis_id()
-        
-        # Simulate scoring from different agents
         scores = self._calculate_scores(briefing, constraints)
-        
-        # Build page summary
         page_summary = self._build_page_summary(
             briefing, business_goal, target_audience
         )
-        
-        # Generate recommendations
         recommendations = self._generate_recommendations(
-            briefing, business_goal, constraints
+            business_goal=business_goal,
+            constraints=constraints,
+            pattern=storytelling_pattern,
+            text_context=briefing,
         )
-        
-        # Build module plan
-        module_plan = self._build_module_plan(briefing, catalogs)
-        
-        # Generate copy suggestions
-        copy_suggestions = self._generate_copy_suggestions(briefing)
-        
-        # Build catalog context
+        module_plan = self._build_module_plan(
+            catalogs=catalogs,
+            pattern=storytelling_pattern,
+            detected_modules=[],
+        )
+        copy_suggestions = self._generate_copy_suggestions(
+            pattern=storytelling_pattern
+        )
         catalog_context = self._build_catalog_context(catalogs)
-        
+
         return {
             "analysis_id": analysis_id,
             "score": scores,
@@ -88,7 +99,8 @@ class LocalAgentFallback:
             "module_plan": module_plan,
             "copy_suggestions": copy_suggestions,
             "catalog_context": catalog_context,
-            "agent_trace": agent_trace
+            "agent_trace": agent_trace,
+            "storytelling_analysis": storytelling_analysis,
         }
     
     def analyze_url(self, payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -126,37 +138,45 @@ class LocalAgentFallback:
         catalogs = payload.get("catalogs", {})
         normalized_page = payload.get("normalized_page", {})
         
-        # Build page diagnostics from normalized page
+        text_context = self._build_url_context(
+            url=url,
+            business_goal=business_goal,
+            normalized_page=normalized_page,
+        )
+        storytelling_pattern = self._select_storytelling_pattern(
+            catalogs=catalogs,
+            page_type=page_type_hint,
+            business_goal=business_goal,
+            target_audience=target_audience,
+            text_context=text_context,
+        )
+        storytelling_analysis = build_storytelling_analysis(
+            storytelling_pattern
+        )
+
         page_diagnostics = self._build_page_diagnostics(normalized_page)
-        
-        # Simulate agent trace for URL analysis
         agent_trace = self._build_url_agent_trace(url)
-        
-        # Build analysis response
         analysis_id = self._generate_analysis_id()
-        
-        # Simulate scoring (slightly different from briefing)
         scores = self._calculate_url_scores(url)
-        
-        # Build page summary for URL
         page_summary = self._build_url_page_summary(
             url, business_goal, target_audience, page_type_hint
         )
-        
-        # Generate recommendations for URL
-        recommendations = self._generate_url_recommendations(
-            url, business_goal
+        recommendations = self._generate_recommendations(
+            business_goal=business_goal,
+            constraints=[],
+            pattern=storytelling_pattern,
+            text_context=text_context,
         )
-        
-        # Build module plan
-        module_plan = self._build_module_plan(url, catalogs)
-        
-        # Generate copy suggestions
-        copy_suggestions = self._generate_url_copy_suggestions(url)
-        
-        # Build catalog context
+        module_plan = self._build_module_plan(
+            catalogs=catalogs,
+            pattern=storytelling_pattern,
+            detected_modules=normalized_page.get("modules", []),
+        )
+        copy_suggestions = self._generate_copy_suggestions(
+            pattern=storytelling_pattern
+        )
         catalog_context = self._build_catalog_context(catalogs)
-        
+
         return {
             "analysis_id": analysis_id,
             "score": scores,
@@ -166,12 +186,14 @@ class LocalAgentFallback:
             "copy_suggestions": copy_suggestions,
             "catalog_context": catalog_context,
             "agent_trace": agent_trace,
-            "page_diagnostics": page_diagnostics
+            "page_diagnostics": page_diagnostics,
+            "storytelling_analysis": storytelling_analysis,
+            "detected_modules": normalized_page.get("modules", []),
         }
     
     def _generate_analysis_id(self) -> str:
         """Generate a unique analysis ID."""
-        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         return f"analysis_{timestamp}"
     
     def _build_agent_trace(
@@ -299,113 +321,254 @@ class LocalAgentFallback:
         }
     
     def _generate_recommendations(
-        self, briefing: str, business_goal: str, constraints: List[str]
+        self,
+        business_goal: str,
+        constraints: List[str],
+        pattern: Optional[Dict[str, Any]],
+        text_context: str,
     ) -> List[Dict[str, Any]]:
-        """
-        Generate recommendations based on briefing analysis.
-        
-        Returns:
-            List of recommendation dictionaries.
-        """
-        recommendations = []
-        
-        # Storytelling recommendation
-        recommendations.append({
-            "priority": "alta",
-            "area": "storytelling",
-            "title": "Organizar estrutura narrativa da página",
-            "why": (
-                "O briefing precisa de um fluxo "
-                "problema-solução-ação mais claro "
-                "para guiar os usuários efetivamente."
-            ),
-            "suggestion": (
-                "Estruture a página com: declaração do problema, "
-                "visão geral da solução, principais benefícios, "
-                "prova social e CTA claro."
-            ),
-            "impact": "alto",
-            "effort": "médio"
-        })
-        
-        # SEO recommendation
-        if len(briefing) < 200:
+        """Generate pattern-based recommendations."""
+        recommendations: List[Dict[str, Any]] = []
+
+        narrative_steps = []
+        if pattern:
+            narrative_steps = [
+                str(step.get("name"))
+                for step in pattern.get("narrative_steps", [])
+                if isinstance(step, dict) and step.get("name")
+            ]
+
+        if narrative_steps:
+            recommendations.append({
+                "priority": "alta",
+                "area": "storytelling",
+                "title": "Aplicar sequência narrativa recomendada",
+                "why": (
+                    "O pattern detectado define uma progressão narrativa "
+                    "mais aderente ao objetivo da página."
+                ),
+                "suggestion": (
+                    "Organize a página na sequência: "
+                    + " → ".join(narrative_steps)
+                ),
+                "impact": "alto",
+                "effort": "médio"
+            })
+
+        cta_examples = []
+        if pattern:
+            cta_examples = list(pattern.get("cta_examples") or [])
+        if cta_examples:
+            recommendations.append({
+                "priority": "alta",
+                "area": "conversão",
+                "title": "Usar CTAs aderentes ao pattern detectado",
+                "why": (
+                    "Chamadas para ação alinhadas ao storytelling reduzem "
+                    "fricção e tornam a conversão mais clara."
+                ),
+                "suggestion": (
+                    "Teste CTAs como: " + "; ".join(cta_examples[:3])
+                ),
+                "impact": "alto",
+                "effort": "baixo"
+            })
+
+        compliance_guidelines = []
+        avoid_copy = []
+        if pattern:
+            compliance_guidelines = list(
+                pattern.get("compliance_guidelines") or []
+            )
+            avoid_copy = list(pattern.get("avoid_copy") or [])
+        if compliance_guidelines or avoid_copy:
+            safety_parts = []
+            if compliance_guidelines:
+                safety_parts.append(
+                    "Siga estas diretrizes: "
+                    + "; ".join(compliance_guidelines[:3])
+                )
+            if avoid_copy:
+                safety_parts.append(
+                    "Evite expressões como: "
+                    + "; ".join(avoid_copy[:3])
+                )
+            recommendations.append({
+                "priority": "alta",
+                "area": "brand_safety",
+                "title": "Ajustar copy para compliance e segurança de marca",
+                "why": (
+                    "O pattern inclui regras específicas de linguagem e "
+                    "conformidade para este contexto."
+                ),
+                "suggestion": " ".join(safety_parts),
+                "impact": "alto",
+                "effort": "baixo"
+            })
+
+        avoid_modules_when = []
+        if pattern:
+            avoid_modules_when = list(pattern.get("avoid_modules_when") or [])
+        for avoid_rule in avoid_modules_when:
+            if not isinstance(avoid_rule, dict):
+                continue
+            module_name = str(avoid_rule.get("module") or "").strip()
+            reason = str(avoid_rule.get("reason") or "").strip()
+            if module_name and reason:
+                recommendations.append({
+                    "priority": "média",
+                    "area": "módulos",
+                    "title": f"Evitar módulo {module_name} neste contexto",
+                    "why": reason,
+                    "suggestion": (
+                        f"Reavalie o uso de {module_name} e priorize os "
+                        "módulos recomendados pelo pattern."
+                    ),
+                    "impact": "médio",
+                    "effort": "baixo"
+                })
+
+        if len(text_context) < 200:
             recommendations.append({
                 "priority": "média",
                 "area": "seo",
-                "title": "Expandir conteúdo para melhor cobertura de SEO",
+                "title": "Expandir contexto textual da página",
                 "why": (
-                    "Conteúdo breve pode limitar oportunidades "
-                    "de palavras-chave e visibilidade em buscas."
+                    "Pouco conteúdo textual pode limitar clareza da proposta "
+                    "e cobertura orgânica."
                 ),
                 "suggestion": (
-                    "Adicione seções detalhadas cobrindo "
-                    "perguntas dos usuários, casos de uso e benefícios."
+                    "Detalhe melhor a proposta de valor, a jornada e o CTA "
+                    "sem fugir da estrutura do pattern."
                 ),
                 "impact": "médio",
-                "effort": "alto"
+                "effort": "médio"
             })
-        
-        # Module recommendation
-        recommendations.append({
-            "priority": "média",
-            "area": "módulos",
-            "title": "Adicionar módulo de FAQ para reduzir objeções",
-            "why": (
-                "Responder perguntas comuns constrói confiança e reduz "
-                "fricção."
-            ),
-            "suggestion": (
-                "Inclua módulo de FAQ com 5-7 perguntas cobrindo preços, "
-                "implementação e suporte."
-            ),
-            "impact": "médio",
-            "effort": "baixo"
-        })
-        
+
+        if constraints:
+            recommendations.append({
+                "priority": "baixa",
+                "area": "execução",
+                "title": "Validar restrições do briefing na implementação",
+                "why": (
+                    "Restrições explícitas podem afetar a ordem narrativa e "
+                    "a composição de módulos."
+                ),
+                "suggestion": (
+                    "Confirme que os módulos e a copy final respeitam: "
+                    + "; ".join(constraints[:3])
+                ),
+                "impact": "médio",
+                "effort": "baixo"
+            })
+
         return recommendations
-    
+
     def _build_module_plan(
-        self, briefing: str, catalogs: Dict[str, Any]
+        self,
+        catalogs: Dict[str, Any],
+        pattern: Optional[Dict[str, Any]],
+        detected_modules: List[Dict[str, Any]],
     ) -> Dict[str, List[Any]]:
-        """
-        Build module plan with keep, remove, reorder, add suggestions.
-        
-        Returns:
-            Dictionary with keep, remove, reorder, add lists.
-        """
-        modules_catalog = catalogs.get("modules_catalog", [])
-        
-        # Suggest adding FAQ and testimonials for most pages
-        add_suggestions = []
-        
-        # Find FAQ module
-        for module in modules_catalog:
-            if module.get("name") == "FAQ":
-                add_suggestions.append({
-                    "module_type": "FAQ",
-                    "reason": "Ajuda a reduzir objeções antes da conversão."
+        """Build module plan using the detected storytelling pattern."""
+        detected_names = [
+            str(module.get("matched_catalog_name") or "").strip()
+            for module in detected_modules
+            if isinstance(module, dict)
+        ]
+        detected_name_set = {name for name in detected_names if name}
+
+        required_modules = []
+        optional_modules = []
+        recommended_order = []
+        avoid_modules_when = []
+        if pattern:
+            required_modules = list(pattern.get("required_modules") or [])
+            optional_modules = list(pattern.get("optional_modules") or [])
+            recommended_order = list(
+                pattern.get("recommended_module_order") or []
+            )
+            avoid_modules_when = list(
+                pattern.get("avoid_modules_when") or []
+            )
+
+        keep = []
+        for module_name in detected_names:
+            if (
+                module_name in recommended_order
+                or module_name in required_modules
+            ):
+                keep.append(module_name)
+
+        reorder = []
+        for index, module_name in enumerate(recommended_order, start=1):
+            if module_name in detected_name_set:
+                reorder.append({
+                    "module_type": module_name,
+                    "suggested_position": index,
+                    "reason": (
+                        "Módulo recomendado pelo storytelling pattern "
+                        "detectado."
+                    )
                 })
-                break
-        
-        # Find testimonials module
-        for module in modules_catalog:
-            if module.get("name") == "Testimonials":
-                add_suggestions.append({
-                    "module_type": "Depoimentos",
-                    "reason": "Prova social aumenta confiança e credibilidade."
+
+        add = []
+        for module_name in required_modules:
+            if module_name not in detected_name_set:
+                add.append({
+                    "module_type": module_name,
+                    "reason": (
+                        "Módulo obrigatório no pattern detectado para "
+                        "sustentar a narrativa."
+                    )
                 })
-                break
-        
+
+        for module_name in optional_modules:
+            if (
+                module_name not in detected_name_set
+                and module_name in recommended_order
+            ):
+                add.append({
+                    "module_type": module_name,
+                    "reason": (
+                        "Módulo opcional recomendado pelo pattern detectado."
+                    )
+                })
+
+        remove = []
+        for avoid_rule in avoid_modules_when:
+            if not isinstance(avoid_rule, dict):
+                continue
+            module_name = str(avoid_rule.get("module") or "").strip()
+            reason = str(avoid_rule.get("reason") or "").strip()
+            if module_name and module_name in detected_name_set:
+                remove.append({
+                    "module_type": module_name,
+                    "reason": reason
+                })
+
+        if not detected_name_set:
+            for module_name in required_modules:
+                if not any(
+                    item.get("module_type") == module_name for item in add
+                ):
+                    add.append({
+                        "module_type": module_name,
+                        "reason": (
+                            "Módulo obrigatório sugerido porque nenhum módulo "
+                            "foi detectado na página."
+                        )
+                    })
+
         return {
-            "keep": [],
-            "remove": [],
-            "reorder": [],
-            "add": add_suggestions
+            "keep": keep,
+            "remove": remove,
+            "reorder": reorder,
+            "add": add
         }
-    
+
     def _generate_copy_suggestions(
-        self, briefing: str
+        self, pattern: Optional[Dict[str, Any]]
     ) -> List[Dict[str, str]]:
         """
         Generate copy improvement suggestions.
@@ -414,25 +577,39 @@ class LocalAgentFallback:
             List of copy suggestion dictionaries.
         """
         suggestions = []
-        
-        # Generic copy suggestions
-        suggestions.append({
-            "section": "título",
-            "current": "Título genérico",
-            "suggested": (
-                "Título focado em benefícios que aborda "
-                "o ponto de dor do usuário"
-            ),
-            "reason": "Proposta de valor clara melhora o engajamento"
-        })
-        
-        suggestions.append({
-            "section": "cta",
-            "current": "Clique aqui",
-            "suggested": "Comece seu teste grátis hoje",
-            "reason": "CTAs orientados a ação com valor aumentam conversões"
-        })
-        
+
+        headlines = []
+        ctas = []
+        tones = []
+        if pattern:
+            headlines = list(pattern.get("headline_examples") or [])
+            ctas = list(pattern.get("cta_examples") or [])
+            tones = list(pattern.get("tone_guidelines") or [])
+
+        if headlines:
+            suggestions.append({
+                "section": "título",
+                "current": "Título atual",
+                "suggested": headlines[0],
+                "reason": "Exemplo de headline recomendado pelo pattern"
+            })
+
+        if ctas:
+            suggestions.append({
+                "section": "cta",
+                "current": "CTA atual",
+                "suggested": ctas[0],
+                "reason": "CTA alinhado ao storytelling detectado"
+            })
+
+        if tones:
+            suggestions.append({
+                "section": "tom",
+                "current": "Tom atual",
+                "suggested": ", ".join(tones[:3]),
+                "reason": "Diretriz de tom definida no storytelling pattern"
+            })
+
         return suggestions
     
     def _build_catalog_context(
@@ -578,112 +755,32 @@ class LocalAgentFallback:
             "main_topic": main_topic
         }
     
-    def _generate_url_recommendations(
-        self, url: str, business_goal: str
-    ) -> List[Dict[str, Any]]:
-        """
-        Generate recommendations for URL analysis.
-        
-        Returns:
-            List of recommendations.
-        """
-        recommendations = []
-        
-        # SEO recommendation
-        recommendations.append({
-            "priority": "alta",
-            "area": "seo",
-            "title": "Otimizar metadados e estrutura da página",
-            "why": (
-                "Metadados bem estruturados melhoram a visibilidade em buscas "
-                "e taxas de cliques."
-            ),
-            "suggestion": (
-                "Adicione tags de título descritivas, meta descrições "
-                "e marcação de dados estruturados."
-            ),
-            "impact": "alto",
-            "effort": "médio"
-        })
-        
-        # Content recommendation
-        recommendations.append({
-            "priority": "média",
-            "area": "storytelling",
-            "title": "Melhorar fluxo narrativo do conteúdo",
-            "why": "Storytelling claro guia usuários em direção à conversão.",
-            "suggestion": (
-                "Estruture o conteúdo com fluxo problema-solução-ação "
-                "e propostas de valor claras."
-            ),
-            "impact": "alto",
-            "effort": "médio"
-        })
-        
-        # Module recommendation
-        recommendations.append({
-            "priority": "média",
-            "area": "módulos",
-            "title": "Adicionar elementos de prova social",
-            "why": "Depoimentos e estudos de caso constroem credibilidade.",
-            "suggestion": (
-                "Inclua depoimentos de clientes, estudos de caso "
-                "ou selos de confiança."
-            ),
-            "impact": "médio",
-            "effort": "baixo"
-        })
-        
-        return recommendations
-    
-    def _generate_url_copy_suggestions(
-        self, url: str
-    ) -> List[Dict[str, str]]:
-        """
-        Generate copy suggestions for URL analysis.
-        
-        Returns:
-            List of copy suggestions.
-        """
-        suggestions = []
-        
-        suggestions.append({
-            "section": "título",
-            "current": "Título genérico da página",
-            "suggested": (
-                "Título claro focado em benefícios "
-                "que atende necessidades do usuário"
-            ),
-            "reason": (
-                "Títulos fortes capturam atenção "
-                "e estabelecem expectativas"
-            )
-        })
-        
-        suggestions.append({
-            "section": "subtítulo",
-            "current": "Descrição básica",
-            "suggested": (
-                "Subtítulo convincente explicando "
-                "a proposta de valor principal"
-            ),
-            "reason": (
-                "Subtítulos fornecem contexto "
-                "e reforçam a mensagem principal"
-            )
-        })
-        
-        suggestions.append({
-            "section": "cta",
-            "current": "Saiba mais",
-            "suggested": "Comece com seu teste grátis",
-            "reason": (
-                "CTAs específicos com valor claro "
-                "geram conversões mais altas"
-            )
-        })
-        
-        return suggestions
+    def _select_storytelling_pattern(
+        self,
+        catalogs: Dict[str, Any],
+        page_type: Optional[str],
+        business_goal: Optional[str],
+        target_audience: Optional[str],
+        text_context: Optional[str],
+    ) -> Optional[Dict[str, Any]]:
+        patterns = get_storytelling_patterns(catalogs)
+        return find_best_storytelling_pattern(
+            patterns=patterns,
+            page_type=page_type,
+            business_goal=business_goal,
+            target_audience=target_audience,
+            text_context=text_context,
+        )
+
+    def _build_url_context(
+        self,
+        url: str,
+        business_goal: Optional[str],
+        normalized_page: Dict[str, Any],
+    ) -> str:
+        main_text = str(normalized_page.get("main_text") or "")
+        goal = str(business_goal or "")
+        return " ".join(part for part in [url, goal, main_text] if part)
     
     def _build_page_diagnostics(
         self, normalized_page: Dict[str, Any]

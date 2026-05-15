@@ -1,5 +1,6 @@
 """
 Module detector service for identifying page modules using heuristic analysis.
+Maps detected blocks to official catalog modules.
 """
 from typing import Dict, List, Any
 import re
@@ -10,7 +11,7 @@ def detect_modules(
     modules_catalog: List[Dict[str, Any]]
 ) -> List[Dict[str, Any]]:
     """
-    Detect modules in a normalized page using heuristic analysis.
+    Detect modules in a normalized page using catalog-based heuristics.
     
     Args:
         normalized_page: Normalized page data with metadata,
@@ -18,7 +19,7 @@ def detect_modules(
         modules_catalog: List of module definitions from catalog
     
     Returns:
-        List of detected modules with metadata
+        List of detected modules matching catalog structure
     """
     detected_modules = []
     
@@ -31,99 +32,101 @@ def detect_modules(
     # Create catalog lookup by name for easy matching
     catalog_by_name = {m["name"]: m for m in modules_catalog}
     
-    # Detect Hero / Main Banner
-    hero_module = _detect_hero(
+    # Detect modules using catalog-based matching
+    # Each detector returns a match with the catalog entry
+    
+    # 1. Detect Breadcrumb Header (module_01)
+    breadcrumb = _detect_breadcrumb(links, headings, catalog_by_name)
+    if breadcrumb:
+        detected_modules.append(breadcrumb)
+    
+    # 2. Detect Main Banner / Hero (module_09)
+    hero = _detect_hero(headings, main_text, images, links, catalog_by_name)
+    if hero:
+        detected_modules.append(hero)
+    
+    # 3. Detect Richtext (module_02)
+    richtext = _detect_richtext(headings, main_text, catalog_by_name)
+    if richtext:
+        detected_modules.append(richtext)
+    
+    # 4. Detect Image with text (module_03)
+    image_text = _detect_image_with_text(
+        headings, images, main_text, catalog_by_name
+    )
+    if image_text:
+        detected_modules.append(image_text)
+    
+    # 5. Detect Accordion / FAQ (module_04)
+    accordion = _detect_accordion(headings, main_text, catalog_by_name)
+    if accordion:
+        detected_modules.append(accordion)
+    
+    # 6. Detect Carrossel (module_05)
+    carousel = _detect_carousel(images, links, main_text, catalog_by_name)
+    if carousel:
+        detected_modules.append(carousel)
+    
+    # 7. Detect Image Icon (module_06)
+    image_icon = _detect_image_icon(
+        headings, images, main_text, catalog_by_name
+    )
+    if image_icon:
+        detected_modules.append(image_icon)
+    
+    # 8. Detect Contract and tariffs (module_07)
+    contracts = _detect_contracts(links, main_text, catalog_by_name)
+    if contracts:
+        detected_modules.append(contracts)
+    
+    # 9. Detect Card with icon (module_08)
+    card_icon = _detect_card_with_icon(
+        headings, images, main_text, catalog_by_name
+    )
+    if card_icon:
+        detected_modules.append(card_icon)
+    
+    # 10. Detect Media with steps (module_10)
+    media_steps = _detect_media_with_steps(
         headings, main_text, images, catalog_by_name
     )
-    if hero_module:
-        detected_modules.append(hero_module)
+    if media_steps:
+        detected_modules.append(media_steps)
     
-    # Detect Breadcrumb
-    breadcrumb_module = _detect_breadcrumb(
-        links, headings, catalog_by_name
-    )
-    if breadcrumb_module:
-        detected_modules.append(breadcrumb_module)
+    # 11. Detect WhatsApp button (module_11)
+    whatsapp = _detect_whatsapp(links, main_text, catalog_by_name)
+    if whatsapp:
+        detected_modules.append(whatsapp)
     
-    # Detect FAQ / Accordion
-    faq_modules = _detect_faq(
-        headings, main_text, catalog_by_name
-    )
-    detected_modules.extend(faq_modules)
+    # 12. Detect QR Code modules (module_13, module_14)
+    qr_codes = _detect_qr_codes(images, main_text, catalog_by_name)
+    detected_modules.extend(qr_codes)
     
-    # Detect CTA / Call to Action
-    cta_modules = _detect_cta(
-        headings, links, main_text, catalog_by_name
-    )
-    detected_modules.extend(cta_modules)
-    
-    # Detect Benefits (Card with icon / Image Icon)
-    benefit_modules = _detect_benefits(
-        headings, main_text, images, catalog_by_name
-    )
-    detected_modules.extend(benefit_modules)
-    
-    # Detect Richtext
-    richtext_modules = _detect_richtext(
-        headings, main_text, catalog_by_name
-    )
-    detected_modules.extend(richtext_modules)
-    
-    # Assign positions based on detection order
-    for idx, module in enumerate(detected_modules):
+    # Assign positions based on detection order (starting from 1)
+    for idx, module in enumerate(detected_modules, start=1):
         module["position"] = idx
     
     return detected_modules
 
 
-def _detect_hero(
-    headings: List[Dict],
-    main_text: str,
-    images: List[Dict],
-    catalog: Dict[str, Any]
-) -> Dict[str, Any] | None:
-    """Detect Hero / Main Banner module."""
-    if not headings:
-        return None
-    
-    # Hero typically has H1 at the beginning
-    first_heading = headings[0]
-    if first_heading.get("level") != "1":
-        return None
-    
-    h1_text = first_heading.get("text", "")
-    
-    # Check for hero indicators
-    hero_keywords = [
-        "bem-vindo", "welcome", "descubra", "discover",
-        "conheca", "meet", "solucao", "solution"
-    ]
-    
-    has_hero_keyword = any(kw in main_text for kw in hero_keywords)
-    has_images = len(images) > 0
-    
-    confidence = 0.6
-    if has_hero_keyword:
-        confidence += 0.2
-    if has_images:
-        confidence += 0.2
-    
-    evidence = ["H1 found at beginning"]
-    if has_hero_keyword:
-        evidence.append("Hero keywords detected")
-    if has_images:
-        evidence.append("Images present")
-    
-    catalog_entry = catalog.get("Main Banner", {})
-    
+def _create_detected_module(
+    module_id: str,
+    catalog_entry: Dict[str, Any],
+    title: str,
+    text: str,
+    confidence: float,
+    evidence: List[str]
+) -> Dict[str, Any]:
+    """Helper to create a standardized detected module."""
     return {
-        "id": "detected_hero_0",
-        "type": "Hero",
-        "matched_catalog_id": catalog_entry.get("id", "module_09"),
-        "matched_catalog_name": "Main Banner",
-        "title": h1_text,
-        "text": h1_text[:200],
-        "position": 0,
+        "id": module_id,
+        "type": catalog_entry.get("generic_type", "Unknown"),
+        "matched_catalog_id": catalog_entry.get("id", ""),
+        "matched_catalog_name": catalog_entry.get("name", ""),
+        "display_name": catalog_entry.get("display_name", ""),
+        "title": title,
+        "text": text[:200] if text else "",
+        "position": 0,  # Will be set later
         "confidence": round(confidence, 2),
         "evidence": evidence
     }
@@ -134,14 +137,16 @@ def _detect_breadcrumb(
     headings: List[Dict],
     catalog: Dict[str, Any]
 ) -> Dict[str, Any] | None:
-    """Detect Breadcrumb module."""
+    """Detect Breadcrumb Header module (module_01)."""
     if not links:
         return None
     
+    catalog_entry = catalog.get("Breadcrumb Header", {})
+    
     # Look for breadcrumb indicators in first few links
     breadcrumb_keywords = [
-        "home", "inicio", "para voce", "empresas",
-        "produtos", "servicos"
+        "home", "inicio", "início", "para voce", "para você",
+        "empresas", "produtos", "servicos", "serviços"
     ]
     
     # Check first 5 links for breadcrumb pattern
@@ -158,38 +163,176 @@ def _detect_breadcrumb(
     
     confidence = 0.7 if len(breadcrumb_links) >= 3 else 0.5
     
-    catalog_entry = catalog.get("Breadcrumb Header", {})
+    evidence = [
+        f"Found {len(breadcrumb_links)} breadcrumb-like links",
+        "Links contain navigation keywords"
+    ]
     
-    return {
-        "id": "detected_breadcrumb_0",
-        "type": "Navigation",
-        "matched_catalog_id": catalog_entry.get("id", "module_01"),
-        "matched_catalog_name": "Breadcrumb Header",
-        "title": "Breadcrumb navigation",
-        "text": " > ".join(
-            [link.get("text", "") for link in breadcrumb_links[:3]]
-        ),
-        "position": 0,
-        "confidence": round(confidence, 2),
-        "evidence": [
-            f"Found {len(breadcrumb_links)} breadcrumb-like links",
-            "Links contain navigation keywords"
-        ]
-    }
+    breadcrumb_text = " > ".join(
+        [link.get("text", "") for link in breadcrumb_links[:3]]
+    )
+    
+    return _create_detected_module(
+        module_id="detected_breadcrumb_0",
+        catalog_entry=catalog_entry,
+        title="Breadcrumb navigation",
+        text=breadcrumb_text,
+        confidence=confidence,
+        evidence=evidence
+    )
 
 
-def _detect_faq(
+def _detect_hero(
+    headings: List[Dict],
+    main_text: str,
+    images: List[Dict],
+    links: List[Dict],
+    catalog: Dict[str, Any]
+) -> Dict[str, Any] | None:
+    """Detect Main Banner / Hero module (module_09)."""
+    if not headings:
+        return None
+    
+    catalog_entry = catalog.get("Main Banner", {})
+    
+    # Hero typically has H1 at the beginning
+    first_heading = headings[0]
+    if first_heading.get("level") != "1":
+        return None
+    
+    h1_text = first_heading.get("text", "")
+    
+    # Check for hero indicators from catalog detection_hints
+    hero_keywords = [
+        "bem-vindo", "welcome", "descubra", "discover",
+        "conheca", "conheça", "meet", "solucao", "solução", "solution"
+    ]
+    
+    has_hero_keyword = any(kw in main_text for kw in hero_keywords)
+    has_images = len(images) > 0
+    
+    # Check for CTA (common in hero)
+    cta_verbs = [
+        "contrate", "simule", "abra", "fale", "conheca", "conheça",
+        "baixe", "solicite", "comece", "experimente"
+    ]
+    has_cta = any(verb in main_text for verb in cta_verbs)
+    
+    confidence = 0.6
+    if has_hero_keyword:
+        confidence += 0.15
+    if has_images:
+        confidence += 0.15
+    if has_cta:
+        confidence += 0.1
+    
+    evidence = ["H1 found at beginning"]
+    if has_hero_keyword:
+        evidence.append("Hero keywords detected")
+    if has_images:
+        evidence.append("Images present")
+    if has_cta:
+        evidence.append("CTA detected")
+    
+    return _create_detected_module(
+        module_id="detected_hero_0",
+        catalog_entry=catalog_entry,
+        title=h1_text,
+        text=h1_text,
+        confidence=confidence,
+        evidence=evidence
+    )
+
+
+def _detect_richtext(
     headings: List[Dict],
     main_text: str,
     catalog: Dict[str, Any]
-) -> List[Dict[str, Any]]:
-    """Detect FAQ / Accordion modules."""
-    faq_modules = []
+) -> Dict[str, Any] | None:
+    """Detect Richtext module (module_02)."""
+    catalog_entry = catalog.get("Richtext", {})
     
-    # Look for FAQ indicators
+    # Richtext is common, detect if there's substantial text
+    if len(main_text) < 500:
+        return None
+    
+    # Count paragraphs (approximate by sentence count)
+    sentence_count = len(re.findall(r'[.!?]+', main_text))
+    
+    if sentence_count < 5:
+        return None
+    
+    confidence = 0.6
+    
+    evidence = [
+        f"Substantial text content ({len(main_text)} chars)",
+        f"Multiple paragraphs detected ({sentence_count} sentences)"
+    ]
+    
+    return _create_detected_module(
+        module_id="detected_richtext_0",
+        catalog_entry=catalog_entry,
+        title="Text content section",
+        text=main_text[:200],
+        confidence=confidence,
+        evidence=evidence
+    )
+
+
+def _detect_image_with_text(
+    headings: List[Dict],
+    images: List[Dict],
+    main_text: str,
+    catalog: Dict[str, Any]
+) -> Dict[str, Any] | None:
+    """Detect Image with text module (module_03)."""
+    catalog_entry = catalog.get("Image with text", {})
+    
+    # Needs both images and substantial text
+    if len(images) < 1 or len(main_text) < 200:
+        return None
+    
+    # Check for benefit/feature keywords
+    benefit_keywords = [
+        "beneficio", "benefício", "vantagem", "diferencial",
+        "recurso", "funcionalidade"
+    ]
+    
+    has_benefit = any(kw in main_text for kw in benefit_keywords)
+    
+    if not has_benefit:
+        return None
+    
+    confidence = 0.65
+    
+    evidence = [
+        f"Images present: {len(images)}",
+        "Benefit keywords detected",
+        "Text and image combination"
+    ]
+    
+    return _create_detected_module(
+        module_id="detected_image_text_0",
+        catalog_entry=catalog_entry,
+        title="Image with text section",
+        text=main_text[:200],
+        confidence=confidence,
+        evidence=evidence
+    )
+
+
+def _detect_accordion(
+    headings: List[Dict],
+    main_text: str,
+    catalog: Dict[str, Any]
+) -> Dict[str, Any] | None:
+    """Detect Accordion / FAQ module (module_04)."""
+    catalog_entry = catalog.get("Accordion", {})
+    
+    # Look for FAQ indicators from catalog
     faq_keywords = [
-        "perguntas frequentes", "faq", "duvidas",
-        "como funciona", "o que e", "posso", "quando"
+        "perguntas frequentes", "faq", "duvidas", "dúvidas",
+        "como funciona", "o que e", "o que é", "posso", "quando"
     ]
     
     has_faq_keyword = any(kw in main_text for kw in faq_keywords)
@@ -199,191 +342,336 @@ def _detect_faq(
     for heading in headings:
         text = heading.get("text", "").lower()
         question_starters = [
-            "como", "o que", "qual", "quando", "posso", "por que"
+            "como", "o que", "qual", "quando", "posso", "por que", "onde"
         ]
         if any(text.startswith(q) for q in question_starters):
             question_headings.append(heading)
     
-    if has_faq_keyword or len(question_headings) >= 3:
-        confidence = 0.8 if len(question_headings) >= 3 else 0.6
-        
-        catalog_entry = catalog.get("Accordion", {})
-        
-        faq_modules.append({
-            "id": "detected_faq_0",
-            "type": "Expandable Content",
-            "matched_catalog_id": catalog_entry.get("id", "module_04"),
-            "matched_catalog_name": "Accordion",
-            "title": "FAQ section",
-            "text": (
-                f"Detected {len(question_headings)} "
-                "question-like headings"
-            ),
-            "position": 0,
-            "confidence": round(confidence, 2),
-            "evidence": [
-                f"Found {len(question_headings)} question headings",
-                (
-                    "FAQ keywords present" if has_faq_keyword
-                    else "Question patterns detected"
-                )
-            ]
-        })
+    if not has_faq_keyword and len(question_headings) < 3:
+        return None
     
-    return faq_modules
+    confidence = 0.8 if len(question_headings) >= 3 else 0.6
+    
+    evidence = [
+        f"Found {len(question_headings)} question headings"
+    ]
+    if has_faq_keyword:
+        evidence.append("FAQ keywords present")
+    else:
+        evidence.append("Question patterns detected")
+    
+    return _create_detected_module(
+        module_id="detected_accordion_0",
+        catalog_entry=catalog_entry,
+        title="FAQ section",
+        text=f"Detected {len(question_headings)} question-like headings",
+        confidence=confidence,
+        evidence=evidence
+    )
 
 
-def _detect_cta(
-    headings: List[Dict],
+def _detect_carousel(
+    images: List[Dict],
     links: List[Dict],
     main_text: str,
     catalog: Dict[str, Any]
-) -> List[Dict[str, Any]]:
-    """Detect CTA / Call to Action modules."""
-    cta_modules = []
+) -> Dict[str, Any] | None:
+    """Detect Carrossel module (module_05)."""
+    catalog_entry = catalog.get("Carrossel", {})
     
-    # CTA action verbs
-    cta_verbs = [
-        "contrate", "simule", "abra", "fale", "conheca",
-        "baixe", "solicite", "comece", "experimente",
-        "cadastre", "assine", "garanta"
+    # Carousel indicators
+    carousel_keywords = [
+        "slider", "carrossel", "carousel", "anterior", "próximo",
+        "proximo", "swipe"
     ]
     
-    # Check links for CTA patterns
-    cta_links = []
-    for link in links:
-        link_text = link.get("text", "").lower()
-        if any(verb in link_text for verb in cta_verbs):
-            cta_links.append(link)
+    has_carousel_keyword = any(kw in main_text for kw in carousel_keywords)
     
-    # Check main text for CTA keywords
-    cta_count = sum(1 for verb in cta_verbs if verb in main_text)
+    # Multiple images suggest carousel possibility
+    if len(images) < 3 and not has_carousel_keyword:
+        return None
     
-    if cta_links or cta_count >= 2:
-        confidence = 0.7 if cta_links else 0.5
-        
-        catalog_entry = catalog.get("Call to Action", {})
-        
-        if cta_links:
-            cta_text = cta_links[0].get("text", "CTA detected")
-        else:
-            cta_text = "CTA section"
-        
-        cta_modules.append({
-            "id": "detected_cta_0",
-            "type": "CTA",
-            "matched_catalog_id": catalog_entry.get("id", "module_19"),
-            "matched_catalog_name": "Call to Action",
-            "title": cta_text,
-            "text": cta_text[:200],
-            "position": 0,
-            "confidence": round(confidence, 2),
-            "evidence": [
-                (
-                    f"Found {len(cta_links)} CTA links" if cta_links
-                    else f"Found {cta_count} CTA verbs"
-                ),
-                "Action verbs detected"
-            ]
-        })
+    confidence = 0.7 if has_carousel_keyword else 0.5
     
-    return cta_modules
+    evidence = [
+        f"Multiple images present: {len(images)}"
+    ]
+    if has_carousel_keyword:
+        evidence.append("Carousel keywords detected")
+    
+    return _create_detected_module(
+        module_id="detected_carousel_0",
+        catalog_entry=catalog_entry,
+        title="Carousel section",
+        text=f"Detected {len(images)} images",
+        confidence=confidence,
+        evidence=evidence
+    )
 
 
-def _detect_benefits(
+def _detect_image_icon(
+    headings: List[Dict],
+    images: List[Dict],
+    main_text: str,
+    catalog: Dict[str, Any]
+) -> Dict[str, Any] | None:
+    """Detect Image Icon module (module_06)."""
+    catalog_entry = catalog.get("Image Icon", {})
+    
+    # Look for icon-like patterns
+    # Multiple small headings + images suggest icon list
+    list_headings = [h for h in headings if h.get("level") in ["3", "4"]]
+    
+    if len(list_headings) < 3 or len(images) < 3:
+        return None
+    
+    # Benefit keywords
+    benefit_keywords = [
+        "beneficio", "benefício", "vantagem", "diferencial"
+    ]
+    
+    has_benefit = any(kw in main_text for kw in benefit_keywords)
+    
+    confidence = 0.65 if has_benefit else 0.5
+    
+    evidence = [
+        f"Found {len(list_headings)} list-style headings",
+        f"Images present: {len(images)}"
+    ]
+    if has_benefit:
+        evidence.append("Benefit keywords detected")
+    
+    return _create_detected_module(
+        module_id="detected_image_icon_0",
+        catalog_entry=catalog_entry,
+        title="Icon list section",
+        text=f"Detected {len(list_headings)} items",
+        confidence=confidence,
+        evidence=evidence
+    )
+
+
+def _detect_contracts(
+    links: List[Dict],
+    main_text: str,
+    catalog: Dict[str, Any]
+) -> Dict[str, Any] | None:
+    """Detect Contract and tariffs module (module_07)."""
+    catalog_entry = catalog.get("Contract and tariffs", {})
+    
+    # Look for PDF links or contract keywords
+    pdf_links = [
+        link for link in links
+        if ".pdf" in link.get("href", "").lower()
+    ]
+    
+    contract_keywords = [
+        "contrato", "tarifa", "regulamento", "condicoes", "condições",
+        "termos", "documento", "download"
+    ]
+    
+    has_contract_keyword = any(kw in main_text for kw in contract_keywords)
+    
+    if len(pdf_links) < 1 and not has_contract_keyword:
+        return None
+    
+    confidence = 0.8 if len(pdf_links) > 0 else 0.6
+    
+    evidence = []
+    if pdf_links:
+        evidence.append(f"Found {len(pdf_links)} PDF links")
+    if has_contract_keyword:
+        evidence.append("Contract/tariff keywords detected")
+    
+    return _create_detected_module(
+        module_id="detected_contracts_0",
+        catalog_entry=catalog_entry,
+        title="Contracts and documents",
+        text=f"Detected {len(pdf_links)} documents",
+        confidence=confidence,
+        evidence=evidence
+    )
+
+
+def _detect_card_with_icon(
+    headings: List[Dict],
+    images: List[Dict],
+    main_text: str,
+    catalog: Dict[str, Any]
+) -> Dict[str, Any] | None:
+    """Detect Card with icon module (module_08)."""
+    catalog_entry = catalog.get("Card with icon", {})
+    
+    # Similar to image icon but with card structure
+    list_headings = [h for h in headings if h.get("level") in ["3", "4"]]
+    
+    if len(list_headings) < 2:
+        return None
+    
+    # Card keywords
+    card_keywords = [
+        "beneficio", "benefício", "vantagem", "diferencial",
+        "funcionalidade", "caracteristica", "característica"
+    ]
+    
+    has_card_keyword = any(kw in main_text for kw in card_keywords)
+    
+    if not has_card_keyword and len(images) < 2:
+        return None
+    
+    confidence = 0.7 if has_card_keyword and len(images) >= 2 else 0.55
+    
+    evidence = [
+        f"Found {len(list_headings)} card-like headings"
+    ]
+    if has_card_keyword:
+        evidence.append("Card keywords detected")
+    if images:
+        evidence.append(f"Images present: {len(images)}")
+    
+    return _create_detected_module(
+        module_id="detected_card_icon_0",
+        catalog_entry=catalog_entry,
+        title="Cards with icons",
+        text=f"Detected {len(list_headings)} cards",
+        confidence=confidence,
+        evidence=evidence
+    )
+
+
+def _detect_media_with_steps(
     headings: List[Dict],
     main_text: str,
     images: List[Dict],
     catalog: Dict[str, Any]
-) -> List[Dict[str, Any]]:
-    """Detect Benefits modules (Card with icon / Image Icon)."""
-    benefit_modules = []
+) -> Dict[str, Any] | None:
+    """Detect Media with steps module (module_10)."""
+    catalog_entry = catalog.get("Media with steps", {})
     
-    # Benefit keywords
-    benefit_keywords = [
-        "beneficio", "vantagem", "diferencial",
-        "recurso", "funcionalidade", "caracteristica"
+    # Look for step indicators
+    step_keywords = [
+        "passo", "etapa", "primeiro", "segundo", "terceiro",
+        "depois", "por fim", "finalmente", "como fazer"
     ]
     
-    has_benefit_keyword = any(kw in main_text for kw in benefit_keywords)
+    has_step_keyword = any(kw in main_text for kw in step_keywords)
     
-    # Look for list-like patterns in headings (H3, H4)
-    list_headings = [h for h in headings if h.get("level") in ["3", "4"]]
+    # Look for numbered patterns
+    numbered_pattern = re.findall(r'\b[1-9]\.\s|\b[1-9]\)\s', main_text)
     
-    # If we have multiple similar-level headings and benefit keywords
-    if len(list_headings) >= 3 and (has_benefit_keyword or len(images) >= 3):
-        confidence = 0.7 if has_benefit_keyword else 0.5
-        
-        # Prefer "Card with icon" if we have images
-        if len(images) >= 3:
-            catalog_entry = catalog.get("Card with icon", {})
-            module_name = "Card with icon"
-            module_id = "module_08"
-        else:
-            catalog_entry = catalog.get("Image Icon", {})
-            module_name = "Image Icon"
-            module_id = "module_06"
-        
-        benefit_modules.append({
-            "id": "detected_benefits_0",
-            "type": "Icon Feature List",
-            "matched_catalog_id": catalog_entry.get("id", module_id),
-            "matched_catalog_name": module_name,
-            "title": "Benefits section",
-            "text": f"Detected {len(list_headings)} benefit items",
-            "position": 0,
-            "confidence": round(confidence, 2),
-            "evidence": [
-                f"Found {len(list_headings)} list-style headings",
-                (
-                    f"Images present: {len(images)}" if images
-                    else "Benefit keywords detected"
-                )
-            ]
-        })
+    if not has_step_keyword and len(numbered_pattern) < 2:
+        return None
     
-    return benefit_modules
+    confidence = 0.75 if has_step_keyword and numbered_pattern else 0.6
+    
+    evidence = []
+    if has_step_keyword:
+        evidence.append("Step keywords detected")
+    if numbered_pattern:
+        evidence.append(f"Found {len(numbered_pattern)} numbered items")
+    if images:
+        evidence.append("Media present")
+    
+    return _create_detected_module(
+        module_id="detected_media_steps_0",
+        catalog_entry=catalog_entry,
+        title="Step-by-step guide",
+        text="Process with sequential steps",
+        confidence=confidence,
+        evidence=evidence
+    )
 
 
-def _detect_richtext(
-    headings: List[Dict],
+def _detect_whatsapp(
+    links: List[Dict],
+    main_text: str,
+    catalog: Dict[str, Any]
+) -> Dict[str, Any] | None:
+    """Detect Button Help WhatsApp module (module_11)."""
+    catalog_entry = catalog.get("Button Help WhatsApp", {})
+    
+    # Look for WhatsApp indicators
+    whatsapp_keywords = [
+        "whatsapp", "whats app", "wpp", "wa.me"
+    ]
+    
+    has_whatsapp = any(kw in main_text for kw in whatsapp_keywords)
+    
+    # Check links for WhatsApp
+    whatsapp_links = [
+        link for link in links
+        if any(kw in link.get("href", "").lower() for kw in whatsapp_keywords)
+    ]
+    
+    if not has_whatsapp and not whatsapp_links:
+        return None
+    
+    confidence = 0.9 if whatsapp_links else 0.7
+    
+    evidence = []
+    if whatsapp_links:
+        evidence.append(f"Found {len(whatsapp_links)} WhatsApp links")
+    if has_whatsapp:
+        evidence.append("WhatsApp keywords detected")
+    
+    return _create_detected_module(
+        module_id="detected_whatsapp_0",
+        catalog_entry=catalog_entry,
+        title="WhatsApp contact",
+        text="WhatsApp button detected",
+        confidence=confidence,
+        evidence=evidence
+    )
+
+
+def _detect_qr_codes(
+    images: List[Dict],
     main_text: str,
     catalog: Dict[str, Any]
 ) -> List[Dict[str, Any]]:
-    """Detect Richtext modules."""
-    richtext_modules = []
+    """Detect QR Code modules (module_13, module_14)."""
+    qr_modules = []
     
-    # Richtext is common, so we detect it if there's substantial text
-    # and it doesn't match other specific patterns
+    # Look for QR code indicators
+    qr_keywords = [
+        "qr code", "qrcode", "qr", "codigo qr", "código qr",
+        "escaneie", "escanear", "scanner"
+    ]
     
-    if len(main_text) > 500:
-        # Count paragraphs (approximate by sentence count)
-        sentence_count = len(re.findall(r'[.!?]+', main_text))
-        
-        if sentence_count >= 5:
-            confidence = 0.6
-            
-            catalog_entry = catalog.get("Richtext", {})
-            
-            richtext_modules.append({
-                "id": "detected_richtext_0",
-                "type": "Text Content",
-                "matched_catalog_id": catalog_entry.get("id", "module_02"),
-                "matched_catalog_name": "Richtext",
-                "title": "Text content section",
-                "text": main_text[:200],
-                "position": 0,
-                "confidence": round(confidence, 2),
-                "evidence": [
-                    f"Substantial text content ({len(main_text)} chars)",
-                    (
-                        f"Multiple paragraphs detected "
-                        f"({sentence_count} sentences)"
-                    )
-                ]
-            })
+    has_qr = any(kw in main_text for kw in qr_keywords)
     
-    return richtext_modules
+    # Check image alt texts for QR
+    qr_images = [
+        img for img in images
+        if any(kw in img.get("alt", "").lower() for kw in qr_keywords)
+    ]
+    
+    if not has_qr and not qr_images:
+        return qr_modules
+    
+    # Determine which QR module
+    catalog_entry = catalog.get("QR Code Nativo", {})
+    
+    confidence = 0.85 if qr_images else 0.65
+    
+    evidence = []
+    if qr_images:
+        evidence.append(f"Found {len(qr_images)} QR code images")
+    if has_qr:
+        evidence.append("QR code keywords detected")
+    
+    qr_module = _create_detected_module(
+        module_id="detected_qr_0",
+        catalog_entry=catalog_entry,
+        title="QR Code",
+        text="QR code detected",
+        confidence=confidence,
+        evidence=evidence
+    )
+    
+    qr_modules.append(qr_module)
+    
+    return qr_modules
 
 
 # Made with Bob

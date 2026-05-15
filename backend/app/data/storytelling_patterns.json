@@ -1,22 +1,1174 @@
 [
   {
-    "page_type": "produto",
-    "pattern": ["Problema", "Solucao", "Beneficios", "Como funciona", "Prova", "CTA", "FAQ"],
-    "description": "Ideal para paginas que precisam explicar valor e converter."
+    "id": "pattern_credito_pessoal",
+    "page_type": "credito_pessoal",
+    "segment": "financial_services",
+    "business_goal": "conversao",
+    "target_audience": "pessoa_fisica",
+    "storytelling_name": "Problema → Alívio financeiro → Segurança → Conversão",
+    "description": "Fluxo recomendado para páginas de crédito pessoal, empréstimos, antecipação ou soluções de dinheiro rápido com foco em confiança, clareza e redução de objeções.",
+    "emotional_journey": [
+      "urgencia",
+      "clareza",
+      "seguranca",
+      "acao"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Dor financeira",
+        "objective": "Reconhecer uma necessidade real do usuário sem explorar medo ou vulnerabilidade.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Apresente o contexto financeiro de forma empática e objetiva."
+      },
+      {
+        "step": 2,
+        "name": "Solução acessível",
+        "objective": "Mostrar que existe uma alternativa simples para organizar planos ou resolver uma necessidade pontual.",
+        "recommended_modules": ["Image with text", "Background with text"],
+        "copy_direction": "Conecte a solução ao benefício prático, sem prometer aprovação ou resultado."
+      },
+      {
+        "step": 3,
+        "name": "Benefícios práticos",
+        "objective": "Destacar vantagens escaneáveis e relevantes para decisão.",
+        "recommended_modules": ["Card with icon", "Image Icon"],
+        "copy_direction": "Use benefícios concretos, como simulação, parcelamento, contratação digital e acompanhamento."
+      },
+      {
+        "step": 4,
+        "name": "Como funciona",
+        "objective": "Reduzir incerteza explicando a jornada de contratação.",
+        "recommended_modules": ["Media with steps"],
+        "copy_direction": "Explique em etapas curtas: simular, escolher proposta, enviar dados e acompanhar retorno."
+      },
+      {
+        "step": 5,
+        "name": "Segurança e transparência",
+        "objective": "Reforçar análise, condições, tarifas e responsabilidade financeira.",
+        "recommended_modules": ["Accordion", "Contract and tariffs"],
+        "copy_direction": "Inclua dúvidas sobre análise de crédito, IOF, CET, parcelas e antecipação."
+      },
+      {
+        "step": 6,
+        "name": "Conversão assistida",
+        "objective": "Levar o usuário à simulação ou atendimento sem pressão excessiva.",
+        "recommended_modules": ["Button Help WhatsApp", "QR Code Nativo"],
+        "copy_direction": "Use CTA claro e específico."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Card with icon",
+      "Media with steps",
+      "Image with text",
+      "Accordion",
+      "Contract and tariffs",
+      "Button Help WhatsApp"
+    ],
+    "required_modules": ["Main Banner", "Media with steps", "Accordion", "Contract and tariffs"],
+    "optional_modules": ["Breadcrumb Header", "Image with text", "Card with icon", "Image Icon", "Button Help WhatsApp", "QR Code Nativo"],
+    "avoid_modules_when": [
+      {
+        "module": "Carrossel",
+        "reason": "Evite esconder informações essenciais de crédito em slides."
+      },
+      {
+        "module": "QR Code With Text",
+        "reason": "Priorize QR Code Nativo quando a ação depender de app ou continuação mobile."
+      }
+    ],
+    "headline_examples": [
+      "Crédito para organizar seus planos com mais previsibilidade.",
+      "Simule uma opção de crédito para o seu momento.",
+      "Uma alternativa para tirar seus planos do papel com planejamento."
+    ],
+    "cta_examples": [
+      "Simular crédito",
+      "Ver opções disponíveis",
+      "Calcular parcelas",
+      "Conhecer condições"
+    ],
+    "tone_guidelines": [
+      "empatico",
+      "claro",
+      "educativo",
+      "responsavel",
+      "sem_pressao"
+    ],
+    "compliance_guidelines": [
+      "Informar que a contratação pode estar sujeita à análise de crédito.",
+      "Evitar promessas de aprovação, liberação imediata ou ausência de risco.",
+      "Quando aplicável, mencionar consulta a condições, taxas, CET e IOF."
+    ],
+    "avoid_copy": [
+      "dinheiro garantido",
+      "aprovação imediata para todos",
+      "sem burocracia nenhuma",
+      "crédito sem análise",
+      "menor taxa do mercado"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "A página apresenta proposta clara no hero.",
+        "Existe passo a passo antes do CTA principal.",
+        "Há FAQ com objeções reais de contratação.",
+        "Documentos, tarifas ou condições aparecem no final da jornada."
+      ],
+      "weak_pattern_when": [
+        "A página começa com termos regulatórios densos.",
+        "O CTA aparece antes de explicar funcionamento e condições.",
+        "Promete aprovação, taxa ou resultado sem contexto.",
+        "Falta transparência sobre análise e custos."
+      ]
+    }
   },
   {
-    "page_type": "campanha",
-    "pattern": ["Gancho", "Oferta", "Beneficios", "Urgencia", "Confianca", "CTA"],
-    "description": "Ideal para campanhas com uma acao principal."
+    "id": "pattern_cartao_credito",
+    "page_type": "cartao_credito",
+    "segment": "financial_services",
+    "business_goal": "aquisicao",
+    "target_audience": "pessoa_fisica",
+    "storytelling_name": "Benefícios → Estilo de vida → Controle → Conversão",
+    "description": "Fluxo recomendado para páginas de cartão de crédito com foco em benefícios, comparação de opções e controle financeiro.",
+    "emotional_journey": [
+      "desejo",
+      "praticidade",
+      "controle",
+      "seguranca"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Proposta principal",
+        "objective": "Apresentar o cartão e seu principal benefício.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Conecte o cartão à rotina do usuário."
+      },
+      {
+        "step": 2,
+        "name": "Benefícios escaneáveis",
+        "objective": "Mostrar vantagens de forma rápida.",
+        "recommended_modules": ["Image Icon", "Card with icon"],
+        "copy_direction": "Use benefícios como cashback, cartão virtual, aproximação, app e controle de limite."
+      },
+      {
+        "step": 3,
+        "name": "Comparação de opções",
+        "objective": "Ajudar o usuário a escolher entre categorias ou planos.",
+        "recommended_modules": ["Card Comparative"],
+        "copy_direction": "Compare critérios paralelos, como anuidade, benefícios, renda mínima e diferenciais."
+      },
+      {
+        "step": 4,
+        "name": "Reforço de valor",
+        "objective": "Criar uma pausa visual com mensagem aspiracional moderada.",
+        "recommended_modules": ["Background with text"],
+        "copy_direction": "Mostre praticidade para compras, viagens e organização financeira."
+      },
+      {
+        "step": 5,
+        "name": "Objeções e condições",
+        "objective": "Responder dúvidas antes da solicitação.",
+        "recommended_modules": ["Accordion", "Contract and tariffs"],
+        "copy_direction": "Explique anuidade, limite, fatura, juros, elegibilidade e benefícios."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Image Icon",
+      "Card Comparative",
+      "Background with text",
+      "Accordion",
+      "Contract and tariffs"
+    ],
+    "required_modules": ["Main Banner", "Image Icon", "Card Comparative", "Accordion", "Contract and tariffs"],
+    "optional_modules": ["Breadcrumb Header", "Card with icon", "Background with text", "QR Code Nativo", "Button Help WhatsApp"],
+    "avoid_modules_when": [
+      {
+        "module": "Carrossel",
+        "reason": "Evite usar carrossel para benefícios essenciais que precisam ser vistos sem interação."
+      }
+    ],
+    "headline_examples": [
+      "Um cartão que acompanha sua rotina.",
+      "Mais controle e praticidade para suas compras.",
+      "Escolha o cartão que combina com você."
+    ],
+    "cta_examples": [
+      "Pedir cartão",
+      "Comparar cartões",
+      "Ver benefícios",
+      "Conhecer opções"
+    ],
+    "tone_guidelines": [
+      "moderno",
+      "simples",
+      "aspiracional_moderado",
+      "digital",
+      "objetivo"
+    ],
+    "compliance_guidelines": [
+      "Evitar prometer limite, aprovação ou isenção sem condições claras.",
+      "Explicar anuidade, juros e critérios quando aplicável.",
+      "Manter benefícios condicionais acompanhados de contexto."
+    ],
+    "avoid_copy": [
+      "limite garantido",
+      "cartão aprovado na hora",
+      "sem juros",
+      "melhor cartão do mercado",
+      "benefícios ilimitados"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "Benefícios aparecem logo após o hero.",
+        "Há comparação clara entre opções.",
+        "As condições aparecem antes ou próximas do CTA decisivo.",
+        "O CTA é específico e não genérico."
+      ],
+      "weak_pattern_when": [
+        "A página lista benefícios sem explicar diferenças entre cartões.",
+        "O conteúdo depende de carrossel para mostrar informação essencial.",
+        "Há promessa de limite ou aprovação sem ressalva.",
+        "FAQ não aborda anuidade, limite e juros."
+      ]
+    }
   },
   {
-    "page_type": "educacao_financeira",
-    "pattern": ["Contexto", "Explicacao simples", "Exemplos", "Orientacao pratica", "Proximo passo"],
-    "description": "Ideal para conteudos que precisam ensinar e guiar."
+    "id": "pattern_conta_digital",
+    "page_type": "conta_digital",
+    "segment": "financial_services",
+    "business_goal": "abertura_de_conta",
+    "target_audience": "pessoa_fisica",
+    "storytelling_name": "Simplicidade → Controle → Vida financeira → Conversão",
+    "description": "Fluxo recomendado para páginas de conta digital com foco em simplicidade, autonomia e migração para app.",
+    "emotional_journey": [
+      "facilidade",
+      "autonomia",
+      "controle",
+      "acao"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Abertura simples",
+        "objective": "Comunicar a proposta central da conta digital.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Explique o benefício principal de abrir a conta."
+      },
+      {
+        "step": 2,
+        "name": "Funcionalidades essenciais",
+        "objective": "Mostrar recursos do dia a dia financeiro.",
+        "recommended_modules": ["Card with icon", "Image Icon"],
+        "copy_direction": "Liste Pix, cartão, pagamentos, transferências, app e atendimento."
+      },
+      {
+        "step": 3,
+        "name": "Contexto de uso",
+        "objective": "Humanizar a experiência e mostrar uso real.",
+        "recommended_modules": ["Image with text"],
+        "copy_direction": "Mostre como a conta ajuda na rotina."
+      },
+      {
+        "step": 4,
+        "name": "Passo a passo",
+        "objective": "Explicar abertura ou ativação da conta.",
+        "recommended_modules": ["Media with steps"],
+        "copy_direction": "Use verbos de ação e etapas curtas."
+      },
+      {
+        "step": 5,
+        "name": "Migração para app",
+        "objective": "Conduzir o usuário do desktop para o celular.",
+        "recommended_modules": ["QR Code Nativo"],
+        "copy_direction": "Explique por que continuar pelo app."
+      },
+      {
+        "step": 6,
+        "name": "Dúvidas finais",
+        "objective": "Reduzir incerteza antes da abertura.",
+        "recommended_modules": ["Accordion"],
+        "copy_direction": "Explique documentos, prazo, segurança e elegibilidade."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Card with icon",
+      "Image with text",
+      "Media with steps",
+      "Background with text",
+      "Accordion",
+      "QR Code Nativo"
+    ],
+    "required_modules": ["Main Banner", "Card with icon", "Media with steps", "QR Code Nativo", "Accordion"],
+    "optional_modules": ["Breadcrumb Header", "Image with text", "Image Icon", "Background with text", "Button Help WhatsApp"],
+    "avoid_modules_when": [
+      {
+        "module": "Contract and tariffs",
+        "reason": "Use apenas quando houver documentos, tarifas ou condições relevantes para a conta."
+      }
+    ],
+    "headline_examples": [
+      "Abra sua conta digital sem complicação.",
+      "Sua vida financeira em um app simples de usar.",
+      "Mais autonomia para cuidar do seu dinheiro."
+    ],
+    "cta_examples": [
+      "Abrir conta",
+      "Baixar app",
+      "Começar agora",
+      "Conhecer a conta"
+    ],
+    "tone_guidelines": [
+      "simples",
+      "agil",
+      "digital",
+      "proximo",
+      "funcional"
+    ],
+    "compliance_guidelines": [
+      "Explicar requisitos de abertura quando aplicável.",
+      "Evitar sugerir ausência total de análise ou validação cadastral.",
+      "Informar condições de tarifas, pacotes ou serviços quando existirem."
+    ],
+    "avoid_copy": [
+      "conta aprovada para todos",
+      "sem nenhuma análise",
+      "totalmente grátis para sempre",
+      "zero tarifas em qualquer situação"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "A página explica funcionalidades antes de pedir abertura.",
+        "Há alternativa mobile clara via QR Code ou botão.",
+        "O passo a passo reduz fricção.",
+        "A linguagem é simples e não burocrática."
+      ],
+      "weak_pattern_when": [
+        "A página depende de texto longo para explicar a conta.",
+        "Não há orientação clara para abrir pelo app.",
+        "Funcionalidades aparecem sem benefício para o usuário.",
+        "Há excesso de termos bancários."
+      ]
+    }
   },
   {
+    "id": "pattern_investimentos",
+    "page_type": "investimentos",
+    "segment": "financial_services",
+    "business_goal": "educacao_e_conversao",
+    "target_audience": "pessoa_fisica",
+    "storytelling_name": "Educação → Segurança → Oportunidade → Conversão",
+    "description": "Fluxo recomendado para páginas de investimentos, fundos, renda fixa, carteiras ou conteúdos de entrada em jornada de investimento.",
+    "emotional_journey": [
+      "curiosidade",
+      "entendimento",
+      "confianca",
+      "decisao"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Proposta educativa",
+        "objective": "Introduzir o tema sem prometer resultado financeiro.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Conecte investimentos a objetivos, perfil e planejamento."
+      },
+      {
+        "step": 2,
+        "name": "Explicação simples",
+        "objective": "Ensinar conceitos essenciais antes da oferta.",
+        "recommended_modules": ["Richtext"],
+        "copy_direction": "Use linguagem clara e exemplos práticos."
+      },
+      {
+        "step": 3,
+        "name": "Benefícios e atributos",
+        "objective": "Mostrar o que o usuário deve considerar.",
+        "recommended_modules": ["Card with icon", "Image Icon"],
+        "copy_direction": "Fale de diversificação, liquidez, perfil, acompanhamento e objetivos."
+      },
+      {
+        "step": 4,
+        "name": "Comparação orientativa",
+        "objective": "Ajudar a diferenciar opções por perfil ou característica.",
+        "recommended_modules": ["Card Comparative"],
+        "copy_direction": "Compare opções com critérios paralelos e sem recomendar de forma absoluta."
+      },
+      {
+        "step": 5,
+        "name": "Confiança e riscos",
+        "objective": "Explicar riscos, adequação e dúvidas relevantes.",
+        "recommended_modules": ["Accordion", "Contract and tariffs"],
+        "copy_direction": "Inclua perguntas sobre risco, liquidez, rentabilidade, suitability, taxas e garantias."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Richtext",
+      "Card with icon",
+      "Card Comparative",
+      "Image with text",
+      "Accordion",
+      "Contract and tariffs"
+    ],
+    "required_modules": ["Main Banner", "Richtext", "Card Comparative", "Accordion", "Contract and tariffs"],
+    "optional_modules": ["Breadcrumb Header", "Card with icon", "Image Icon", "Image with text", "Duo Text Link", "Micro Frontend"],
+    "avoid_modules_when": [
+      {
+        "module": "Background with text",
+        "reason": "Evite mensagens aspiracionais que possam soar como promessa de rentabilidade."
+      },
+      {
+        "module": "Carrossel",
+        "reason": "Evite ocultar riscos, condições ou informações essenciais em slides."
+      }
+    ],
+    "headline_examples": [
+      "Invista de forma alinhada aos seus objetivos.",
+      "Conheça opções para diferentes perfis de investidor.",
+      "Dê o próximo passo na sua jornada financeira."
+    ],
+    "cta_examples": [
+      "Conhecer opções",
+      "Ver investimentos",
+      "Entender meu perfil",
+      "Começar planejamento"
+    ],
+    "tone_guidelines": [
+      "educativo",
+      "transparente",
+      "consultivo",
+      "responsavel",
+      "sem_promessa"
+    ],
+    "compliance_guidelines": [
+      "Evitar promessa de rentabilidade, ganho, segurança absoluta ou ausência de risco.",
+      "Quando aplicável, mencionar perfil do investidor, riscos, taxas e documentos.",
+      "Usar linguagem contextual e educativa."
+    ],
+    "avoid_copy": [
+      "rentabilidade garantida",
+      "sem risco",
+      "melhor investimento",
+      "ganhe mais dinheiro",
+      "lucro certo"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "A página educa antes de converter.",
+        "Riscos e condições são visíveis.",
+        "As opções são comparadas com critérios claros.",
+        "O CTA respeita perfil e adequação."
+      ],
+      "weak_pattern_when": [
+        "A página usa linguagem de promessa financeira.",
+        "Não há explicação de risco ou perfil.",
+        "O conteúdo é técnico demais para público amplo.",
+        "A conversão aparece antes da compreensão mínima."
+      ]
+    }
+  },
+  {
+    "id": "pattern_seguros",
+    "page_type": "seguros",
+    "segment": "financial_services",
+    "business_goal": "contratacao_ou_lead",
+    "target_audience": "pessoa_fisica_ou_pj",
+    "storytelling_name": "Proteção → Tranquilidade → Cobertura → Conversão",
+    "description": "Fluxo recomendado para páginas de seguro, proteção, assistência ou cobertura financeira.",
+    "emotional_journey": [
+      "protecao",
+      "tranquilidade",
+      "clareza",
+      "decisao"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Proteção principal",
+        "objective": "Apresentar a cobertura como apoio para momentos importantes sem usar medo excessivo.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Mostre proteção e tranquilidade com linguagem empática."
+      },
+      {
+        "step": 2,
+        "name": "Mensagem emocional moderada",
+        "objective": "Criar conexão humana e reforçar valor da proteção.",
+        "recommended_modules": ["Background with text", "Image with text"],
+        "copy_direction": "Use imagem ou fundo para reforçar segurança, família, cuidado ou continuidade."
+      },
+      {
+        "step": 3,
+        "name": "Coberturas e diferenciais",
+        "objective": "Organizar benefícios e coberturas principais.",
+        "recommended_modules": ["Card with icon", "Image Icon"],
+        "copy_direction": "Apresente cada cobertura como item claro e independente."
+      },
+      {
+        "step": 4,
+        "name": "Escolha de modalidade",
+        "objective": "Separar públicos, planos ou tipos de cobertura.",
+        "recommended_modules": ["Double Box", "Card Comparative"],
+        "copy_direction": "Compare opções de forma paralela e simples."
+      },
+      {
+        "step": 5,
+        "name": "Condições e dúvidas",
+        "objective": "Explicar cobertura, carência, acionamento e exclusões relevantes.",
+        "recommended_modules": ["Accordion", "Contract and tariffs"],
+        "copy_direction": "Inclua perguntas sobre carência, franquia, cobertura, acionamento e documentação."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Background with text",
+      "Card with icon",
+      "Double Box",
+      "Accordion",
+      "Contract and tariffs"
+    ],
+    "required_modules": ["Main Banner", "Card with icon", "Accordion", "Contract and tariffs"],
+    "optional_modules": ["Breadcrumb Header", "Background with text", "Image with text", "Double Box", "Card Comparative", "Button Help WhatsApp"],
+    "avoid_modules_when": [
+      {
+        "module": "Carrossel",
+        "reason": "Evite colocar coberturas ou exclusões importantes em carrossel."
+      }
+    ],
+    "headline_examples": [
+      "Proteção para os momentos mais importantes.",
+      "Mais tranquilidade para cuidar do que importa.",
+      "Conheça uma proteção para sua rotina."
+    ],
+    "cta_examples": [
+      "Conhecer seguro",
+      "Ver coberturas",
+      "Solicitar cotação",
+      "Contratar proteção"
+    ],
+    "tone_guidelines": [
+      "empatico",
+      "seguro",
+      "humano",
+      "claro",
+      "sem_alarmismo"
+    ],
+    "compliance_guidelines": [
+      "Evitar induzir contratação por medo excessivo.",
+      "Deixar claro que coberturas, carências e exclusões seguem condições contratuais.",
+      "Direcionar para documentos e condições gerais."
+    ],
+    "avoid_copy": [
+      "proteção total contra tudo",
+      "nunca mais se preocupe",
+      "cobertura garantida em qualquer situação",
+      "seguro sem exclusões"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "A página equilibra emoção e clareza de cobertura.",
+        "Coberturas e condições são fáceis de encontrar.",
+        "O FAQ aborda carência, exclusões e acionamento.",
+        "Documentos contratuais aparecem no final."
+      ],
+      "weak_pattern_when": [
+        "A página usa medo excessivo.",
+        "As coberturas são genéricas ou vagas.",
+        "Não há explicação de carência ou exclusões.",
+        "O CTA aparece sem contexto suficiente."
+      ]
+    }
+  },
+  {
+    "id": "pattern_financiamento_imobiliario",
+    "page_type": "financiamento_imobiliario",
+    "segment": "financial_services",
+    "business_goal": "simulacao_ou_contratacao",
+    "target_audience": "pessoa_fisica",
+    "storytelling_name": "Sonho → Planejamento → Viabilidade → Conversão",
+    "description": "Fluxo recomendado para páginas de financiamento imobiliário, crédito habitacional ou simulação de imóvel.",
+    "emotional_journey": [
+      "sonho",
+      "planejamento",
+      "viabilidade",
+      "seguranca",
+      "acao"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Sonho possível",
+        "objective": "Conectar a solução ao objetivo de conquistar ou trocar um imóvel.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Trate o imóvel como projeto de vida com planejamento financeiro."
+      },
+      {
+        "step": 2,
+        "name": "Humanização",
+        "objective": "Mostrar contexto familiar, conquista ou planejamento.",
+        "recommended_modules": ["Image with text"],
+        "copy_direction": "Use imagem que complemente o texto, sem ser genérica."
+      },
+      {
+        "step": 3,
+        "name": "Jornada de financiamento",
+        "objective": "Explicar etapas e reduzir ansiedade sobre o processo.",
+        "recommended_modules": ["Media with steps"],
+        "copy_direction": "Mostre simulação, documentação, análise, aprovação e assinatura."
+      },
+      {
+        "step": 4,
+        "name": "Diferenciais e condições",
+        "objective": "Apresentar atributos relevantes do financiamento.",
+        "recommended_modules": ["Card with icon"],
+        "copy_direction": "Explique prazo, uso de FGTS, canais de acompanhamento e tipos de imóvel, se aplicável."
+      },
+      {
+        "step": 5,
+        "name": "Simulação",
+        "objective": "Permitir cálculo ou lead qualificado.",
+        "recommended_modules": ["Micro Frontend"],
+        "copy_direction": "A simulação deve aparecer depois de contexto mínimo e antes das dúvidas finais."
+      },
+      {
+        "step": 6,
+        "name": "Objeções e documentos",
+        "objective": "Responder dúvidas e garantir transparência.",
+        "recommended_modules": ["Accordion", "Contract and tariffs"],
+        "copy_direction": "Inclua dúvidas sobre renda, entrada, taxas, documentação, avaliação e prazos."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Image with text",
+      "Media with steps",
+      "Card with icon",
+      "Micro Frontend",
+      "Accordion",
+      "Contract and tariffs"
+    ],
+    "required_modules": ["Main Banner", "Media with steps", "Micro Frontend", "Accordion", "Contract and tariffs"],
+    "optional_modules": ["Breadcrumb Header", "Image with text", "Card with icon", "Button Help WhatsApp", "Duo Text Link"],
+    "avoid_modules_when": [
+      {
+        "module": "Carrossel",
+        "reason": "Evite quando a jornada exige leitura sequencial e compreensão de etapas."
+      }
+    ],
+    "headline_examples": [
+      "Seu próximo imóvel começa com um bom planejamento.",
+      "Simule seu financiamento imobiliário.",
+      "Planeje a conquista do seu imóvel com mais clareza."
+    ],
+    "cta_examples": [
+      "Simular financiamento",
+      "Ver condições",
+      "Começar simulação",
+      "Conhecer etapas"
+    ],
+    "tone_guidelines": [
+      "consultivo",
+      "seguro",
+      "planejado",
+      "claro",
+      "orientativo"
+    ],
+    "compliance_guidelines": [
+      "Evitar prometer aprovação ou taxa específica sem contexto.",
+      "Explicar que condições dependem de análise e critérios.",
+      "Direcionar para tarifas, contratos e documentos oficiais."
+    ],
+    "avoid_copy": [
+      "financiamento aprovado na hora",
+      "taxa garantida",
+      "compre seu imóvel sem análise",
+      "financiamento sem burocracia nenhuma"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "A página explica a jornada antes da simulação.",
+        "O simulador está bem posicionado e contextualizado.",
+        "Dúvidas sobre taxa, entrada e documentação são respondidas.",
+        "A linguagem é consultiva e não promete aprovação."
+      ],
+      "weak_pattern_when": [
+        "O simulador aparece sem explicar condições.",
+        "A página vende o sonho sem orientar planejamento.",
+        "Faltam documentos ou tarifas.",
+        "As etapas do financiamento não estão claras."
+      ]
+    }
+  },
+  {
+    "id": "pattern_institucional_financeiro",
     "page_type": "institucional",
-    "pattern": ["Proposito", "Credibilidade", "Diferenciais", "Servicos", "Prova", "Contato"],
-    "description": "Ideal para paginas de posicionamento e confianca."
+    "segment": "financial_services",
+    "business_goal": "confianca_e_posicionamento",
+    "target_audience": "publico_geral",
+    "storytelling_name": "Propósito → Credibilidade → Diferenciais → Relacionamento",
+    "description": "Fluxo recomendado para páginas institucionais de bancos, financeiras, cooperativas, seguradoras ou fintechs.",
+    "emotional_journey": [
+      "reconhecimento",
+      "credibilidade",
+      "identificacao",
+      "relacionamento"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Propósito",
+        "objective": "Apresentar posicionamento institucional de forma clara.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Evite manifesto genérico; declare o papel da instituição para clientes e sociedade."
+      },
+      {
+        "step": 2,
+        "name": "Mensagem de marca",
+        "objective": "Criar reforço visual e emocional.",
+        "recommended_modules": ["Background with text"],
+        "copy_direction": "Use frase curta com valor institucional."
+      },
+      {
+        "step": 3,
+        "name": "História ou contexto",
+        "objective": "Explicar trajetória, atuação ou diferenciais.",
+        "recommended_modules": ["Image with text", "Richtext"],
+        "copy_direction": "Conte a história com foco em relevância para o público."
+      },
+      {
+        "step": 4,
+        "name": "Diferenciais",
+        "objective": "Mostrar atributos de confiança.",
+        "recommended_modules": ["Card with icon"],
+        "copy_direction": "Use pontos como segurança, tecnologia, atendimento, presença e soluções."
+      },
+      {
+        "step": 5,
+        "name": "Ecossistema ou iniciativas",
+        "objective": "Apresentar produtos, frentes, programas ou conteúdos relacionados.",
+        "recommended_modules": ["Carrossel", "Duo Text Link"],
+        "copy_direction": "Agrupe conteúdos equivalentes sem esconder informação crítica."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Background with text",
+      "Image with text",
+      "Card with icon",
+      "Carrossel",
+      "Duo Text Link",
+      "Contract and tariffs"
+    ],
+    "required_modules": ["Main Banner", "Image with text", "Card with icon"],
+    "optional_modules": ["Breadcrumb Header", "Background with text", "Richtext", "Carrossel", "Duo Text Link", "Contract and tariffs"],
+    "avoid_modules_when": [
+      {
+        "module": "Micro Frontend",
+        "reason": "Use apenas quando houver experiência funcional real, como busca, formulário ou consulta."
+      }
+    ],
+    "headline_examples": [
+      "Soluções financeiras para diferentes momentos da vida.",
+      "Tecnologia, segurança e relacionamento para cuidar do seu dinheiro.",
+      "Conheça nossa atuação no mercado financeiro."
+    ],
+    "cta_examples": [
+      "Conheça nossas soluções",
+      "Ver áreas de atuação",
+      "Fale conosco",
+      "Acessar canais digitais"
+    ],
+    "tone_guidelines": [
+      "institucional",
+      "transparente",
+      "confiavel",
+      "inspirador_moderado",
+      "sem_jargao_corporativo"
+    ],
+    "compliance_guidelines": [
+      "Evitar claims institucionais não comprováveis.",
+      "Não usar superlativos absolutos sem base verificável.",
+      "Manter linguagem clara para público amplo."
+    ],
+    "avoid_copy": [
+      "o melhor banco",
+      "líder absoluto",
+      "o banco mais seguro",
+      "revolucionamos o mercado"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "A página comunica propósito sem jargão vazio.",
+        "Diferenciais são concretos e verificáveis.",
+        "A narrativa cria confiança progressiva.",
+        "Links secundários ajudam a continuar a jornada."
+      ],
+      "weak_pattern_when": [
+        "A página usa frases institucionais genéricas.",
+        "Não há evidências ou diferenciais claros.",
+        "O conteúdo é longo e pouco escaneável.",
+        "O carrossel esconde informações importantes."
+      ]
+    }
+  },
+  {
+    "id": "pattern_educacao_financeira",
+    "page_type": "educacao_financeira",
+    "segment": "financial_services",
+    "business_goal": "educacao_e_engajamento",
+    "target_audience": "publico_geral",
+    "storytelling_name": "Contexto → Explicação → Aplicação → Próximo passo",
+    "description": "Fluxo recomendado para páginas educacionais, guias, conteúdos explicativos e orientação financeira.",
+    "emotional_journey": [
+      "curiosidade",
+      "compreensao",
+      "aplicacao",
+      "continuidade"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Contexto",
+        "objective": "Apresentar o tema e por que ele importa.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Use pergunta, situação cotidiana ou benefício educativo."
+      },
+      {
+        "step": 2,
+        "name": "Explicação simples",
+        "objective": "Ensinar o conceito principal com clareza.",
+        "recommended_modules": ["Richtext"],
+        "copy_direction": "Explique com frases curtas, subtítulos e exemplos."
+      },
+      {
+        "step": 3,
+        "name": "Aplicação prática",
+        "objective": "Transformar o conceito em orientação acionável.",
+        "recommended_modules": ["Media with steps"],
+        "copy_direction": "Use etapas ou checklist prático."
+      },
+      {
+        "step": 4,
+        "name": "Resumo visual",
+        "objective": "Facilitar escaneabilidade e retenção.",
+        "recommended_modules": ["Image Icon", "Card with icon"],
+        "copy_direction": "Resuma pontos-chave em itens curtos."
+      },
+      {
+        "step": 5,
+        "name": "Dúvidas e continuidade",
+        "objective": "Responder perguntas e levar para conteúdos relacionados.",
+        "recommended_modules": ["Accordion", "Duo Text Link"],
+        "copy_direction": "Use links complementares ou próximos passos educacionais."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Richtext",
+      "Media with steps",
+      "Image Icon",
+      "Accordion",
+      "Duo Text Link"
+    ],
+    "required_modules": ["Main Banner", "Richtext", "Media with steps"],
+    "optional_modules": ["Breadcrumb Header", "Image Icon", "Card with icon", "Accordion", "Duo Text Link", "Image with text"],
+    "avoid_modules_when": [
+      {
+        "module": "Contract and tariffs",
+        "reason": "Use apenas se o conteúdo educacional estiver conectado a produto regulado ou documentos."
+      },
+      {
+        "module": "Button Help WhatsApp",
+        "reason": "Evite transformar conteúdo educativo em atendimento comercial cedo demais."
+      }
+    ],
+    "headline_examples": [
+      "Entenda melhor suas decisões financeiras.",
+      "Aprenda a organizar sua vida financeira com mais clareza.",
+      "Um guia simples para cuidar melhor do seu dinheiro."
+    ],
+    "cta_examples": [
+      "Continuar aprendendo",
+      "Ver conteúdos relacionados",
+      "Conhecer soluções",
+      "Baixar guia"
+    ],
+    "tone_guidelines": [
+      "didatico",
+      "leve",
+      "acessivel",
+      "neutro",
+      "orientativo"
+    ],
+    "compliance_guidelines": [
+      "Não transformar orientação educacional em recomendação financeira personalizada.",
+      "Evitar prometer resultado financeiro.",
+      "Quando necessário, indicar que decisões dependem de perfil e contexto."
+    ],
+    "avoid_copy": [
+      "faça isso para ganhar dinheiro",
+      "essa é a melhor escolha",
+      "todo mundo deve investir assim",
+      "resultado garantido"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "O conteúdo ensina antes de vender.",
+        "Há exemplos ou passos práticos.",
+        "A linguagem é simples e escaneável.",
+        "Links finais dão continuidade à jornada."
+      ],
+      "weak_pattern_when": [
+        "O conteúdo parece propaganda disfarçada de educação.",
+        "Há recomendação financeira sem contexto de perfil.",
+        "O texto é longo e sem hierarquia.",
+        "Faltam exemplos práticos."
+      ]
+    }
+  },
+  {
+    "id": "pattern_campanha_promocional",
+    "page_type": "campanha_promocional",
+    "segment": "financial_services",
+    "business_goal": "conversao_de_campanha",
+    "target_audience": "pessoa_fisica_ou_pj",
+    "storytelling_name": "Gancho → Oferta → Urgência contextual → Conversão",
+    "description": "Fluxo recomendado para campanhas sazonais, ofertas comerciais, ativações promocionais e páginas temporárias.",
+    "emotional_journey": [
+      "atencao",
+      "interesse",
+      "clareza",
+      "acao"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Gancho de campanha",
+        "objective": "Capturar atenção com mensagem clara e específica.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Informe a oferta ou tema principal sem depender apenas de imagem."
+      },
+      {
+        "step": 2,
+        "name": "Oferta ou benefício",
+        "objective": "Explicar o valor da campanha.",
+        "recommended_modules": ["Background with text", "Card with icon"],
+        "copy_direction": "Mostre benefícios, condições principais e motivo da ação."
+      },
+      {
+        "step": 3,
+        "name": "Itens relacionados",
+        "objective": "Agrupar ofertas ou conteúdos equivalentes.",
+        "recommended_modules": ["Carrossel"],
+        "copy_direction": "Use apenas para itens independentes, não para regras essenciais."
+      },
+      {
+        "step": 4,
+        "name": "Condições e dúvidas",
+        "objective": "Reduzir objeções e explicar regras.",
+        "recommended_modules": ["Accordion", "Contract and tariffs"],
+        "copy_direction": "Explique prazo, elegibilidade, condições e documentos relacionados."
+      },
+      {
+        "step": 5,
+        "name": "Conversão",
+        "objective": "Conduzir para ação final.",
+        "recommended_modules": ["QR Code Nativo", "Button Help WhatsApp"],
+        "copy_direction": "Use CTA específico para contratar, simular, participar ou continuar."
+      }
+    ],
+    "recommended_module_order": [
+      "Main Banner",
+      "Background with text",
+      "Card with icon",
+      "Carrossel",
+      "Accordion",
+      "QR Code Nativo",
+      "Contract and tariffs"
+    ],
+    "required_modules": ["Main Banner", "Card with icon", "Accordion"],
+    "optional_modules": ["Background with text", "Carrossel", "QR Code Nativo", "Button Help WhatsApp", "Contract and tariffs"],
+    "avoid_modules_when": [
+      {
+        "module": "Richtext",
+        "reason": "Evite blocos longos que diminuam o ritmo de campanha."
+      }
+    ],
+    "headline_examples": [
+      "Uma condição especial para o seu próximo passo.",
+      "Aproveite uma oferta pensada para este momento.",
+      "Conheça a campanha e veja como participar."
+    ],
+    "cta_examples": [
+      "Participar da campanha",
+      "Ver condições",
+      "Aproveitar oferta",
+      "Começar agora"
+    ],
+    "tone_guidelines": [
+      "objetivo",
+      "comercial",
+      "claro",
+      "energetico_moderado",
+      "transparente"
+    ],
+    "compliance_guidelines": [
+      "Evitar urgência falsa ou pressão excessiva.",
+      "Explicar prazo, elegibilidade e condições de participação.",
+      "Não omitir regras relevantes no rodapé ou em links escondidos."
+    ],
+    "avoid_copy": [
+      "última chance garantida",
+      "só hoje" ,
+      "oferta imperdível sem condições",
+      "ganhe sempre",
+      "benefício garantido"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "A oferta é clara logo no hero.",
+        "Condições aparecem de forma acessível.",
+        "O carrossel mostra itens secundários, não regras críticas.",
+        "O CTA é coerente com a campanha."
+      ],
+      "weak_pattern_when": [
+        "A campanha depende apenas de visual sem explicar benefício.",
+        "Regras importantes estão escondidas.",
+        "Há urgência artificial.",
+        "Muitos CTAs competem pela atenção."
+      ]
+    }
+  },
+  {
+    "id": "pattern_empresas_pj",
+    "page_type": "empresas_pj",
+    "segment": "financial_services",
+    "business_goal": "lead_ou_contratacao_pj",
+    "target_audience": "pessoa_juridica",
+    "storytelling_name": "Eficiência → Crescimento → Controle → Conversão",
+    "description": "Fluxo recomendado para páginas de soluções financeiras para empresas, como conta PJ, crédito PJ, maquininha, folha, cobrança, gestão financeira e soluções corporativas.",
+    "emotional_journey": [
+      "eficiencia",
+      "crescimento",
+      "controle",
+      "confianca",
+      "acao"
+    ],
+    "narrative_steps": [
+      {
+        "step": 1,
+        "name": "Proposta para negócio",
+        "objective": "Mostrar o benefício para gestão ou crescimento da empresa.",
+        "recommended_modules": ["Main Banner"],
+        "copy_direction": "Conecte a solução a desafios reais de empresas."
+      },
+      {
+        "step": 2,
+        "name": "Segmentação de jornada",
+        "objective": "Separar públicos, portes ou necessidades.",
+        "recommended_modules": ["Double Box", "Card Comparative"],
+        "copy_direction": "Diferencie micro, pequenas, médias empresas ou tipos de solução."
+      },
+      {
+        "step": 3,
+        "name": "Benefícios operacionais",
+        "objective": "Mostrar ganhos de gestão, controle e eficiência.",
+        "recommended_modules": ["Card with icon", "Image Icon"],
+        "copy_direction": "Use benefícios como fluxo de caixa, pagamentos, recebimentos, crédito e acompanhamento."
+      },
+      {
+        "step": 4,
+        "name": "Como funciona",
+        "objective": "Explicar contratação, simulação ou contato comercial.",
+        "recommended_modules": ["Media with steps"],
+        "copy_direction": "Use etapas claras e orientadas a ação."
+      },
+      {
+        "step": 5,
+        "name": "Experiência funcional",
+        "objective": "Capturar lead, simular ou iniciar fluxo transacional.",
+        "recommended_modules": ["Micro Frontend"],
+        "copy_direction": "Use formulário, simulador ou consulta quando houver lógica real."
+      },
+      {
+        "step": 6,
+        "name": "Objeções e documentação",
+        "objective": "Responder dúvidas sobre elegibilidade, análise, tarifas e contratação.",
+        "recommended_modules": ["Accordion", "Contract and tariffs"],
+        "copy_direction": "Inclua dúvidas sobre CNPJ, faturamento, documentos, análise e canais de atendimento."
+      }
+    ],
+    "recommended_module_order": [
+      "Breadcrumb Header",
+      "Main Banner",
+      "Double Box",
+      "Card with icon",
+      "Media with steps",
+      "Micro Frontend",
+      "Accordion",
+      "Contract and tariffs"
+    ],
+    "required_modules": ["Main Banner", "Card with icon", "Media with steps", "Accordion"],
+    "optional_modules": ["Breadcrumb Header", "Double Box", "Card Comparative", "Image Icon", "Micro Frontend", "Contract and tariffs", "Button Help WhatsApp"],
+    "avoid_modules_when": [
+      {
+        "module": "Carrossel",
+        "reason": "Evite para comparação de soluções que exigem leitura simultânea."
+      }
+    ],
+    "headline_examples": [
+      "Soluções financeiras para sua empresa crescer com mais controle.",
+      "Mais praticidade para a gestão financeira do seu negócio.",
+      "Conheça soluções para diferentes momentos da sua empresa."
+    ],
+    "cta_examples": [
+      "Conhecer soluções PJ",
+      "Solicitar contato",
+      "Simular para minha empresa",
+      "Ver opções"
+    ],
+    "tone_guidelines": [
+      "profissional",
+      "estrategico",
+      "consultivo",
+      "objetivo",
+      "sem_informalidade_excessiva"
+    ],
+    "compliance_guidelines": [
+      "Evitar prometer aprovação de crédito ou resultados de crescimento.",
+      "Informar que produtos podem depender de análise, faturamento ou elegibilidade.",
+      "Manter documentos e tarifas acessíveis quando aplicável."
+    ],
+    "avoid_copy": [
+      "crédito garantido para sua empresa",
+      "crescimento garantido",
+      "aumente seu faturamento com certeza",
+      "sem análise de CNPJ"
+    ],
+    "agent_evaluation_rules": {
+      "strong_pattern_when": [
+        "A página separa públicos ou necessidades PJ com clareza.",
+        "Benefícios são operacionais e conectados à rotina da empresa.",
+        "A jornada de contratação ou contato está clara.",
+        "Há FAQ com critérios, documentos e análise."
+      ],
+      "weak_pattern_when": [
+        "A página trata empresas como público genérico.",
+        "Não diferencia porte, necessidade ou solução.",
+        "Promete crescimento ou crédito sem contexto.",
+        "Faltam detalhes sobre elegibilidade e contratação."
+      ]
+    }
   }
 ]

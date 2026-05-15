@@ -1,4 +1,5 @@
 import { AnalysisResponse } from '../lib/api';
+import { ModuleMap } from './ModuleMap';
 
 interface AnalysisResultProps {
   data: AnalysisResponse;
@@ -134,65 +135,11 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
         </div>
       )}
 
-      {/* Module Plan - Mapa de módulos com manter, remover, mover e adicionar */}
-      {data.module_plan && (
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="text-2xl">🗺️</span>
-            Mapa de Módulos
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4">
-            {data.module_plan.keep && data.module_plan.keep.length > 0 && (
-              <div className="border-2 border-green-300 rounded-xl p-4 bg-green-50">
-                <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
-                  <span>✅</span> Manter ({data.module_plan.keep.length})
-                </h4>
-                <ul className="text-sm text-green-800 space-y-1">
-                  {data.module_plan.keep.map((item: any, idx: number) => (
-                    <li key={idx}>• {typeof item === 'string' ? item : item.name || JSON.stringify(item)}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {data.module_plan.remove && data.module_plan.remove.length > 0 && (
-              <div className="border-2 border-red-300 rounded-xl p-4 bg-red-50">
-                <h4 className="font-semibold text-red-900 mb-2 flex items-center gap-2">
-                  <span>❌</span> Remover ({data.module_plan.remove.length})
-                </h4>
-                <ul className="text-sm text-red-800 space-y-1">
-                  {data.module_plan.remove.map((item: any, idx: number) => (
-                    <li key={idx}>• {typeof item === 'string' ? item : item.name || JSON.stringify(item)}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {data.module_plan.add && data.module_plan.add.length > 0 && (
-              <div className="border-2 border-blue-300 rounded-xl p-4 bg-blue-50">
-                <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
-                  <span>➕</span> Adicionar ({data.module_plan.add.length})
-                </h4>
-                <ul className="text-sm text-blue-800 space-y-1">
-                  {data.module_plan.add.map((item: any, idx: number) => (
-                    <li key={idx}>• {typeof item === 'string' ? item : item.name || JSON.stringify(item)}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {data.module_plan.reorder && data.module_plan.reorder.length > 0 && (
-              <div className="border-2 border-orange-300 rounded-xl p-4 bg-orange-50">
-                <h4 className="font-semibold text-orange-900 mb-2 flex items-center gap-2">
-                  <span>🔄</span> Reordenar ({data.module_plan.reorder.length})
-                </h4>
-                <ul className="text-sm text-yellow-800 space-y-1">
-                  {data.module_plan.reorder.map((item: any, idx: number) => (
-                    <li key={idx}>• {typeof item === 'string' ? item : item.name || JSON.stringify(item)}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Module Map - Mapa de módulos detectados com recomendações */}
+      <ModuleMap
+        detectedModules={data.detected_modules}
+        modulePlan={data.module_plan}
+      />
 
       {/* Copy Suggestions - Antes/depois de copy */}
       {data.copy_suggestions && data.copy_suggestions.length > 0 && (
