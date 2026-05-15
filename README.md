@@ -46,57 +46,76 @@ User
   |
   | URL or briefing
   v
-Web Frontend
+Web Frontend (React + Vite)
   |
   v
 FastAPI Backend
   |
-  | scraping, extraction, and normalization
+  | Scraping + Normalization + Module Detection
   v
-Page Intelligence Layer
+Scoring Service
   |
-  | structured payload
+  | SEO Score + Storytelling Score + Modules Score + Brand Safety Score
   v
-IBM Consulting Advantage
+Catalog Context Builder
   |
-  | Orchestrator Agent
-  | SEO Agent
-  | Module Strategy Agent
-  | Storytelling Agent
-  | Brand Safety Agent
-  | Recommendation Agent
+  | Injects relevant_seo_rules, relevant_brand_rules,
+  | relevant_storytelling_patterns, relevant_modules
   v
-Consolidated result
+IBM Consulting Advantage (ICA) Orchestration
   |
+  | Page Strategy Orchestrator
+  | ├── SEO Agent
+  | ├── Module Strategy Agent
+  | ├── Storytelling Agent
+  | └── Brand and Compliance Agent
   v
-Dashboard and recommendation report
+Recommendation Agent
+  |
+  | Consolidates findings into actionable recommendations
+  v
+Structured Response
+  |
+  | score, score_breakdown, recommendations, module_plan,
+  | narrative_insights, storytelling_analysis, catalog_context
+  v
+Dashboard with visual components
 ```
+
+**Key Components:**
+
+- **Catalog Context Builder**: Injects specialized domain knowledge from local catalogs into ICA agents without requiring Knowledge Base/embedding setup
+- **ICA Orchestration**: Multi-agent system with supervisor pattern coordinating specialized agents
+- **Local Fallback**: Automatic fallback to local processing if ICA is unavailable
+- **Data-Driven Scoring**: Transparent, auditable scoring based on catalog rules
 
 ## Agents
 
-### Orchestrator Agent
+The system uses IBM Consulting Advantage (ICA) with the following specialized agents:
 
-Coordinates the analysis, identifies the page type, and consolidates the results from the other agents.
+### Page Strategy Orchestrator
+
+Coordinates the multi-agent analysis, identifies page type, consolidates findings from specialized agents, and ensures coherent recommendations.
 
 ### SEO Agent
 
-Evaluates title, meta description, H1, headings, search intent, keywords, and on-page improvement opportunities.
+Evaluates title, meta description, H1, headings hierarchy, search intent, keywords, internal links, and on-page SEO opportunities using `relevant_seo_rules` from catalog context.
 
 ### Module Strategy Agent
 
-Analyzes the page composition in modules, recommending what to keep, remove, move, rewrite, or add.
+Analyzes page composition in modules, recommending what to keep, remove, reorder, or add based on `relevant_modules` and storytelling patterns from catalog context.
 
 ### Storytelling Agent
 
-Evaluates whether the page follows a narrative that fits its goal, such as conversion, education, campaign, or institutional positioning.
+Evaluates narrative progression (hook, context, solution, benefits, proof, CTA) using `relevant_storytelling_patterns` to ensure the page follows an appropriate narrative structure for its type and goal.
 
-### Brand Safety Agent
+### Brand and Compliance Agent
 
-Checks clarity, tone, sensitive language, and possible risks from overly strong claims in a financial context.
+Checks clarity, institutional tone, financial compliance (YMYL), and language safety using `relevant_brand_rules`. Flags risks like absolute promises, aggressive language, artificial urgency, and missing disclaimers (CET, credit analysis).
 
 ### Recommendation Agent
 
-Transforms findings from the other agents into an action plan prioritized by impact and effort.
+Consolidates findings from all agents into a prioritized action plan with impact/effort classification, executive summary, quick wins, and implementation checklist.
 
 ## Technical stack
 
@@ -135,65 +154,79 @@ Transforms findings from the other agents into an action plan prioritized by imp
 ```text
 marketing-page-analyzer/
   README.md
-  .env.example
+  README-pt.md
+  .gitignore
 
   docs/
-    architecture.md
-    agent-prompts.md
-    demo-script.md
-    backlog.md
+    guia-tecnico-hackathon.md
 
   backend/
+    .env
     requirements.txt
+    ICA_INTEGRATION.md
+    RUNNING.md
+    run_server.ps1
+    run_server.sh
+    test_api.ps1
+    test_api.py
     app/
       main.py
-      config.py
+      __init__.py
       routes/
         analyze.py
         health.py
+        __init__.py
       schemas/
         input.py
-        output.py
-        page.py
+        __init__.py
       services/
         scraper.py
         page_normalizer.py
         module_detector.py
-        seo_static_analyzer.py
+        scoring_service.py
+        storytelling_pattern_service.py
+        catalog_loader.py
+        catalog_context_builder.py
+        ica_client.py
         advantage_client.py
+        local_agent_fallback.py
         report_builder.py
+        __init__.py
       data/
         modules_catalog.json
         storytelling_patterns.json
         brand_rules.json
-        keyword_topics.json
+        seo_rules.json
       tests/
-        test_seo_static_analyzer.py
-        test_module_detector.py
-        test_page_normalizer.py
+        test_catalog_context_builder.py
+        test_encoding.py
+        test_ica_integration.py
+        test_scoring.py
+        test_storytelling_integration.py
+      utils/
+        analysis_messages.py
+        __init__.py
 
   frontend/
     package.json
     vite.config.ts
+    README.md
+    SETUP.md
     src/
       main.tsx
       App.tsx
+      index.css
       lib/
         api.ts
-        types.ts
-      pages/
-        Home.tsx
-        AnalysisResult.tsx
       components/
         UrlAnalyzerForm.tsx
         BriefingAnalyzerForm.tsx
-        ScoreCard.tsx
-        RecommendationList.tsx
+        AnalysisResult.tsx
+        JsonResult.tsx
         ModuleMap.tsx
-        StorytellingTimeline.tsx
-        SeoPanel.tsx
-        CopySuggestions.tsx
-        PriorityMatrix.tsx
+        ScoreBreakdown.tsx
+        NarrativeInsights.tsx
+        CollapsibleSection.tsx
 ```
 
 ## Backend setup
@@ -323,13 +356,39 @@ Input:
 
 ```json
 {
-  "analysis_id": "ana_123",
+  "analysis_id": "analysis_20260515_120000",
   "score": {
     "overall": 82,
     "seo": 78,
     "storytelling": 85,
     "modules": 80,
     "brand_safety": 90
+  },
+  "score_breakdown": {
+    "seo": {
+      "score": 78,
+      "issues": [
+        {
+          "rule_id": "seo_rule_001",
+          "severity": "high",
+          "description": "Title tag missing or too generic"
+        }
+      ]
+    },
+    "storytelling": {
+      "score": 85,
+      "pattern_match": "conversion_funnel",
+      "missing_elements": ["social_proof"]
+    },
+    "modules": {
+      "score": 80,
+      "detected_count": 8,
+      "recommended_count": 10
+    },
+    "brand_safety": {
+      "score": 90,
+      "risks": []
+    }
   },
   "page_summary": {
     "detected_type": "product",
@@ -348,34 +407,106 @@ Input:
     }
   ],
   "module_plan": {
-    "keep": [],
-    "remove": [],
-    "reorder": [],
-    "add": []
+    "keep": ["hero", "benefits", "cta_primary"],
+    "remove": ["generic_text"],
+    "reorder": [
+      {"module": "social_proof", "from": 8, "to": 4}
+    ],
+    "add": ["faq", "trust_badges"]
   },
-  "copy_suggestions": []
+  "narrative_insights": [
+    {
+      "insight": "Page lacks clear problem statement before presenting solution",
+      "impact": "medium",
+      "recommendation": "Add context module explaining customer pain points"
+    }
+  ],
+  "storytelling_analysis": {
+    "pattern_used": "conversion_funnel",
+    "pattern_strength": "medium",
+    "narrative_flow_score": 75,
+    "missing_steps": ["objection_handling"]
+  },
+  "catalog_context": {
+    "relevant_modules": ["hero", "benefits", "faq", "cta_primary"],
+    "relevant_storytelling_patterns": ["conversion_funnel"],
+    "relevant_seo_rules": ["seo_rule_001", "seo_rule_002"],
+    "relevant_brand_rules": ["brand_rule_001"]
+  },
+  "ica_enhanced": true,
+  "analysis_source": "ica"
 }
 ```
 
 ## Local catalogs
 
-The project uses JSON catalogs to reduce generic recommendations and provide context to the agents.
+The project uses JSON catalogs to provide specialized domain knowledge to ICA agents through the **catalog_context** mechanism, eliminating the need for Knowledge Base or embedding setup in the MVP phase.
 
 ### `modules_catalog.json`
 
-Defines module types such as hero, benefits, FAQ, social proof, simulator, CTA, and educational content.
+Defines 50+ module types with detailed metadata:
+- Module ID, name, display name, generic type
+- Purpose, description, synonyms
+- Detection hints, common content, UI elements
+- Good for / bad for scenarios
+- Recommendation rules (keepWhen, removeWhen, improveWhen)
+
+Examples: hero, benefits, FAQ, social proof, simulator, CTA, trust badges, educational content, comparison tables, testimonials.
 
 ### `storytelling_patterns.json`
 
-Defines narrative patterns by page type, such as product, campaign, financial education, and institutional pages.
+Defines narrative patterns by page type with:
+- Page type, segment, business goal, target audience
+- Storytelling name and description
+- Emotional journey stages
+- Narrative steps with recommended modules
+- Required/optional/avoid modules
+- Recommended module order
+- Tone guidelines, compliance guidelines
+- CTA examples, avoid copy patterns
+- Agent evaluation rules
+
+Examples: conversion funnel, educational journey, campaign landing, institutional positioning.
+
+### `seo_rules.json`
+
+Defines SEO rules with:
+- Rule ID, category, severity
+- Description, applies_to (page types)
+- Checks (field, min/max length, requirements)
+- Bad/good examples
+- Recommended action
+- Score impact (missing, too_short, too_long, generic)
+- Agent guidance
+
+Categories: metadata, headings, content, links, technical.
 
 ### `brand_rules.json`
 
-Defines tone and language safety rules, such as avoiding absolute promises and simplifying financial terms.
+Defines brand and compliance rules with:
+- Rule ID, category, subcategory, severity
+- Description, applies_to (page types)
+- Bad examples, safe alternatives
+- Detection keywords
+- Recommended action, recommended modules
+- Agent guidance
 
-### `keyword_topics.json`
+Categories: compliance (financial promises, YMYL, disclaimers), tone (institutional, clarity), language safety (aggressive, urgency, absolute claims).
 
-Defines initial topics and keywords to support SEO suggestions without relying on paid APIs in the MVP.
+### How catalog_context works
+
+The **Catalog Context Builder** service:
+1. Analyzes the page type, business goal, target audience
+2. Selects the most relevant items from each catalog (max 8 per catalog)
+3. Compacts them to essential fields
+4. Injects them into the ICA payload as `catalog_context`
+5. ICA agents use this context as their source of domain knowledge
+
+This approach provides:
+- **Specialized knowledge** without requiring Knowledge Base setup
+- **Transparent reasoning** - agents cite specific rules/patterns
+- **Auditable recommendations** - traceable to catalog entries
+- **Easy maintenance** - update catalogs without retraining
 
 ## Local fallback
 
@@ -509,127 +640,39 @@ Scenarios:
 - Briefing that is too short.
 ```
 
-## Prompts for IBM Consulting Advantage
+## IBM Consulting Advantage (ICA) Integration
 
-### Orchestrator Agent
+The system uses **IBM Consulting Advantage** for multi-agent orchestration with automatic fallback to local processing.
 
-```text
-You are the Orchestrator Agent for a marketing page analyzer for a financial institution.
+### Key Features
 
-Your task is to coordinate specialized analyses of SEO, modules, storytelling, content, and brand safety.
+- **Catalog Context Injection**: Backend injects `catalog_context` with relevant rules, patterns, and modules into ICA payload
+- **No Knowledge Base Required**: Catalog context provides specialized domain knowledge without KB/embedding setup
+- **Automatic Fallback**: If ICA is unavailable, system uses local agent fallback
+- **Transparent Scoring**: Data-driven scoring based on catalog rules with full explainability
+- **Agent Traceability**: Each recommendation cites specific catalog rules/patterns
 
-Use the normalized page data, business goal, target audience, and available catalogs.
+### Configuration
 
-You must:
-1. Identify the probable page type.
-2. Define the main page intent.
-3. Consolidate findings from the specialized agents.
-4. Return a single, clear, prioritized response.
+Set environment variables in `backend/.env`:
 
-Criteria:
-- Be practical.
-- Prioritize high-impact recommendations.
-- Do not invent data.
-- Flag uncertainty when necessary.
-- Avoid generic recommendations.
-- Return only valid JSON.
+```env
+ADVANTAGE_BASE_URL=https://api.ibm.com/consulting-advantage
+ADVANTAGE_API_KEY=your_api_key_here
+ADVANTAGE_ORCHESTRATOR_ID=d5d0c63a-4a42-4431-b870-3f496a43fe10
+ENABLE_AGENT_FALLBACK=true
 ```
 
-### SEO Agent
+### Agent Instructions
 
-```text
-You are an SEO specialist for financial services marketing pages.
+ICA agents receive instructions to:
+- Use `catalog_context` as the source of domain knowledge
+- Not invent rules, modules, or patterns outside provided context
+- Base recommendations on `relevant_modules`, `relevant_storytelling_patterns`, `relevant_seo_rules`, and `relevant_brand_rules`
+- Cite specific rule IDs and pattern IDs in recommendations
+- Provide explainability for all scores and recommendations
 
-Analyze metadata, headings, main text, links, and page structure.
-
-Evaluate:
-- Title tag.
-- Meta description.
-- H1.
-- H2 and H3 hierarchy.
-- Primary keyword.
-- Secondary keywords.
-- Search intent.
-- Internal links.
-- Snippet opportunities.
-
-Return valid JSON with score, issues, recommendations, suggested title, suggested meta description, primary keyword, and secondary keywords.
-```
-
-### Module Strategy Agent
-
-```text
-You are a UX and content strategist specialized in modular marketing pages.
-
-You will receive detected modules and a catalog of possible modules.
-
-Evaluate:
-- Which modules to keep.
-- Which modules to remove.
-- Which modules to reposition.
-- Which modules to rewrite.
-- Which modules to add.
-
-Consider the page type, business goal, and target audience.
-Return valid JSON with rationale and expected impact.
-```
-
-### Storytelling Agent
-
-```text
-You are a storytelling specialist for digital marketing pages.
-
-Analyze whether the page has a clear narrative progression:
-- Hook.
-- Context or problem.
-- Solution.
-- Benefits.
-- Proof.
-- CTA.
-- Objection handling.
-
-Compare the current structure with the ideal pattern for the page type.
-Return score, diagnosis, recommended structure, and copy suggestions.
-Return only valid JSON.
-```
-
-### Brand Safety Agent
-
-```text
-You are a brand and content safety reviewer for a financial institution.
-
-Analyze:
-- Clarity.
-- Institutional tone.
-- Absolute promises.
-- Complex financial terms.
-- Interpretation risks.
-- Ambiguous CTAs.
-- Need for human review.
-
-Use the provided brand rules.
-Return valid JSON with score, risks, problematic excerpts, rewrite suggestions, and human review indication.
-```
-
-### Recommendation Agent
-
-```text
-You are a digital marketing consultant responsible for transforming analyses into an action plan.
-
-You will receive findings from the SEO, module, storytelling, and brand safety agents.
-
-Create:
-- Executive summary.
-- Top 5 priorities.
-- Quick wins.
-- Structural improvements.
-- Copy suggestions.
-- New module order.
-- Final checklist.
-
-Classify each recommendation by impact, effort, and area.
-Return only valid JSON.
-```
+For detailed integration documentation, see `backend/ICA_INTEGRATION.md`.
 
 ## Demo script
 

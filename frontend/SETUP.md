@@ -1,97 +1,175 @@
-# Frontend Setup and Testing Guide
+# Frontend Setup and Testing Guide - Financial Marketing Pages Analyzer
+
+## Overview
+
+Complete setup and testing guide for the **Financial Marketing Pages Analyzer** frontend.
+
+## Prerequisites
+
+- Node.js 18+ installed
+- npm or yarn package manager
+- Backend running on port 8001
+- Modern web browser (Chrome, Firefox, Edge, Safari)
 
 ## Complete Setup Instructions
 
 ### Step 1: Install Dependencies
 
-Open PowerShell and navigate to the frontend directory:
+Navigate to the frontend directory:
 
-```powershell
-cd "C:\Users\014590631\Documents\Projetos Python\Bob-a-thon\marketing-page-analyzer\frontend"
+```bash
+cd frontend
 npm install
 ```
 
-This will install all required dependencies including:
-- React 18.2.0
-- TypeScript 5.2.2
-- Vite 5.0.8
-- Tailwind CSS 3.3.6
-- Axios 1.6.0
+This will install all required dependencies:
+- **React 18.2.0**: UI framework
+- **TypeScript 5.2.2**: Type safety
+- **Vite 5.0.8**: Build tool
+- **Tailwind CSS 3.3.6**: Styling
+- **Axios 1.6.0**: HTTP client
+- **Lucide React**: Icons
 
 ### Step 2: Start the Backend
 
-In a separate PowerShell window:
+In a separate terminal:
 
+**Windows (PowerShell):**
 ```powershell
-cd "C:\Users\014590631\Documents\Projetos Python\Bob-a-thon\marketing-page-analyzer\backend"
+cd backend
 .\.venv\Scripts\Activate.ps1
-python -m uvicorn app.main:app --reload --port 8001
+uvicorn app.main:app --reload --port 8001
 ```
 
-Verify the backend is running by visiting: http://localhost:8001/health
+**Linux/Mac:**
+```bash
+cd backend
+source .venv/bin/activate
+uvicorn app.main:app --reload --port 8001
+```
+
+**Verify backend is running:**
+- Health check: http://localhost:8001/health
+- API docs: http://localhost:8001/docs
 
 ### Step 3: Start the Frontend
 
-In the frontend PowerShell window:
+In the frontend terminal:
 
-```powershell
+```bash
 npm run dev
 ```
 
-The frontend will start on http://localhost:3000
+The frontend will start on **http://localhost:3000**
 
-## Testing URL Analysis
+## Testing the Application
+
+### Testing URL Analysis
 
 1. Open http://localhost:3000 in your browser
-2. Make sure the "Analyze by URL" tab is selected
-3. Enter a test URL, for example:
-   - URL: `https://www.example.com`
-   - Business Goal: `increase conversions`
-   - Target Audience: `small business owners`
-   - Page Type Hint: `landing page`
-4. Click "Analyze URL"
-5. Wait for the loading spinner
-6. View the JSON response with:
-   - analysis_id
-   - score (overall, seo, storytelling, modules, brand_safety)
-   - page_summary
-   - recommendations
-   - module_plan
-   - copy_suggestions
-   - catalog_context
-   - agent_trace
-   - page_diagnostics (including modules_detected_count)
+2. Select the **"Analyze by URL"** tab
+3. Enter test data:
+   - **URL**: `https://www.example.com/financial-product`
+   - **Business Goal**: `conversion` or `lead generation`
+   - **Target Audience**: `individuals` or `businesses`
+   - **Page Type Hint**: `product`, `campaign`, or `educational`
+4. Click **"Analyze URL"**
+5. Wait for analysis (loading spinner appears)
+6. View results with:
+   - **Overall Score**: Aggregate quality score
+   - **Score Breakdown**: SEO, Storytelling, Modules, Brand Safety
+   - **Recommendations**: Prioritized action items
+   - **Module Plan**: Keep/remove/reorder/add modules
+   - **Narrative Insights**: Storytelling recommendations
+   - **Catalog Context**: Relevant rules and patterns used
 
-## Testing Briefing Analysis
+### Testing Briefing Analysis
 
-1. Click on the "Analyze by Briefing" tab
-2. Enter a test briefing, for example:
+1. Click the **"Analyze by Briefing"** tab
+2. Enter a test briefing:
    ```
-   We need a landing page for our new SaaS product targeting small businesses.
-   The page should highlight our key features, pricing, and customer testimonials.
-   We want to emphasize ease of use and quick setup.
+   Create a landing page for personal credit product targeting individuals
+   seeking financial solutions. The page should explain benefits, requirements,
+   simulation, and application process. Emphasize transparency and security.
    ```
-3. Fill in optional fields:
-   - Business Goal: `generate leads`
-   - Target Audience: `small business owners`
-   - Constraints: `mobile-first, no video, budget limit`
-4. Click "Analyze Briefing"
-5. Wait for the loading spinner
-6. View the JSON response with the same structure as URL analysis
+3. Fill optional fields:
+   - **Business Goal**: `conversion`
+   - **Target Audience**: `individuals seeking credit`
+   - **Constraints**: `institutional tone, avoid absolute promises, include disclaimers`
+4. Click **"Analyze Briefing"**
+5. Wait for analysis
+6. View structured recommendations for the planned page
+
+### Expected Response Structure
+
+```json
+{
+  "analysis_id": "analysis_20260515_120000",
+  "score": {
+    "overall": 82,
+    "seo": 78,
+    "storytelling": 85,
+    "modules": 80,
+    "brand_safety": 90
+  },
+  "score_breakdown": {
+    "seo": {
+      "score": 78,
+      "issues": [...]
+    },
+    "storytelling": {
+      "score": 85,
+      "pattern_match": "conversion_funnel",
+      "missing_elements": [...]
+    },
+    "modules": {
+      "score": 80,
+      "detected_count": 8,
+      "recommended_count": 10
+    },
+    "brand_safety": {
+      "score": 90,
+      "risks": []
+    }
+  },
+  "recommendations": [...],
+  "module_plan": {
+    "keep": [...],
+    "remove": [...],
+    "reorder": [...],
+    "add": [...]
+  },
+  "narrative_insights": [...],
+  "storytelling_analysis": {...},
+  "catalog_context": {
+    "relevant_modules": [...],
+    "relevant_storytelling_patterns": [...],
+    "relevant_seo_rules": [...],
+    "relevant_brand_rules": [...]
+  },
+  "ica_enhanced": true,
+  "analysis_source": "ica"
+}
+```
 
 ## Expected Behavior
 
 ### Success Case
-- Loading spinner appears while analyzing
-- JSON result displays in a formatted code block
-- Result includes all expected fields
-- No error messages
+- ✅ Loading spinner appears during analysis
+- ✅ Results display in organized sections
+- ✅ Scores show with visual indicators
+- ✅ Recommendations are prioritized and actionable
+- ✅ Module plan shows clear changes
+- ✅ Narrative insights provide context
+- ✅ Raw JSON available for debugging
+- ✅ No error messages
 
 ### Error Cases
-- **Missing Required Field**: Red error message appears
-- **Backend Not Running**: Error message about connection failure
-- **Invalid URL**: Error message from backend validation
-- **Network Error**: Friendly error message displayed
+- ❌ **Missing Required Field**: Red error message appears
+- ❌ **Backend Not Running**: Connection error with troubleshooting tips
+- ❌ **Invalid URL**: Validation error from backend
+- ❌ **Network Error**: Friendly error message with retry option
+- ❌ **ICA Timeout**: System uses fallback, analysis still completes
 
 ## Troubleshooting
 
@@ -114,13 +192,44 @@ The frontend will start on http://localhost:3000
 - The backend should already have CORS configured
 - If you see CORS errors, check backend/app/main.py
 
-## Next Steps
+## Visual Components
 
-After validating the basic integration:
-1. The next task will implement the visual dashboard with cards and charts
-2. Module detection results will be displayed visually
-3. Scores will be shown with progress bars
-4. Recommendations will be displayed in organized cards
+The frontend includes several visual components:
+
+### Score Breakdown
+- Visual representation of scores by dimension
+- Color-coded indicators (green/yellow/red)
+- Detailed issue breakdown per category
+
+### Module Map
+- Interactive visualization of detected modules
+- Shows module position and confidence
+- Highlights recommended changes
+
+### Narrative Insights
+- Key storytelling recommendations
+- Impact assessment
+- Actionable suggestions
+
+### Collapsible Sections
+- Organized, scannable results
+- Expand/collapse for better UX
+- Preserves state during navigation
+
+## Integration with ICA
+
+The frontend displays ICA-enhanced results:
+- **ica_enhanced**: Boolean flag indicating ICA usage
+- **analysis_source**: "ica" or "fallback"
+- **catalog_context**: Shows which rules/patterns were used
+- **Explainability**: Each recommendation cites specific catalog entries
+
+## Performance
+
+- **Fast Loading**: Vite HMR for instant updates
+- **Optimized Build**: Production build with code splitting
+- **Responsive**: Works on desktop, tablet, and mobile
+- **Accessible**: Semantic HTML and ARIA labels
 
 ## File Structure Reference
 

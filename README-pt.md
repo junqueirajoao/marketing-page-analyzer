@@ -46,57 +46,76 @@ Usuário
   |
   | URL ou briefing
   v
-Frontend Web
+Frontend Web (React + Vite)
   |
   v
 Backend FastAPI
   |
-  | scraping, extração e normalização
+  | Scraping + Normalização + Detecção de Módulos
   v
-Page Intelligence Layer
+Serviço de Scoring
   |
-  | payload estruturado
+  | Score SEO + Score Storytelling + Score Módulos + Score Brand Safety
   v
-IBM Consulting Advantage
+Catalog Context Builder
   |
-  | Orchestrator Agent
-  | SEO Agent
-  | Module Strategy Agent
-  | Storytelling Agent
-  | Brand Safety Agent
-  | Recommendation Agent
+  | Injeta relevant_seo_rules, relevant_brand_rules,
+  | relevant_storytelling_patterns, relevant_modules
   v
-Resultado consolidado
+Orquestração IBM Consulting Advantage (ICA)
   |
+  | Page Strategy Orchestrator
+  | ├── SEO Agent
+  | ├── Module Strategy Agent
+  | ├── Storytelling Agent
+  | └── Brand and Compliance Agent
   v
-Dashboard e relatório de recomendações
+Recommendation Agent
+  |
+  | Consolida achados em recomendações acionáveis
+  v
+Resposta Estruturada
+  |
+  | score, score_breakdown, recommendations, module_plan,
+  | narrative_insights, storytelling_analysis, catalog_context
+  v
+Dashboard com componentes visuais
 ```
+
+**Componentes-Chave:**
+
+- **Catalog Context Builder**: Injeta conhecimento especializado dos catálogos locais nos agentes ICA sem necessidade de Knowledge Base/embedding
+- **Orquestração ICA**: Sistema multiagente com padrão supervisor coordenando agentes especializados
+- **Fallback Local**: Fallback automático para processamento local se ICA não estiver disponível
+- **Scoring Data-Driven**: Scoring transparente e auditável baseado em regras dos catálogos
 
 ## Agentes
 
-### Orchestrator Agent
+O sistema utiliza IBM Consulting Advantage (ICA) com os seguintes agentes especializados:
 
-Coordena a análise, identifica o tipo da página e consolida os resultados dos demais agentes.
+### Page Strategy Orchestrator
+
+Coordena a análise multiagente, identifica o tipo da página, consolida achados dos agentes especializados e garante recomendações coerentes.
 
 ### SEO Agent
 
-Avalia title, meta description, H1, headings, intenção de busca, palavras-chave e oportunidades de melhoria on-page.
+Avalia title, meta description, H1, hierarquia de headings, intenção de busca, palavras-chave, links internos e oportunidades de SEO on-page usando `relevant_seo_rules` do contexto de catálogo.
 
 ### Module Strategy Agent
 
-Analisa a composição da página em módulos, recomendando o que manter, remover, mover, reescrever ou adicionar.
+Analisa a composição da página em módulos, recomendando o que manter, remover, reordenar ou adicionar com base em `relevant_modules` e padrões de storytelling do contexto de catálogo.
 
 ### Storytelling Agent
 
-Avalia se a página segue uma narrativa adequada ao objetivo, como conversão, educação, campanha ou posicionamento institucional.
+Avalia a progressão narrativa (gancho, contexto, solução, benefícios, prova, CTA) usando `relevant_storytelling_patterns` para garantir que a página siga uma estrutura narrativa apropriada para seu tipo e objetivo.
 
-### Brand Safety Agent
+### Brand and Compliance Agent
 
-Verifica clareza, tom, linguagem sensível e possíveis riscos de promessas fortes demais em contexto financeiro.
+Verifica clareza, tom institucional, compliance financeiro (YMYL) e segurança de linguagem usando `relevant_brand_rules`. Sinaliza riscos como promessas absolutas, linguagem agressiva, urgência artificial e falta de disclaimers (CET, análise de crédito).
 
 ### Recommendation Agent
 
-Transforma os achados dos demais agentes em um plano de ação priorizado por impacto e esforço.
+Consolida achados de todos os agentes em um plano de ação priorizado com classificação de impacto/esforço, resumo executivo, quick wins e checklist de implementação.
 
 ## Stack técnica
 
@@ -135,65 +154,79 @@ Transforma os achados dos demais agentes em um plano de ação priorizado por im
 ```text
 marketing-page-analyzer/
   README.md
-  .env.example
+  README-pt.md
+  .gitignore
 
   docs/
-    architecture.md
-    agent-prompts.md
-    demo-script.md
-    backlog.md
+    guia-tecnico-hackathon.md
 
   backend/
+    .env
     requirements.txt
+    ICA_INTEGRATION.md
+    RUNNING.md
+    run_server.ps1
+    run_server.sh
+    test_api.ps1
+    test_api.py
     app/
       main.py
-      config.py
+      __init__.py
       routes/
         analyze.py
         health.py
+        __init__.py
       schemas/
         input.py
-        output.py
-        page.py
+        __init__.py
       services/
         scraper.py
         page_normalizer.py
         module_detector.py
-        seo_static_analyzer.py
+        scoring_service.py
+        storytelling_pattern_service.py
+        catalog_loader.py
+        catalog_context_builder.py
+        ica_client.py
         advantage_client.py
+        local_agent_fallback.py
         report_builder.py
+        __init__.py
       data/
         modules_catalog.json
         storytelling_patterns.json
         brand_rules.json
-        keyword_topics.json
+        seo_rules.json
       tests/
-        test_seo_static_analyzer.py
-        test_module_detector.py
-        test_page_normalizer.py
+        test_catalog_context_builder.py
+        test_encoding.py
+        test_ica_integration.py
+        test_scoring.py
+        test_storytelling_integration.py
+      utils/
+        analysis_messages.py
+        __init__.py
 
   frontend/
     package.json
     vite.config.ts
+    README.md
+    SETUP.md
     src/
       main.tsx
       App.tsx
+      index.css
       lib/
         api.ts
-        types.ts
-      pages/
-        Home.tsx
-        AnalysisResult.tsx
       components/
         UrlAnalyzerForm.tsx
         BriefingAnalyzerForm.tsx
-        ScoreCard.tsx
-        RecommendationList.tsx
+        AnalysisResult.tsx
+        JsonResult.tsx
         ModuleMap.tsx
-        StorytellingTimeline.tsx
-        SeoPanel.tsx
-        CopySuggestions.tsx
-        PriorityMatrix.tsx
+        ScoreBreakdown.tsx
+        NarrativeInsights.tsx
+        CollapsibleSection.tsx
 ```
 
 ## Setup do backend
@@ -323,13 +356,39 @@ Entrada:
 
 ```json
 {
-  "analysis_id": "ana_123",
+  "analysis_id": "analysis_20260515_120000",
   "score": {
     "overall": 82,
     "seo": 78,
     "storytelling": 85,
     "modules": 80,
     "brand_safety": 90
+  },
+  "score_breakdown": {
+    "seo": {
+      "score": 78,
+      "issues": [
+        {
+          "rule_id": "seo_rule_001",
+          "severity": "high",
+          "description": "Title tag ausente ou muito genérico"
+        }
+      ]
+    },
+    "storytelling": {
+      "score": 85,
+      "pattern_match": "conversion_funnel",
+      "missing_elements": ["social_proof"]
+    },
+    "modules": {
+      "score": 80,
+      "detected_count": 8,
+      "recommended_count": 10
+    },
+    "brand_safety": {
+      "score": 90,
+      "risks": []
+    }
   },
   "page_summary": {
     "detected_type": "produto",
@@ -348,12 +407,34 @@ Entrada:
     }
   ],
   "module_plan": {
-    "keep": [],
-    "remove": [],
-    "reorder": [],
-    "add": []
+    "keep": ["hero", "benefits", "cta_primary"],
+    "remove": ["generic_text"],
+    "reorder": [
+      {"module": "social_proof", "from": 8, "to": 4}
+    ],
+    "add": ["faq", "trust_badges"]
   },
-  "copy_suggestions": []
+  "narrative_insights": [
+    {
+      "insight": "Página não apresenta problema claro antes de apresentar solução",
+      "impact": "medium",
+      "recommendation": "Adicionar módulo de contexto explicando dores do cliente"
+    }
+  ],
+  "storytelling_analysis": {
+    "pattern_used": "conversion_funnel",
+    "pattern_strength": "medium",
+    "narrative_flow_score": 75,
+    "missing_steps": ["objection_handling"]
+  },
+  "catalog_context": {
+    "relevant_modules": ["hero", "benefits", "faq", "cta_primary"],
+    "relevant_storytelling_patterns": ["conversion_funnel"],
+    "relevant_seo_rules": ["seo_rule_001", "seo_rule_002"],
+    "relevant_brand_rules": ["brand_rule_001"]
+  },
+  "ica_enhanced": true,
+  "analysis_source": "ica"
 }
 ```
 

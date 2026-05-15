@@ -2,15 +2,16 @@
 
 ## Overview
 
-This document describes the integration of IBM Consulting Advantage (ICA) orchestration with automatic fallback to local agent processing.
+This document describes the integration of **IBM Consulting Advantage (ICA)** orchestration with automatic fallback to local agent processing for the **Financial Marketing Pages Analyzer**.
 
 ## Architecture
 
-The system implements a robust three-layer architecture:
+The system implements a robust multi-layer architecture:
 
 1. **ICA Client** (`ica_client.py`) - Handles communication with ICA API
 2. **Advantage Client** (`advantage_client.py`) - Orchestrates ICA with fallback
-3. **Local Agent Fallback** (`local_agent_fallback.py`) - Provides local processing
+3. **Catalog Context Builder** (`catalog_context_builder.py`) - Injects specialized domain knowledge
+4. **Local Agent Fallback** (`local_agent_fallback.py`) - Provides local processing when ICA unavailable
 
 ## Configuration
 
@@ -96,25 +97,46 @@ Or on fallback:
 
 ## ICA Payload Structure
 
-The system sends a structured payload to ICA:
+The system sends a structured payload to ICA with **catalog_context** for specialized domain knowledge:
 
 ```json
 {
   "normalized_page": {
-    "metadata": {},
-    "headings": [],
+    "metadata": {
+      "title": "...",
+      "meta_description": "...",
+      "canonical": "..."
+    },
+    "headings": {
+      "h1": ["..."],
+      "h2": ["..."],
+      "h3": ["..."]
+    },
     "images": [],
-    "links": [],
+    "links": {
+      "internal": [],
+      "external": []
+    },
     "main_text": "..."
   },
-  "detected_modules": [],
+  "detected_modules": [
+    {
+      "id": "hero",
+      "confidence": 0.95,
+      "position": 1
+    }
+  ],
   "module_plan": {
-    "keep": [],
-    "remove": [],
-    "reorder": [],
-    "add": []
+    "keep": ["hero", "benefits"],
+    "remove": ["generic_text"],
+    "reorder": [{"module": "social_proof", "from": 8, "to": 4}],
+    "add": ["faq", "trust_badges"]
   },
-  "storytelling_analysis": {},
+  "storytelling_analysis": {
+    "pattern_used": "conversion_funnel",
+    "pattern_strength": "medium",
+    "missing_steps": ["objection_handling"]
+  },
   "score": {
     "overall": 85,
     "seo": 80,
@@ -122,12 +144,130 @@ The system sends a structured payload to ICA:
     "modules": 75,
     "brand_safety": 100
   },
-  "score_breakdown": {},
-  "narrative_insights": [],
-  "business_goal": "conversao",
-  "target_audience": "empresas",
-  "page_type_hint": "produto"
+  "score_breakdown": {
+    "seo": {
+      "score": 80,
+      "issues": [
+        {
+          "rule_id": "seo_rule_001",
+          "severity": "high",
+          "description": "Title tag missing or too generic"
+        }
+      ]
+    },
+    "storytelling": {
+      "score": 90,
+      "pattern_match": "conversion_funnel",
+      "missing_elements": ["social_proof"]
+    },
+    "modules": {
+      "score": 75,
+      "detected_count": 8,
+      "recommended_count": 10
+    },
+    "brand_safety": {
+      "score": 100,
+      "risks": []
+    }
+  },
+  "narrative_insights": [
+    {
+      "insight": "Page lacks clear problem statement",
+      "impact": "medium",
+      "recommendation": "Add context module"
+    }
+  ],
+  "catalog_context": {
+    "relevant_modules": [
+      {
+        "id": "hero",
+        "name": "Hero",
+        "purpose": "...",
+        "good_for": ["..."],
+        "recommendation_rules": {}
+      }
+    ],
+    "relevant_storytelling_patterns": [
+      {
+        "id": "conversion_funnel",
+        "page_type": "product",
+        "narrative_steps": [],
+        "required_modules": ["hero", "benefits", "cta_primary"]
+      }
+    ],
+    "relevant_seo_rules": [
+      {
+        "id": "seo_rule_001",
+        "severity": "high",
+        "rule_name": "Clear, unique, specific title",
+        "recommended_action": "..."
+      }
+    ],
+    "relevant_brand_rules": [
+      {
+        "id": "brand_rule_001",
+        "severity": "high",
+        "rule_name": "Avoid absolute financial promises",
+        "safe_alternatives": ["..."]
+      }
+    ]
+  },
+  "business_goal": "conversion",
+  "target_audience": "businesses",
+  "page_type_hint": "product",
+  "instructions": "Use catalog_context as the source of domain knowledge..."
 }
+```
+
+### Key Payload Components
+
+- **normalized_page**: Scraped and normalized page data
+- **detected_modules**: Modules identified by module detector with confidence scores
+- **module_plan**: Initial recommendations for module changes
+- **storytelling_analysis**: Pattern analysis from storytelling service
+- **score**: Overall and dimensional scores from scoring service
+- **score_breakdown**: Detailed scoring with issues and rule violations
+- **narrative_insights**: Key insights about narrative structure
+- **catalog_context**: **Specialized domain knowledge** injected from local catalogs
+- **instructions**: Explicit instructions for ICA agents to use catalog_context
+
+## Catalog Context: The Key Innovation
+
+The **catalog_context** mechanism is the core innovation that enables specialized agent behavior without requiring Knowledge Base or embedding setup:
+
+### What is catalog_context?
+
+A structured payload section containing the most relevant items from each local catalog:
+- **relevant_modules**: Up to 8 most relevant module definitions
+- **relevant_storytelling_patterns**: Up to 8 most relevant narrative patterns
+- **relevant_seo_rules**: Up to 8 most relevant SEO rules
+- **relevant_brand_rules**: Up to 8 most relevant brand/compliance rules
+
+### How is it built?
+
+The `catalog_context_builder.py` service:
+1. Analyzes page type, business goal, target audience
+2. Scores each catalog item for relevance
+3. Selects top items per catalog (max 8 each)
+4. Compacts them to essential fields
+5. Injects into ICA payload
+
+### Why is it important?
+
+- **No Knowledge Base needed**: Provides specialized knowledge without KB/embedding infrastructure
+- **Transparent reasoning**: Agents cite specific rule IDs and pattern IDs
+- **Auditable recommendations**: Every recommendation traceable to catalog entry
+- **Easy maintenance**: Update catalogs without retraining or re-indexing
+- **Context-aware**: Different context for different page types/goals
+
+### Agent Instructions
+
+ICA agents receive explicit instructions:
+```
+Use catalog_context as the source of domain knowledge.
+Do not invent rules, modules or storytelling patterns outside the provided context.
+Base your recommendations on the relevant_modules, relevant_storytelling_patterns,
+relevant_seo_rules, and relevant_brand_rules provided in catalog_context.
 ```
 
 ## Response Validation
