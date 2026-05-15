@@ -2,7 +2,6 @@
 Test UTF-8 encoding in API responses.
 Validates that Portuguese characters are correctly encoded.
 """
-import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -10,7 +9,7 @@ client = TestClient(app)
 
 
 def test_briefing_analysis_utf8_encoding():
-    """Test that briefing analysis returns proper UTF-8 encoded Portuguese text."""
+    """Test briefing analysis returns proper UTF-8 encoded text."""
     payload = {
         "briefing": "Criar página de crédito pessoal para conversão",
         "business_goal": "gerar leads",
@@ -21,7 +20,8 @@ def test_briefing_analysis_utf8_encoding():
     response = client.post("/analyze/briefing", json=payload)
     
     assert response.status_code == 200
-    assert response.headers["content-type"] == "application/json; charset=utf-8"
+    content_type = response.headers["content-type"]
+    assert content_type == "application/json; charset=utf-8"
     
     data = response.json()
     
@@ -30,11 +30,20 @@ def test_briefing_analysis_utf8_encoding():
     
     # Check that proper Portuguese characters are present
     # These should appear correctly, not as broken encoding
-    assert "Módulo" in response_text or "módulo" in response_text or "modulo" in response_text
+    has_modulo = (
+        "Módulo" in response_text or
+        "módulo" in response_text or
+        "modulo" in response_text
+    )
+    assert has_modulo
     assert "conversão" in response_text or "conversao" in response_text
     assert "crédito" in response_text or "credito" in response_text
     assert "análise" in response_text or "analise" in response_text
-    assert "recomendação" in response_text or "recomendacao" in response_text
+    has_recomendacao = (
+        "recomendação" in response_text or
+        "recomendacao" in response_text
+    )
+    assert has_recomendacao
     
     # Check that broken encoding patterns are NOT present
     assert "MÃ³dulo" not in response_text

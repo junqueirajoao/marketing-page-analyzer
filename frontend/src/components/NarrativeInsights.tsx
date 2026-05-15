@@ -1,4 +1,5 @@
 import React from 'react';
+import { CollapsibleSection } from './CollapsibleSection';
 
 interface NarrativeInsight {
   id: string;
@@ -43,25 +44,26 @@ export const NarrativeInsights: React.FC<NarrativeInsightsProps> = ({ insights }
 
   if (!insights || insights.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <span className="text-2xl">💡</span>
-          Insights Narrativos
-        </h3>
+      <CollapsibleSection
+        title="Insights Narrativos"
+        icon="💡"
+        defaultExpanded={false}
+      >
         <div className="text-center py-8 text-gray-500">
           <p className="text-lg">✅ Nenhum insight crítico detectado</p>
           <p className="text-sm mt-2">A estrutura narrativa está alinhada com o storytelling pattern.</p>
         </div>
-      </div>
+      </CollapsibleSection>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <span className="text-2xl">💡</span>
-        Insights Narrativos ({insights.length})
-      </h3>
+    <CollapsibleSection
+      title="Insights Narrativos"
+      icon="💡"
+      badge={insights.length}
+      defaultExpanded={false}
+    >
       <div className="space-y-4">
         {insights.map((insight) => (
           <div
@@ -122,7 +124,7 @@ export const NarrativeInsights: React.FC<NarrativeInsightsProps> = ({ insights }
           </div>
         ))}
       </div>
-    </div>
+    </CollapsibleSection>
   );
 };
 

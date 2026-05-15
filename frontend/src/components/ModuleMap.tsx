@@ -1,4 +1,5 @@
 import { DetectedModule } from '../lib/api';
+import { CollapsibleSection } from './CollapsibleSection';
 
 interface ModuleMapProps {
   detectedModules?: DetectedModule[];
@@ -14,11 +15,11 @@ export const ModuleMap: React.FC<ModuleMapProps> = ({ detectedModules, modulePla
   // If no modules detected, show empty state
   if (!detectedModules || detectedModules.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <span className="text-2xl">🗺️</span>
-          Mapa de Módulos Detectados
-        </h3>
+      <CollapsibleSection
+        title="Mapa de Módulos Detectados"
+        icon="🗺️"
+        defaultExpanded={false}
+      >
         <div className="text-center py-8">
           <div className="text-6xl mb-4">📭</div>
           <p className="text-gray-600 mb-2 font-medium">
@@ -28,7 +29,7 @@ export const ModuleMap: React.FC<ModuleMapProps> = ({ detectedModules, modulePla
             Verifique se a URL retornou HTML válido ou se a página depende de JavaScript.
           </p>
         </div>
-      </div>
+      </CollapsibleSection>
     );
   }
 
@@ -93,19 +94,19 @@ export const ModuleMap: React.FC<ModuleMapProps> = ({ detectedModules, modulePla
   const sortedModules = [...detectedModules].sort((a, b) => a.position - b.position);
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <span className="text-2xl">🗺️</span>
-        Mapa de Módulos Detectados ({detectedModules.length})
-      </h3>
-      
+    <CollapsibleSection
+      title="Mapa de Módulos Detectados"
+      icon="🗺️"
+      badge={detectedModules.length}
+      defaultExpanded={false}
+    >
       <div className="space-y-4">
         {sortedModules.map((module) => {
           const status = getModuleStatus(module.matched_catalog_name);
           
           return (
-            <div 
-              key={module.id} 
+            <div
+              key={module.id}
               className={`border-2 rounded-xl p-5 transition-all hover:shadow-lg ${getStatusColor(status)}`}
             >
               {/* Header */}
@@ -217,7 +218,7 @@ export const ModuleMap: React.FC<ModuleMapProps> = ({ detectedModules, modulePla
           </div>
         </div>
       )}
-    </div>
+    </CollapsibleSection>
   );
 };
 

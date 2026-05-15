@@ -2,8 +2,7 @@
 Manual test to verify UTF-8 encoding in API responses.
 Run this with: python test_encoding_manual.py
 """
-import requests
-import json
+import requests  # pylint: disable=import-error
 
 # Test the API
 url = "http://localhost:8000/analyze/briefing"
@@ -35,7 +34,10 @@ for char in correct_chars:
 
 # Check for broken encoding patterns
 print("\n=== Checking for BROKEN encoding patterns ===")
-broken_patterns = ["Ã³", "Ã£", "Ã©", "Ã¡", "Ã§", "MÃ³dulo", "conversÃ£o", "crÃ©dito"]
+broken_patterns = [
+    "Ã³", "Ã£", "Ã©", "Ã¡", "Ã§",
+    "MÃ³dulo", "conversÃ£o", "crÃ©dito"
+]
 found_broken = False
 for pattern in broken_patterns:
     if pattern in response_text:

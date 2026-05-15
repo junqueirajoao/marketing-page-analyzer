@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScoreBreakdown as ScoreBreakdownType, ScoreBreakdownItem } from '../lib/api';
+import { CollapsibleSection } from './CollapsibleSection';
 
 interface ScoreBreakdownProps {
   breakdown: ScoreBreakdownType;
@@ -52,11 +53,11 @@ export const ScoreBreakdown: React.FC<ScoreBreakdownProps> = ({ breakdown }) => 
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <span className="text-2xl">📊</span>
-        Detalhamento de Pontuação
-      </h3>
+    <CollapsibleSection
+      title="Detalhamento de Pontuação"
+      icon="📊"
+      defaultExpanded={false}
+    >
       <div className="space-y-6">
         {categories.map(([category, items]) => (
           <div key={category} className="border-l-4 border-blue-500 pl-4">
@@ -90,7 +91,7 @@ export const ScoreBreakdown: React.FC<ScoreBreakdownProps> = ({ breakdown }) => 
           </div>
         ))}
       </div>
-    </div>
+    </CollapsibleSection>
   );
 };
 

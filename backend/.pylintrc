@@ -1,0 +1,21 @@
+[MASTER]
+ignore=.venv,venv,.git,__pycache__,.pytest_cache
+
+[MESSAGES CONTROL]
+disable=
+    C0111,  # missing-docstring
+    C0103,  # invalid-name
+    R0903,  # too-few-public-methods
+    R0913,  # too-many-arguments
+    W0212,  # protected-access
+    import-error
+
+[FORMAT]
+max-line-length=88
+
+[DESIGN]
+max-args=10
+max-locals=20
+max-branches=15
+
+; Made with Bob

@@ -1,10 +1,11 @@
 """
 Script de teste rápido para validar a API
 """
-import requests
+import requests  # pylint: disable=import-error
 import json
 
 BASE_URL = "http://localhost:8000"
+
 
 def test_health():
     """Testa o endpoint de health"""
@@ -12,6 +13,7 @@ def test_health():
     print(f"Health check: {response.status_code}")
     print(f"Response: {response.json()}")
     return response.status_code == 200
+
 
 def test_analyze_url():
     """Testa análise por URL"""
@@ -42,6 +44,7 @@ def test_analyze_url():
         print(f"Erro: {response.text}")
         return False
 
+
 def test_analyze_briefing():
     """Testa análise por briefing"""
     payload = {
@@ -70,6 +73,7 @@ def test_analyze_briefing():
     else:
         print(f"Erro: {response.text}")
         return False
+
 
 if __name__ == "__main__":
     print("=== Testando API do Financial Marketing Pages Analyzer ===\n")

@@ -1,4 +1,5 @@
 import { AnalysisResponse } from '../lib/api';
+import { CollapsibleSection } from './CollapsibleSection';
 import { ModuleMap } from './ModuleMap';
 import { NarrativeInsights } from './NarrativeInsights';
 import { ScoreBreakdown } from './ScoreBreakdown';
@@ -80,15 +81,15 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
         </div>
       </div>
 
-      {/* Score Breakdown - Detalhamento de pontuação */}
+      {/* Score Breakdown - Detalhamento de pontuação - COLLAPSED BY DEFAULT */}
       {data.score_breakdown && <ScoreBreakdown breakdown={data.score_breakdown} />}
 
-      {/* Page Summary - Resumo executivo */}
-      <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <span className="text-2xl">📋</span>
-          Resumo Executivo
-        </h3>
+      {/* Page Summary - Resumo executivo - COLLAPSED BY DEFAULT */}
+      <CollapsibleSection
+        title="Resumo Executivo"
+        icon="📋"
+        defaultExpanded={false}
+      >
         <div className="space-y-3">
           <div className="flex items-start">
             <span className="font-semibold text-gray-700 w-32">Tipo:</span>
@@ -103,15 +104,16 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
             <span className="text-gray-900">{data.page_summary.main_topic}</span>
           </div>
         </div>
-      </div>
+      </CollapsibleSection>
 
-      {/* Recommendations - Top prioridades */}
+      {/* Recommendations - Top prioridades - COLLAPSED BY DEFAULT */}
       {data.recommendations && data.recommendations.length > 0 && (
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="text-2xl">⭐</span>
-            Principais Prioridades ({data.recommendations.length})
-          </h3>
+        <CollapsibleSection
+          title="Principais Prioridades"
+          icon="⭐"
+          badge={data.recommendations.length}
+          defaultExpanded={false}
+        >
           <div className="space-y-4">
             {data.recommendations.map((rec, index) => (
               <div key={index} className="border-2 border-gray-200 rounded-xl p-5 hover:shadow-lg transition-all hover:border-blue-300">
@@ -137,7 +139,7 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
               </div>
             ))}
           </div>
-        </div>
+        </CollapsibleSection>
       )}
 
       {/* Module Map - Mapa de módulos detectados com recomendações */}
@@ -149,13 +151,13 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
       {/* Narrative Insights - Insights estruturais e narrativos */}
       <NarrativeInsights insights={data.narrative_insights} />
 
-      {/* Page Diagnostics - Checklist final */}
+      {/* Page Diagnostics - Checklist final - COLLAPSED BY DEFAULT */}
       {data.page_diagnostics && (
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="text-2xl">✔️</span>
-            Checklist Final
-          </h3>
+        <CollapsibleSection
+          title="Checklist Final"
+          icon="✔️"
+          defaultExpanded={false}
+        >
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="flex items-center gap-2">
               <span className={`w-3 h-3 rounded-full ${data.page_diagnostics.has_title ? 'bg-green-500' : 'bg-red-500'}`}></span>
@@ -180,15 +182,15 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
               </div>
             )}
           </div>
-        </div>
+        </CollapsibleSection>
       )}
 
-      {/* Catalog Context */}
-      <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <span className="text-2xl">📚</span>
-          Contexto do Catálogo
-        </h3>
+      {/* Catalog Context - COLLAPSED BY DEFAULT */}
+      <CollapsibleSection
+        title="Contexto do Catálogo"
+        icon="📚"
+        defaultExpanded={false}
+      >
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center p-4 bg-blue-50 rounded-xl border-2 border-blue-200">
             <div className="text-4xl font-bold text-blue-600">{data.catalog_context.modules_available_count}</div>
@@ -203,15 +205,16 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
             <div className="text-sm text-gray-700 mt-2 font-medium">Regras de Marca</div>
           </div>
         </div>
-      </div>
+      </CollapsibleSection>
 
-      {/* Agent Trace */}
+      {/* Agent Trace - COLLAPSED BY DEFAULT */}
       {data.agent_trace && data.agent_trace.length > 0 && (
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="text-2xl">🤖</span>
-            Rastreamento de Agentes
-          </h3>
+        <CollapsibleSection
+          title="Rastreamento de Agentes"
+          icon="🤖"
+          badge={data.agent_trace.length}
+          defaultExpanded={false}
+        >
           <div className="space-y-2">
             {data.agent_trace.map((trace, index) => (
               <div key={index} className="flex items-start gap-3 text-sm">
@@ -227,7 +230,7 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
               </div>
             ))}
           </div>
-        </div>
+        </CollapsibleSection>
       )}
     </div>
   );
