@@ -67,8 +67,8 @@
       "Contract and tariffs",
       "Button Help WhatsApp"
     ],
-    "required_modules": ["Main Banner", "Media with steps", "Accordion", "Contract and tariffs"],
-    "optional_modules": ["Breadcrumb Header", "Image with text", "Card with icon", "Image Icon", "Button Help WhatsApp", "QR Code Nativo"],
+    "required_modules": ["Main Banner", "Image with text", "Accordion", "Contract and tariffs"],
+    "optional_modules": ["Breadcrumb Header", "Media with steps", "Card with icon", "Image Icon", "Button Help WhatsApp", "QR Code Nativo"],
     "avoid_modules_when": [
       {
         "module": "Carrossel",
@@ -305,8 +305,8 @@
       "Accordion",
       "QR Code Nativo"
     ],
-    "required_modules": ["Main Banner", "Card with icon", "Media with steps", "QR Code Nativo", "Accordion"],
-    "optional_modules": ["Breadcrumb Header", "Image with text", "Image Icon", "Background with text", "Button Help WhatsApp"],
+    "required_modules": ["Main Banner", "Card with icon", "Accordion"],
+    "optional_modules": ["Breadcrumb Header", "Image with text", "QR Code Nativo", "Image Icon", "Background with text", "Button Help WhatsApp"],
     "avoid_modules_when": [
       {
         "module": "Contract and tariffs",
@@ -656,8 +656,8 @@
       "Accordion",
       "Contract and tariffs"
     ],
-    "required_modules": ["Main Banner", "Media with steps", "Micro Frontend", "Accordion", "Contract and tariffs"],
-    "optional_modules": ["Breadcrumb Header", "Image with text", "Card with icon", "Button Help WhatsApp", "Duo Text Link"],
+    "required_modules": ["Main Banner", "Image with text", "Accordion", "Contract and tariffs"],
+    "optional_modules": ["Breadcrumb Header", "Micro Frontend", "Card with icon", "Button Help WhatsApp", "Duo Text Link", "Media with steps"],
     "avoid_modules_when": [
       {
         "module": "Carrossel",
@@ -881,8 +881,8 @@
       "Accordion",
       "Duo Text Link"
     ],
-    "required_modules": ["Main Banner", "Richtext", "Media with steps"],
-    "optional_modules": ["Breadcrumb Header", "Image Icon", "Card with icon", "Accordion", "Duo Text Link", "Image with text"],
+    "required_modules": ["Main Banner", "Richtext", "Media with steps", "Accordion"],
+    "optional_modules": ["Breadcrumb Header", "Image Icon", "Card with icon", "Duo Text Link", "Image with text"],
     "avoid_modules_when": [
       {
         "module": "Contract and tariffs",
@@ -1119,8 +1119,8 @@
       "Accordion",
       "Contract and tariffs"
     ],
-    "required_modules": ["Main Banner", "Card with icon", "Media with steps", "Accordion"],
-    "optional_modules": ["Breadcrumb Header", "Double Box", "Card Comparative", "Image Icon", "Micro Frontend", "Contract and tariffs", "Button Help WhatsApp"],
+    "required_modules": ["Main Banner", "Card with icon", "Accordion"],
+    "optional_modules": ["Breadcrumb Header", "Double Box", "Card Comparative", "Image Icon", "Micro Frontend", "Contract and tariffs", "Media with steps", "Button Help WhatsApp"],
     "avoid_modules_when": [
       {
         "module": "Carrossel",
