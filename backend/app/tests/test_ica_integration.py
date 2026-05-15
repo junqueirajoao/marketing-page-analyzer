@@ -1,6 +1,11 @@
 """
-Tests for IBM Consulting Advantage (ICA) Integration
+Tests for IBM Consulting Advantage (ICA) Integration.
+
 Tests ICA client, fallback mechanism, and API contract preservation.
+
+Note: Test payloads include business_goal, target_audience, and page_type_hint
+for comprehensive testing, but these fields are OPTIONAL in the actual API.
+The AI-first architecture automatically infers these values when not provided.
 """
 import pytest
 from unittest.mock import AsyncMock, Mock, patch

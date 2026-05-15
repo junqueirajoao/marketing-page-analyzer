@@ -326,7 +326,17 @@ Response:
 
 Analyzes a page from a URL.
 
-Input:
+**AI-First Architecture**: The system automatically infers context, detects narrative patterns, identifies intent, classifies page type, identifies likely audience, selects storytelling patterns, and builds catalog_context based on URL, extracted content, detected modules, storytelling analysis, score breakdown, and narrative insights.
+
+Input (all fields optional except `url`):
+
+```json
+{
+  "url": "https://www.example.com/page"
+}
+```
+
+Optional fields for compatibility/future use (not required, not exposed in main UX):
 
 ```json
 {
@@ -341,7 +351,18 @@ Input:
 
 Analyzes a planned page from a briefing.
 
-Input:
+**AI-First Architecture**: The system automatically infers context, detects narrative patterns, identifies intent, classifies page type, identifies likely audience, selects storytelling patterns, and builds catalog_context based on the briefing content, constraints, storytelling analysis, and narrative insights.
+
+Input (only `briefing` is required):
+
+```json
+{
+  "briefing": "Create a page to promote a financial solution for small businesses.",
+  "constraints": ["simple tone", "avoid absolute promises"]
+}
+```
+
+Optional fields for compatibility/future use (not required, not exposed in main UX):
 
 ```json
 {
@@ -496,7 +517,7 @@ Categories: compliance (financial promises, YMYL, disclaimers), tone (institutio
 ### How catalog_context works
 
 The **Catalog Context Builder** service:
-1. Analyzes the page type, business goal, target audience
+1. Analyzes the page
 2. Selects the most relevant items from each catalog (max 8 per catalog)
 3. Compacts them to essential fields
 4. Injects them into the ICA payload as `catalog_context`
@@ -615,12 +636,14 @@ Create a React with TypeScript interface for Marketing Page Analyzer.
 
 Requirements:
 - Home screen with tabs for URL analysis and briefing analysis.
-- Fields for business goal and target audience.
+- URL field (required) and briefing field (required for briefing tab).
+- Optional advanced fields for business goal, target audience, and page type hint (collapsed by default).
 - Button to start analysis.
 - Result screen with overall score, scores by area, executive summary, top priorities, module map, and copy suggestions.
 - Use Tailwind CSS.
 - Reusable components.
 - Create a lib/api.ts file for backend calls.
+- Emphasize AI-first automatic inference in UI messaging.
 ```
 
 ### Tests

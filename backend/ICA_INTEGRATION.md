@@ -97,7 +97,9 @@ Or on fallback:
 
 ## ICA Payload Structure
 
-The system sends a structured payload to ICA with **catalog_context** for specialized domain knowledge:
+The system sends a structured payload to ICA with **catalog_context** for specialized domain knowledge.
+
+**AI-First Architecture**: The system automatically infers context, detects narrative patterns, identifies intent, classifies page type, identifies likely audience, and selects storytelling patterns. The optional fields `business_goal`, `target_audience`, and `page_type_hint` are included for compatibility but are NOT required and are automatically inferred when not provided.
 
 ```json
 {
@@ -215,7 +217,7 @@ The system sends a structured payload to ICA with **catalog_context** for specia
   "business_goal": "conversion",
   "target_audience": "businesses",
   "page_type_hint": "product",
-  "instructions": "Use catalog_context as the source of domain knowledge..."
+  "instructions": "Use catalog_context as the source of domain knowledge. The business_goal, target_audience, and page_type_hint are automatically inferred from the page content and may be null - use the detected_type and primary_goal from page_summary instead."
 }
 ```
 
@@ -229,7 +231,10 @@ The system sends a structured payload to ICA with **catalog_context** for specia
 - **score_breakdown**: Detailed scoring with issues and rule violations
 - **narrative_insights**: Key insights about narrative structure
 - **catalog_context**: **Specialized domain knowledge** injected from local catalogs
-- **instructions**: Explicit instructions for ICA agents to use catalog_context
+- **business_goal**: Optional - automatically inferred if not provided
+- **target_audience**: Optional - automatically inferred if not provided
+- **page_type_hint**: Optional - automatically inferred if not provided
+- **instructions**: Explicit instructions for ICA agents to use catalog_context and handle optional fields
 
 ## Catalog Context: The Key Innovation
 

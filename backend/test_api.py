@@ -16,15 +16,14 @@ def test_health():
 
 
 def test_analyze_url():
-    """Testa análise por URL"""
+    """Testa análise por URL - AI-First (apenas URL obrigatória)"""
+    # Payload mínimo - sistema infere automaticamente contexto
     payload = {
-        "url": "https://www.example.com",
-        "business_goal": "conversão",
-        "target_audience": "pessoa física",
-        "page_type_hint": "produto"
+        "url": "https://www.example.com"
     }
     
-    print("\n=== Testando /analyze/url ===")
+    print("\n=== Testando /analyze/url (AI-First) ===")
+    print("Sistema infere automaticamente: tipo, objetivo, público-alvo")
     print(f"Payload: {json.dumps(payload, indent=2)}")
     
     response = requests.post(
@@ -46,15 +45,15 @@ def test_analyze_url():
 
 
 def test_analyze_briefing():
-    """Testa análise por briefing"""
+    """Testa análise por briefing - AI-First (apenas briefing obrigatório)"""
+    # Payload mínimo - sistema infere automaticamente contexto
     payload = {
         "briefing": "Criar página de crédito pessoal para MEI",
-        "business_goal": "gerar leads",
-        "target_audience": "microempreendedores",
         "constraints": ["tom simples", "evitar promessas absolutas"]
     }
     
-    print("\n=== Testando /analyze/briefing ===")
+    print("\n=== Testando /analyze/briefing (AI-First) ===")
+    print("Sistema infere automaticamente: tipo, objetivo, público-alvo")
     print(f"Payload: {json.dumps(payload, indent=2)}")
     
     response = requests.post(

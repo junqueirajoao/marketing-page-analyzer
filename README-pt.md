@@ -326,7 +326,17 @@ Resposta:
 
 Analisa uma página a partir de uma URL.
 
-Entrada:
+**Arquitetura AI-First**: O sistema infere automaticamente contexto, detecta padrões narrativos, identifica intenção, classifica tipo de página, identifica público provável, seleciona padrões de storytelling e constrói catalog_context baseado em URL, conteúdo extraído, módulos detectados, análise de storytelling, score breakdown e narrative insights.
+
+Entrada (apenas `url` é obrigatória):
+
+```json
+{
+  "url": "https://www.exemplo.com.br/pagina"
+}
+```
+
+Campos opcionais para compatibilidade/uso futuro (não obrigatórios, não expostos na UX principal):
 
 ```json
 {
@@ -341,7 +351,18 @@ Entrada:
 
 Analisa uma página planejada a partir de um briefing.
 
-Entrada:
+**Arquitetura AI-First**: O sistema infere automaticamente contexto, detecta padrões narrativos, identifica intenção, classifica tipo de página, identifica público provável, seleciona padrões de storytelling e constrói catalog_context baseado no conteúdo do briefing, constraints, análise de storytelling e narrative insights.
+
+Entrada (apenas `briefing` é obrigatório):
+
+```json
+{
+  "briefing": "Criar uma página para divulgar uma solução financeira para pequenos negócios.",
+  "constraints": ["tom simples", "evitar promessas absolutas"]
+}
+```
+
+Campos opcionais para compatibilidade/uso futuro (não obrigatórios, não expostos na UX principal):
 
 ```json
 {
@@ -565,12 +586,14 @@ Crie uma interface React com TypeScript para o Marketing Page Analyzer.
 
 Requisitos:
 - Tela inicial com tabs para análise por URL e análise por briefing.
-- Campos para objetivo de negócio e público-alvo.
+- Campo de URL (obrigatório) e campo de briefing (obrigatório na aba de briefing).
+- Campos avançados opcionais para objetivo de negócio, público-alvo e dica de tipo de página (recolhidos por padrão).
 - Botão para iniciar análise.
 - Tela de resultado com score geral, scores por área, resumo executivo, top prioridades, mapa de módulos e sugestões de copy.
 - Usar Tailwind CSS.
 - Componentes reutilizáveis.
 - Criar um arquivo lib/api.ts para chamadas ao backend.
+- Enfatizar inferência automática AI-first nas mensagens da UI.
 ```
 
 ### Testes

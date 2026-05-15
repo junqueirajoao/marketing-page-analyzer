@@ -1,5 +1,9 @@
 # Como Executar o Backend - Financial Marketing Pages Analyzer
 
+**AI-First Architecture**: O sistema infere automaticamente contexto, detecta padrões narrativos, identifica intenção, classifica tipo de página, identifica público provável e seleciona padrões de storytelling. Os campos `business_goal`, `target_audience` e `page_type_hint` são opcionais e não obrigatórios.
+
+# Como Executar o Backend - Financial Marketing Pages Analyzer
+
 ## Visão Geral
 
 Este guia descreve como executar o backend do **Financial Marketing Pages Analyzer** com integração IBM Consulting Advantage (ICA) e fallback local.

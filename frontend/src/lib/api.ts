@@ -2,6 +2,16 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8001';
 
+/**
+ * Payload for URL-based analysis.
+ *
+ * AI-First Architecture: Only 'url' is required. The system automatically
+ * infers context, detects narrative patterns, identifies intent, classifies
+ * page type, identifies likely audience, and selects storytelling patterns.
+ *
+ * Optional fields (business_goal, target_audience, page_type_hint) are for
+ * compatibility/future use and should NOT be exposed in the main UX.
+ */
 export interface AnalyzeUrlPayload {
   url: string;
   business_goal?: string;
@@ -9,6 +19,16 @@ export interface AnalyzeUrlPayload {
   page_type_hint?: string;
 }
 
+/**
+ * Payload for briefing-based analysis.
+ *
+ * AI-First Architecture: Only 'briefing' is required. The system automatically
+ * infers context, detects narrative patterns, identifies intent, classifies
+ * page type, identifies likely audience, and selects storytelling patterns.
+ *
+ * Optional fields (business_goal, target_audience) are for compatibility/future
+ * use and should NOT be exposed in the main UX.
+ */
 export interface AnalyzeBriefingPayload {
   briefing: string;
   business_goal?: string;
