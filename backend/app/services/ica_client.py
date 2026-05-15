@@ -203,7 +203,8 @@ class ICAClient:
         narrative_insights: list,
         business_goal: str,
         target_audience: str,
-        page_type_hint: Optional[str] = None
+        page_type_hint: Optional[str] = None,
+        catalog_context: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
         Build structured payload for ICA orchestration.
@@ -219,11 +220,12 @@ class ICAClient:
             business_goal: Business goal
             target_audience: Target audience
             page_type_hint: Optional page type hint
+            catalog_context: Optional catalog context with relevant rules
         
         Returns:
             Structured payload dictionary for ICA
         """
-        return {
+        payload = {
             "normalized_page": normalized_page,
             "detected_modules": detected_modules,
             "module_plan": module_plan,
@@ -233,8 +235,38 @@ class ICAClient:
             "narrative_insights": narrative_insights,
             "business_goal": business_goal,
             "target_audience": target_audience,
-            "page_type_hint": page_type_hint or ""
+            "page_type_hint": page_type_hint or "",
+            "instructions": self._build_instructions()
         }
+        
+        # Add catalog context if provided
+        if catalog_context:
+            payload["catalog_context"] = catalog_context
+            logger.info(
+                f"[ICA] Added catalog_context with "
+                f"{len(catalog_context.get('relevant_modules', []))} modules, "
+                f"{len(catalog_context.get('relevant_storytelling_patterns', []))} patterns, "
+                f"{len(catalog_context.get('relevant_seo_rules', []))} SEO rules, "
+                f"{len(catalog_context.get('relevant_brand_rules', []))} brand rules"
+            )
+        
+        return payload
+    
+    def _build_instructions(self) -> str:
+        """
+        Build instructions for ICA agents.
+        
+        Returns:
+            Instructions string for agents
+        """
+        return (
+            "Use catalog_context as the source of domain knowledge. "
+            "Do not invent rules, modules or storytelling patterns "
+            "outside the provided context. "
+            "Base your recommendations on the relevant_modules, "
+            "relevant_storytelling_patterns, relevant_seo_rules, "
+            "and relevant_brand_rules provided in catalog_context."
+        )
 
 
 # Made with Bob

@@ -8,6 +8,7 @@ from typing import Dict, Any, Optional
 
 from app.services.ica_client import ICAClient
 from app.services.local_agent_fallback import LocalAgentFallback
+from app.services.catalog_context_builder import build_catalog_context
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -152,19 +153,38 @@ class AdvantageClient:
         Returns:
             Structured payload for ICA
         """
+        # Build catalog context for ICA
+        catalogs = local_result.get("catalogs", {})
+        storytelling_analysis = local_result.get("storytelling_analysis", {})
+        page_type = (
+            page_type_hint or
+            storytelling_analysis.get("page_type") or
+            storytelling_analysis.get("detected_page_type")
+        )
+        
+        catalog_context = build_catalog_context(
+            catalogs=catalogs,
+            page_type=page_type,
+            business_goal=business_goal,
+            target_audience=target_audience,
+            detected_modules=local_result.get("detected_modules", []),
+            score_breakdown=local_result.get("score_breakdown", {}),
+            narrative_insights=local_result.get("narrative_insights", []),
+            max_items_per_catalog=8
+        )
+        
         return self.ica_client.build_ica_payload(
             normalized_page=local_result.get("normalized_page", {}),
             detected_modules=local_result.get("detected_modules", []),
             module_plan=local_result.get("module_plan", {}),
-            storytelling_analysis=local_result.get(
-                "storytelling_analysis", {}
-            ),
+            storytelling_analysis=storytelling_analysis,
             score=local_result.get("score", 0.0),
             score_breakdown=local_result.get("score_breakdown", {}),
             narrative_insights=local_result.get("narrative_insights", []),
             business_goal=business_goal,
             target_audience=target_audience,
-            page_type_hint=page_type_hint
+            page_type_hint=page_type_hint,
+            catalog_context=catalog_context
         )
     
     def _merge_ica_response(
