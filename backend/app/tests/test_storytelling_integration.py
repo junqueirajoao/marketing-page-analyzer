@@ -181,30 +181,6 @@ def test_return_default_pattern_when_no_match():
     assert pattern["id"] == "pattern_institucional"
 
 
-def test_analyze_briefing_returns_storytelling_analysis():
-    client = LocalAgentFallback()
-    catalogs = _sample_catalogs()
-
-    result = client.analyze_briefing({
-        "briefing": "Página de crédito pessoal com foco em conversao.",
-        "business_goal": "conversao",
-        "target_audience": "pessoa_fisica",
-        "constraints": [],
-        "catalogs": catalogs
-    })
-
-    assert "storytelling_analysis" in result
-    assert (
-        result["storytelling_analysis"]["detected_pattern_id"]
-        == "pattern_credito_pessoal"
-    )
-    assert result["storytelling_analysis"]["recommended_module_order"] == [
-        "Breadcrumb Header",
-        "Main Banner",
-        "Media with steps"
-    ]
-
-
 def test_analyze_url_returns_storytelling_analysis():
     client = LocalAgentFallback()
     catalogs = _sample_catalogs()

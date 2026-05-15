@@ -1,7 +1,7 @@
-# Script to run the FastAPI backend server on port 8001
+# Script to run the FastAPI backend server on port 8000
 # Usage: .\run_server.ps1
 
-Write-Host "Starting Marketing Page Analyzer Backend on port 8001..." -ForegroundColor Green
+Write-Host "Starting Marketing Page Analyzer Backend on port 8000..." -ForegroundColor Green
 
 # Activate virtual environment if it exists
 if (Test-Path ".venv\Scripts\Activate.ps1") {
@@ -13,8 +13,8 @@ if (Test-Path ".venv\Scripts\Activate.ps1") {
     Write-Host "Then install dependencies: pip install -r requirements.txt" -ForegroundColor Yellow
 }
 
-# Run uvicorn on port 8001
+# Run uvicorn on port 8000
 Write-Host "Starting server..." -ForegroundColor Cyan
-uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 # Made with Bob

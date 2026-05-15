@@ -1,13 +1,9 @@
 import { useState } from 'react';
 import { UrlAnalyzerForm } from './components/UrlAnalyzerForm';
-import { BriefingAnalyzerForm } from './components/BriefingAnalyzerForm';
 import { AnalysisResult } from './components/AnalysisResult';
 import { AnalysisResponse } from './lib/api';
 
-type TabType = 'url' | 'briefing';
-
 function App() {
-  const [activeTab, setActiveTab] = useState<TabType>('url');
   const [result, setResult] = useState<AnalysisResponse | null>(null);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,57 +31,17 @@ function App() {
             Financial Marketing Pages Analyzer
           </h1>
           <p className="text-gray-600">
-            Analise suas páginas de marketing financeiro ou briefings para obter insights e recomendações acionáveis.
+            Analise páginas de marketing financeiro reais para obter insights acionáveis baseados em IA.
           </p>
         </div>
 
-        {/* Tabs */}
+        {/* Main Form */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex border-b border-gray-200 mb-6">
-            <button
-              onClick={() => {
-                setActiveTab('url');
-                setResult(null);
-                setError('');
-              }}
-              className={`px-4 py-2 font-medium text-sm focus:outline-none ${
-                activeTab === 'url'
-                  ? 'border-b-2 border-blue-600 text-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Analisar por URL
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab('briefing');
-                setResult(null);
-                setError('');
-              }}
-              className={`px-4 py-2 font-medium text-sm focus:outline-none ${
-                activeTab === 'briefing'
-                  ? 'border-b-2 border-blue-600 text-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Analisar por Briefing
-            </button>
-          </div>
-
-          {/* Forms */}
-          {activeTab === 'url' ? (
-            <UrlAnalyzerForm
-              onResult={handleResult}
-              onError={handleError}
-              onLoading={handleLoading}
-            />
-          ) : (
-            <BriefingAnalyzerForm
-              onResult={handleResult}
-              onError={handleError}
-              onLoading={handleLoading}
-            />
-          )}
+          <UrlAnalyzerForm
+            onResult={handleResult}
+            onError={handleError}
+            onLoading={handleLoading}
+          />
 
           {/* Loading State */}
           {loading && (
@@ -108,7 +64,7 @@ function App() {
 
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>Financial Marketing Pages Analyzer - Bob-a-thon</p>
+          <p>Financial Marketing Pages Analyzer - AI-Powered Page Analysis</p>
         </div>
       </div>
     </div>

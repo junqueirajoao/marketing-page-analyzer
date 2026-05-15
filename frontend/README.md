@@ -80,8 +80,7 @@ frontend/
 The frontend connects to the backend API at `http://localhost:8000`:
 
 ### Endpoints
-- **POST** `/analyze/url` - Analyze a URL
-- **POST** `/analyze/briefing` - Analyze a briefing
+- **POST** `/analyze/url` - Analyze a marketing page by URL
 - **GET** `/health` - Health check
 
 ### Response Structure

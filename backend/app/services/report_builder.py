@@ -1,4 +1,4 @@
-from app.schemas.input import AnalyzeBriefingRequest, AnalyzeUrlRequest
+from app.schemas.input import AnalyzeUrlRequest
 from app.services.catalog_loader import load_all_catalogs
 from app.services.advantage_client import AdvantageClient
 from app.services.scraper import fetch_page
@@ -6,40 +6,23 @@ from app.services.page_normalizer import normalize_page
 from app.services.module_detector import detect_modules
 
 
-async def build_briefing_analysis_report(
-    payload: AnalyzeBriefingRequest
-) -> dict:
-    """
-    Build briefing analysis report using ICA with fallback.
-    
-    Args:
-        payload: Briefing analysis request
-    
-    Returns:
-        Analysis report dictionary
-    """
-    catalogs = load_all_catalogs()
-    agent_payload = {
-        "input_type": "briefing",
-        "briefing": payload.briefing,
-        "business_goal": payload.business_goal,
-        "target_audience": payload.target_audience,
-        "constraints": payload.constraints,
-        "catalogs": catalogs
-    }
-    agent_client = AdvantageClient()
-    return await agent_client.analyze_briefing(agent_payload)
-
-
 async def build_url_analysis_report(payload: AnalyzeUrlRequest) -> dict:
     """
     Build URL analysis report using ICA with fallback.
     
+    This is the core analysis pipeline:
+    1. Load catalogs (modules, storytelling patterns, brand rules)
+    2. Scrape and parse the page
+    3. Detect modules in the page structure
+    4. Send to ICA orchestrator for AI-powered analysis
+    5. Return comprehensive analysis with recommendations
+    
     Args:
-        payload: URL analysis request
+        payload: URL analysis request containing the page URL
     
     Returns:
-        Analysis report dictionary
+        Analysis report dictionary with scores, recommendations,
+        module plan, narrative insights, and agent trace
     """
     # Load catalogs
     catalogs = load_all_catalogs()
@@ -59,9 +42,6 @@ async def build_url_analysis_report(payload: AnalyzeUrlRequest) -> dict:
     agent_payload = {
         "input_type": "url",
         "url": str(payload.url),
-        "business_goal": payload.business_goal,
-        "target_audience": payload.target_audience,
-        "page_type_hint": payload.page_type_hint,
         "catalogs": catalogs,
         "normalized_page": normalized_page
     }
@@ -69,5 +49,6 @@ async def build_url_analysis_report(payload: AnalyzeUrlRequest) -> dict:
     # Call agent with ICA integration
     agent_client = AdvantageClient()
     return await agent_client.analyze_url(agent_payload)
+
 
 # Made with Bob

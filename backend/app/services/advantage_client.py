@@ -43,52 +43,6 @@ class AdvantageClient:
         else:
             logger.info("[ADVANTAGE] Fallback disabled")
     
-    async def analyze_briefing(
-        self, payload: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """
-        Analyze a briefing using ICA or fallback.
-        
-        Args:
-            payload: Dictionary containing:
-                - input_type: Type of input (e.g., "briefing")
-                - briefing: The briefing text
-                - business_goal: Optional business goal
-                - target_audience: Optional target audience
-                - constraints: List of constraints
-                - catalogs: Dictionary with catalogs
-        
-        Returns:
-            Dictionary with analysis results
-        """
-        # First, generate local analysis for ICA payload
-        logger.info("[ADVANTAGE] Generating local analysis for ICA payload")
-        local_result = self.fallback_client.analyze_briefing(payload)
-        
-        # Try ICA if enabled
-        if self.ica_client.is_enabled():
-            ica_payload = self._build_ica_payload_from_local(
-                local_result=local_result,
-                business_goal=payload.get("business_goal", ""),
-                target_audience=payload.get("target_audience", ""),
-                page_type_hint=None
-            )
-            
-            ica_result = await self.ica_client.call_orchestration(ica_payload)
-            
-            if ica_result:
-                logger.info("[ADVANTAGE] Using ICA response")
-                # Merge ICA response with local analysis
-                return self._merge_ica_response(local_result, ica_result)
-        
-        # Use fallback
-        if self.enable_fallback:
-            logger.info("[FALLBACK] Using LocalAgentFallback")
-            return local_result
-        else:
-            logger.error("[ADVANTAGE] ICA failed and fallback disabled")
-            raise RuntimeError("ICA unavailable and fallback disabled")
-    
     async def analyze_url(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """
         Analyze a URL using ICA or fallback.

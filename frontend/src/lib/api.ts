@@ -6,34 +6,11 @@ const API_BASE_URL = 'http://localhost:8000';
  * Payload for URL-based analysis.
  *
  * AI-First Architecture: Only 'url' is required. The system automatically
- * infers context, detects narrative patterns, identifies intent, classifies
- * page type, identifies likely audience, and selects storytelling patterns.
- *
- * Optional fields (business_goal, target_audience, page_type_hint) are for
- * compatibility/future use and should NOT be exposed in the main UX.
+ * scrapes the page, detects modules, analyzes storytelling, evaluates SEO,
+ * checks compliance, and provides actionable recommendations.
  */
 export interface AnalyzeUrlPayload {
   url: string;
-  business_goal?: string;
-  target_audience?: string;
-  page_type_hint?: string;
-}
-
-/**
- * Payload for briefing-based analysis.
- *
- * AI-First Architecture: Only 'briefing' is required. The system automatically
- * infers context, detects narrative patterns, identifies intent, classifies
- * page type, identifies likely audience, and selects storytelling patterns.
- *
- * Optional fields (business_goal, target_audience) are for compatibility/future
- * use and should NOT be exposed in the main UX.
- */
-export interface AnalyzeBriefingPayload {
-  briefing: string;
-  business_goal?: string;
-  target_audience?: string;
-  constraints?: string[];
 }
 
 export interface DetectedModule {
@@ -127,11 +104,6 @@ export interface AnalysisResponse {
 
 export async function analyzeUrl(payload: AnalyzeUrlPayload): Promise<AnalysisResponse> {
   const response = await axios.post(`${API_BASE_URL}/analyze/url`, payload);
-  return response.data;
-}
-
-export async function analyzeBriefing(payload: AnalyzeBriefingPayload): Promise<AnalysisResponse> {
-  const response = await axios.post(`${API_BASE_URL}/analyze/briefing`, payload);
   return response.data;
 }
 

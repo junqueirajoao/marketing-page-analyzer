@@ -30,19 +30,6 @@ def mock_catalogs():
 
 
 @pytest.fixture
-def sample_briefing_payload(mock_catalogs):
-    """Sample briefing payload for testing."""
-    return {
-        "input_type": "briefing",
-        "briefing": "Test briefing content",
-        "business_goal": "conversao",
-        "target_audience": "empresas",
-        "constraints": [],
-        "catalogs": mock_catalogs
-    }
-
-
-@pytest.fixture
 def sample_url_payload(mock_catalogs):
     """Sample URL payload for testing."""
     return {
@@ -252,61 +239,6 @@ class TestICAClient:
 class TestAdvantageClient:
     """Test Advantage client with ICA and fallback."""
     
-    async def test_analyze_briefing_with_ica_success(
-        self,
-        sample_briefing_payload,
-        valid_ica_response
-    ):
-        """Test briefing analysis with successful ICA call."""
-        with patch.dict('os.environ', {
-            'ADVANTAGE_BASE_URL': 'https://test.api.com',
-            'ADVANTAGE_API_KEY': 'test_key',
-            'ENABLE_AGENT_FALLBACK': 'true'
-        }):
-            client = AdvantageClient()
-            
-            with patch.object(
-                client.ica_client,
-                'call_orchestration',
-                AsyncMock(return_value=valid_ica_response)
-            ):
-                result = await client.analyze_briefing(
-                    sample_briefing_payload
-                )
-                
-                assert result is not None
-                assert "recommendations" in result
-                assert "narrative_insights" in result
-                assert result.get("ica_enhanced") is True
-                assert result.get("analysis_source") == "ica"
-    
-    async def test_analyze_briefing_fallback_on_ica_failure(
-        self,
-        sample_briefing_payload
-    ):
-        """Test briefing analysis falls back on ICA failure."""
-        with patch.dict('os.environ', {
-            'ADVANTAGE_BASE_URL': 'https://test.api.com',
-            'ADVANTAGE_API_KEY': 'test_key',
-            'ENABLE_AGENT_FALLBACK': 'true'
-        }):
-            client = AdvantageClient()
-            
-            with patch.object(
-                client.ica_client,
-                'call_orchestration',
-                AsyncMock(return_value=None)
-            ):
-                result = await client.analyze_briefing(
-                    sample_briefing_payload
-                )
-                
-                assert result is not None
-                assert "recommendations" in result
-                assert "narrative_insights" in result
-                # Should not have ICA metadata
-                assert result.get("ica_enhanced") is not True
-    
     async def test_analyze_url_with_ica_success(
         self,
         sample_url_payload,
@@ -357,7 +289,7 @@ class TestAdvantageClient:
     
     async def test_fallback_disabled_raises_error(
         self,
-        sample_briefing_payload
+        sample_url_payload
     ):
         """Test error when ICA fails and fallback is disabled."""
         with patch.dict('os.environ', {
@@ -368,41 +300,11 @@ class TestAdvantageClient:
             client = AdvantageClient()
             
             with pytest.raises(RuntimeError):
-                await client.analyze_briefing(sample_briefing_payload)
+                await client.analyze_url(sample_url_payload)
 
 
 class TestAPIContractPreservation:
     """Test that API contract is preserved with ICA integration."""
-    
-    async def test_briefing_response_contract(self, sample_briefing_payload):
-        """Test briefing response maintains expected contract."""
-        with patch.dict('os.environ', {
-            'ADVANTAGE_BASE_URL': '',
-            'ADVANTAGE_API_KEY': '',
-            'ENABLE_AGENT_FALLBACK': 'true'
-        }):
-            client = AdvantageClient()
-            result = await client.analyze_briefing(sample_briefing_payload)
-            
-            # Check required fields
-            assert "analysis_id" in result
-            assert "score" in result
-            assert "score_breakdown" in result
-            assert "page_summary" in result
-            assert "recommendations" in result
-            assert "module_plan" in result
-            assert "narrative_insights" in result
-            assert "storytelling_analysis" in result
-            assert "catalog_context" in result
-            assert "agent_trace" in result
-            
-            # Check types
-            assert isinstance(result["score"], dict)
-            assert "overall" in result["score"]
-            assert isinstance(result["score"]["overall"], (int, float))
-            assert isinstance(result["score_breakdown"], dict)
-            assert isinstance(result["recommendations"], list)
-            assert isinstance(result["narrative_insights"], list)
     
     async def test_url_response_contract(self, sample_url_payload):
         """Test URL response maintains expected contract."""
@@ -440,19 +342,6 @@ class TestAPIContractPreservation:
 
 class TestLocalAgentFallback:
     """Test local agent fallback functionality."""
-    
-    def test_local_agent_briefing_analysis(
-        self,
-        sample_briefing_payload
-    ):
-        """Test local agent can analyze briefing."""
-        fallback = LocalAgentFallback()
-        result = fallback.analyze_briefing(sample_briefing_payload)
-        
-        assert result is not None
-        assert "recommendations" in result
-        assert "narrative_insights" in result
-        assert "storytelling_analysis" in result
     
     def test_local_agent_url_analysis(self, sample_url_payload):
         """Test local agent can analyze URL."""

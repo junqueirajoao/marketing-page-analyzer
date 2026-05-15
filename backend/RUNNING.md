@@ -82,10 +82,10 @@ chmod +x run_server.sh
 
 ```bash
 cd backend
-uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### Opção 3: Porta Padrão (8000)
+### Opção 3: Apenas com --reload (usa porta 8000 por padrão)
 
 ```bash
 cd backend
@@ -96,7 +96,7 @@ uvicorn app.main:app --reload
 
 ### 1. Health Check
 
-Acesse: http://localhost:8001/health
+Acesse: http://localhost:8000/health
 
 Resposta esperada:
 ```json
@@ -107,7 +107,7 @@ Resposta esperada:
 
 ### 2. API Documentation
 
-Acesse: http://localhost:8001/docs
+Acesse: http://localhost:8000/docs
 
 Você verá a documentação interativa Swagger UI com todos os endpoints disponíveis.
 
@@ -127,7 +127,7 @@ python test_api.py
 
 ## Portas Utilizadas
 
-- **Backend API**: 8001 (configurável)
+- **Backend API**: 8000 (porta padrão)
 - **Frontend**: 3000 (Vite configurado)
 
 ## CORS Configuration
@@ -153,19 +153,19 @@ Backend FastAPI
 
 ## Troubleshooting
 
-### Porta 8001 já em uso
+### Porta 8000 já em uso
 
 **Windows:**
 ```powershell
 # Encontrar processo
-netstat -ano | findstr :8001
+netstat -ano | findstr :8000
 # Matar processo (substitua <PID>)
 taskkill /PID <PID> /F
 ```
 
 **Linux/Mac:**
 ```bash
-lsof -ti:8001 | xargs kill -9
+lsof -ti:8000 | xargs kill -9
 ```
 
 ### Virtual Environment não encontrado
@@ -252,4 +252,4 @@ Para problemas ou dúvidas:
 1. Verifique logs do backend
 2. Consulte `ICA_INTEGRATION.md`
 3. Execute testes: `pytest -v`
-4. Verifique documentação API: http://localhost:8001/docs
+4. Verifique documentação API: http://localhost:8000/docs

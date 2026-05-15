@@ -1,10 +1,10 @@
 # Financial Marketing Pages Analyzer
 
-Multi-agent web application for analyzing and recommending improvements to financial marketing pages.
+AI-powered web application for analyzing and recommending improvements to financial marketing pages.
 
 ## Overview
 
-Financial Marketing Pages Analyzer helps Digital Marketing, UX, Content, and digital channel teams evaluate financial marketing pages faster, more consistently, and with more actionable outputs. The solution analyzes URLs, natural-language briefings, and, in a future evolution, mockups, returning recommendations about SEO, modular structure, narrative, content clarity, and brand safety.
+Financial Marketing Pages Analyzer helps Digital Marketing, UX, Content, and digital channel teams evaluate financial marketing pages faster, more consistently, and with more actionable outputs. The solution analyzes **real page URLs**, scraping content, detecting modules, evaluating storytelling, checking SEO, and assessing brand compliance to deliver comprehensive, actionable recommendations.
 
 The project was designed for a hackathon using two main tools:
 
@@ -27,16 +27,17 @@ This process can be slow, inconsistent, and dependent on multiple specialists. T
 
 ## Solution
 
-The system receives a URL or briefing and generates a report with:
+The system receives a **page URL** and generates a comprehensive report with:
 
 - Overall page score.
 - Score by dimension: SEO, storytelling, modules, and brand safety.
+- Detected modules and structure.
 - Executive diagnosis.
 - Top priorities.
 - Keyword suggestions.
 - Module recommendations to keep, remove, move, or add.
 - Suggested new narrative structure.
-- Before/after copy suggestions.
+- Storytelling analysis.
 - Checklist for the Marketing team.
 
 ## Architecture
@@ -44,14 +45,14 @@ The system receives a URL or briefing and generates a report with:
 ```text
 User
   |
-  | URL or briefing
+  | Page URL
   v
 Web Frontend (React + Vite)
   |
   v
 FastAPI Backend
   |
-  | Scraping + Normalization + Module Detection
+  | Scraping + Parsing + Module Detection
   v
 Scoring Service
   |
@@ -77,7 +78,8 @@ Recommendation Agent
 Structured Response
   |
   | score, score_breakdown, recommendations, module_plan,
-  | narrative_insights, storytelling_analysis, catalog_context
+  | narrative_insights, storytelling_analysis, detected_modules,
+  | page_diagnostics, catalog_context
   v
 Dashboard with visual components
 ```
@@ -336,43 +338,6 @@ Input (all fields optional except `url`):
 }
 ```
 
-Optional fields for compatibility/future use (not required, not exposed in main UX):
-
-```json
-{
-  "url": "https://www.example.com/page",
-  "business_goal": "conversion",
-  "target_audience": "individual interested in a financial product",
-  "page_type_hint": "product"
-}
-```
-
-### `POST /analyze/briefing`
-
-Analyzes a planned page from a briefing.
-
-**AI-First Architecture**: The system automatically infers context, detects narrative patterns, identifies intent, classifies page type, identifies likely audience, selects storytelling patterns, and builds catalog_context based on the briefing content, constraints, storytelling analysis, and narrative insights.
-
-Input (only `briefing` is required):
-
-```json
-{
-  "briefing": "Create a page to promote a financial solution for small businesses.",
-  "constraints": ["simple tone", "avoid absolute promises"]
-}
-```
-
-Optional fields for compatibility/future use (not required, not exposed in main UX):
-
-```json
-{
-  "briefing": "Create a page to promote a financial solution for small businesses.",
-  "business_goal": "generate leads",
-  "target_audience": "micro-entrepreneurs and small businesses",
-  "constraints": ["simple tone", "avoid absolute promises"]
-}
-```
-
 ## Example response
 
 ```json
@@ -564,15 +529,14 @@ class LocalAgentFallback:
 
 - Create FastAPI backend.
 - Create `/health` endpoint.
-- Create `/analyze/url` endpoint.
-- Create `/analyze/briefing` endpoint.
-- Implement simple scraper.
+- Create `/analyze/url` endpoint for URL-based analysis.
+- Implement page scraper and parser.
 - Implement page normalizer.
-- Create JSON catalogs.
+- Implement module detector.
+- Create JSON catalogs (modules, storytelling patterns, brand rules, SEO rules).
 - Create client for IBM Consulting Advantage.
 - Create local fallback.
 - Create frontend with URL form.
-- Create frontend with briefing form.
 - Create result screen.
 - Create score cards.
 - Create recommendation list.
@@ -606,11 +570,10 @@ Create a FastAPI backend for an application called Marketing Page Analyzer.
 
 Requirements:
 - GET /health endpoint.
-- POST /analyze/url endpoint.
-- POST /analyze/briefing endpoint.
+- POST /analyze/url endpoint for URL-based page analysis.
 - Use Pydantic for validation.
 - Separate routes, schemas, and services.
-- Create services for scraping, normalization, module detection, and the IBM Consulting Advantage client.
+- Create services for scraping, parsing, module detection, and the IBM Consulting Advantage client.
 - Create a local fallback for the demo if the IBM Consulting Advantage call is not configured.
 - Keep the code simple, testable, and well organized.
 ```
@@ -635,24 +598,23 @@ Requirements:
 Create a React with TypeScript interface for Marketing Page Analyzer.
 
 Requirements:
-- Home screen with tabs for URL analysis and briefing analysis.
-- URL field (required) and briefing field (required for briefing tab).
-- Optional advanced fields for business goal, target audience, and page type hint (collapsed by default).
+- Simple, focused interface for URL-based page analysis.
+- URL input field (required).
 - Button to start analysis.
-- Result screen with overall score, scores by area, executive summary, top priorities, module map, and copy suggestions.
+- Result screen with overall score, scores by area, detected modules, executive summary, top priorities, module map, and recommendations.
 - Use Tailwind CSS.
 - Reusable components.
 - Create a lib/api.ts file for backend calls.
-- Emphasize AI-first automatic inference in UI messaging.
+- Emphasize AI-powered automatic analysis in UI messaging.
 ```
 
 ### Tests
 
 ```text
 Create unit tests with pytest for the services:
-- seo_static_analyzer.py.
 - module_detector.py.
 - page_normalizer.py.
+- scoring_service.py.
 
 Scenarios:
 - Page without title.
@@ -660,7 +622,7 @@ Scenarios:
 - Page with multiple H1s.
 - Page with headings out of order.
 - Page with empty modules.
-- Briefing that is too short.
+- URL analysis with real page content.
 ```
 
 ## IBM Consulting Advantage (ICA) Integration
@@ -706,25 +668,27 @@ For detailed integration documentation, see `backend/ICA_INTEGRATION.md`.
 ### Flow
 
 1. Open the app.
-2. Paste a public URL or enter a briefing.
-3. Enter the business goal.
-4. Enter the target audience.
-5. Run the analysis.
+2. Paste a public marketing page URL.
+3. Run the analysis.
+4. System scrapes and parses the page.
+5. System detects modules and structure.
 6. Show the overall score.
-7. Show SEO opportunities.
-8. Show the module plan.
-9. Show the recommended storytelling.
-10. Show copy suggestions.
-11. Show top priorities.
+7. Show detected modules.
+8. Show SEO opportunities.
+9. Show the module plan.
+10. Show the recommended storytelling.
+11. Show narrative insights.
+12. Show top priorities.
 
 ### Closing
 
-"The solution uses IBM Consulting Advantage to orchestrate specialist agents and IBM Bob to accelerate software development. The result is a standardized, explainable, and actionable analysis for Digital Marketing teams."
+"The solution uses IBM Consulting Advantage to orchestrate specialist agents and IBM Bob to accelerate software development. The result is a standardized, explainable, and actionable analysis for Digital Marketing teams based on real page content."
 
 ## Acceptance criteria
 
 - The user can analyze a URL.
-- The user can analyze a briefing.
+- The system scrapes and parses real page content.
+- The system detects modules automatically.
 - The API returns structured JSON.
 - The dashboard displays the overall score and scores by area.
 - The solution returns at least five prioritized recommendations.
