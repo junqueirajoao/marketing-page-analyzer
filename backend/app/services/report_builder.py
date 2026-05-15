@@ -1,12 +1,23 @@
 from app.schemas.input import AnalyzeBriefingRequest, AnalyzeUrlRequest
 from app.services.catalog_loader import load_all_catalogs
-from app.services.advantage_client import LocalAgentFallback
+from app.services.advantage_client import AdvantageClient
 from app.services.scraper import fetch_page
 from app.services.page_normalizer import normalize_page
 from app.services.module_detector import detect_modules
 
 
-def build_briefing_analysis_report(payload: AnalyzeBriefingRequest) -> dict:
+async def build_briefing_analysis_report(
+    payload: AnalyzeBriefingRequest
+) -> dict:
+    """
+    Build briefing analysis report using ICA with fallback.
+    
+    Args:
+        payload: Briefing analysis request
+    
+    Returns:
+        Analysis report dictionary
+    """
     catalogs = load_all_catalogs()
     agent_payload = {
         "input_type": "briefing",
@@ -16,11 +27,20 @@ def build_briefing_analysis_report(payload: AnalyzeBriefingRequest) -> dict:
         "constraints": payload.constraints,
         "catalogs": catalogs
     }
-    agent_client = LocalAgentFallback()
-    return agent_client.analyze_briefing(agent_payload)
+    agent_client = AdvantageClient()
+    return await agent_client.analyze_briefing(agent_payload)
 
 
 async def build_url_analysis_report(payload: AnalyzeUrlRequest) -> dict:
+    """
+    Build URL analysis report using ICA with fallback.
+    
+    Args:
+        payload: URL analysis request
+    
+    Returns:
+        Analysis report dictionary
+    """
     # Load catalogs
     catalogs = load_all_catalogs()
     
@@ -46,8 +66,8 @@ async def build_url_analysis_report(payload: AnalyzeUrlRequest) -> dict:
         "normalized_page": normalized_page
     }
     
-    # Call agent
-    agent_client = LocalAgentFallback()
-    return agent_client.analyze_url(agent_payload)
+    # Call agent with ICA integration
+    agent_client = AdvantageClient()
+    return await agent_client.analyze_url(agent_payload)
 
 # Made with Bob

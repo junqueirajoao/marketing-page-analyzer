@@ -9,8 +9,8 @@ router = APIRouter()
 
 
 @router.post("/briefing")
-def analyze_briefing(payload: AnalyzeBriefingRequest):
-    return build_briefing_analysis_report(payload)
+async def analyze_briefing(payload: AnalyzeBriefingRequest):
+    return await build_briefing_analysis_report(payload)
 
 
 @router.post("/url")
