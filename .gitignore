@@ -3,3 +3,7 @@ docs/guia-tecnico*.md__pycache__/
 *.pyc
 .vscode/
 COMANDOS_TESTE.md
+CREDENTIALS.md
+.env
+backend/.env
+frontend/.env
