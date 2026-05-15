@@ -301,7 +301,6 @@ class LocalAgentFallback:
         
         return trace
     
-    
     def _build_page_summary(
         self, briefing: str, business_goal: str, target_audience: str
     ) -> Dict[str, str]:
@@ -584,8 +583,12 @@ class LocalAgentFallback:
         # Check for missing required modules (module_gap)
         for required_module in required_modules:
             if required_module not in detected_module_names:
+                module_id = (
+                    f"insight_missing_module_"
+                    f"{required_module.lower().replace(' ', '_')}"
+                )
                 insights.append({
-                    "id": f"insight_missing_module_{required_module.lower().replace(' ', '_')}",
+                    "id": module_id,
                     "type": NARRATIVE_INSIGHT_TYPES["module_gap"],
                     "severity": SEVERITY_LEVELS["high"],
                     "title": format_message(
@@ -616,8 +619,12 @@ class LocalAgentFallback:
             )
             
             if not has_step_module and step_modules:
+                step_id = (
+                    f"insight_missing_step_"
+                    f"{step_name.lower().replace(' ', '_')}"
+                )
                 insights.append({
-                    "id": f"insight_missing_step_{step_name.lower().replace(' ', '_')}",
+                    "id": step_id,
                     "type": NARRATIVE_INSIGHT_TYPES["missing_step"],
                     "severity": SEVERITY_LEVELS["high"],
                     "title": format_message(

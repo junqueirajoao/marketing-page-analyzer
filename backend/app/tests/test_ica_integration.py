@@ -99,10 +99,18 @@ def valid_ica_response():
             "reorder": [],
             "add": []
         },
-        "score": 85.0,
-        "score_breakdown": {
+        "score": {
+            "overall": 85.0,
             "seo": 80.0,
-            "storytelling": 90.0
+            "storytelling": 90.0,
+            "modules": 85.0,
+            "brand_safety": 90.0
+        },
+        "score_breakdown": {
+            "seo": [],
+            "storytelling": [],
+            "modules": [],
+            "brand_safety": []
         }
     }
 
@@ -235,9 +243,10 @@ class TestICAClient:
     def test_validate_response_not_dict(self):
         """Test response validation with non-dict response."""
         client = ICAClient()
-        assert client._validate_response([]) is False
-        assert client._validate_response("string") is False
-        assert client._validate_response(None) is False
+        # Test with non-dict types (intentionally wrong types for testing)
+        assert client._validate_response([]) is False  # type: ignore
+        assert client._validate_response("string") is False  # type: ignore
+        assert client._validate_response(None) is False  # type: ignore
 
 
 class TestAdvantageClient:
