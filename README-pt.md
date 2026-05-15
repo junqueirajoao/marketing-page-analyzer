@@ -1,42 +1,43 @@
 # Financial Marketing Pages Analyzer
 
-Aplicação web multiagente para análise e recomendação de melhorias em páginas de marketing financeiro.
+Aplicação web com IA para análise e recomendação de melhorias em páginas de marketing financeiro.
 
 ## Visão geral
 
-O Financial Marketing Pages Analyzer ajuda times de Marketing Digital, UX, Conteúdo e canais digitais a avaliarem páginas de marketing financeiro de forma mais rápida, padronizada e acionável. A solução analisa URLs, briefings em linguagem natural e, em uma evolução futura, mockups, retornando recomendações sobre SEO, estrutura modular, narrativa, clareza de conteúdo e segurança de marca.
+O Financial Marketing Pages Analyzer ajuda times de Marketing Digital, UX, Conteúdo e canais digitais a avaliarem páginas de marketing financeiro de forma mais rápida, consistente e com resultados mais acionáveis. A solução analisa **URLs de páginas reais**, fazendo scraping do conteúdo, detectando módulos, avaliando storytelling, verificando SEO e analisando conformidade de marca para entregar recomendações abrangentes e acionáveis.
 
-O projeto foi pensado para um hackathon com duas ferramentas principais:
+O projeto foi desenvolvido para um hackathon utilizando duas ferramentas principais:
 
 - **IBM Consulting Advantage**: camada de agentes especializados para análise, raciocínio e recomendações.
-- **IBM Bob**: apoio ao desenvolvimento no VS Code para acelerar implementação, testes, documentação e refatoração.
+- **IBM Bob**: suporte ao desenvolvimento no VS Code para acelerar implementação, testes, documentação e refatoração.
 
 ## Problema
 
-Revisar páginas de marketing costuma exigir várias análises manuais ao mesmo tempo:
+Revisar páginas de marketing geralmente requer várias análises manuais simultâneas:
 
 - SEO técnico e semântico.
 - Clareza da proposta de valor.
-- Estrutura dos módulos da página.
+- Estrutura modular da página.
 - Storytelling e progressão narrativa.
 - Qualidade dos CTAs.
 - Tom de marca.
 - Riscos de linguagem em contexto financeiro.
 
-Esse processo pode ser demorado, inconsistente e dependente de múltiplos especialistas. A proposta deste projeto é criar um assistente multiagente que consolida essas análises e entrega um plano de melhoria priorizado.
+Esse processo pode ser lento, inconsistente e dependente de múltiplos especialistas. Este projeto propõe um assistente multiagente que consolida essas análises e entrega um plano de melhoria priorizado.
 
 ## Solução
 
-O sistema recebe uma URL ou briefing e gera um relatório com:
+O sistema recebe uma **URL de página** e gera um relatório abrangente com:
 
 - Score geral da página.
 - Score por dimensão: SEO, storytelling, módulos e segurança de marca.
+- Módulos detectados e estrutura.
 - Diagnóstico executivo.
 - Top prioridades.
 - Sugestões de palavras-chave.
 - Recomendações de módulos para manter, remover, mover ou adicionar.
 - Nova estrutura narrativa sugerida.
-- Sugestões de copy antes/depois.
+- Análise de storytelling.
 - Checklist para o time de Marketing.
 
 ## Arquitetura
@@ -44,14 +45,14 @@ O sistema recebe uma URL ou briefing e gera um relatório com:
 ```text
 Usuário
   |
-  | URL ou briefing
+  | URL da Página
   v
 Frontend Web (React + Vite)
   |
   v
 Backend FastAPI
   |
-  | Scraping + Normalização + Detecção de Módulos
+  | Scraping + Parsing + Detecção de Módulos
   v
 Serviço de Scoring
   |
@@ -77,14 +78,15 @@ Recommendation Agent
 Resposta Estruturada
   |
   | score, score_breakdown, recommendations, module_plan,
-  | narrative_insights, storytelling_analysis, catalog_context
+  | narrative_insights, storytelling_analysis, detected_modules,
+  | page_diagnostics, catalog_context
   v
 Dashboard com componentes visuais
 ```
 
 **Componentes-Chave:**
 
-- **Catalog Context Builder**: Injeta conhecimento especializado dos catálogos locais nos agentes ICA sem necessidade de Knowledge Base/embedding
+- **Catalog Context Builder**: Injeta conhecimento especializado de domínio dos catálogos locais nos agentes ICA sem necessidade de configuração de Knowledge Base/embedding
 - **Orquestração ICA**: Sistema multiagente com padrão supervisor coordenando agentes especializados
 - **Fallback Local**: Fallback automático para processamento local se ICA não estiver disponível
 - **Scoring Data-Driven**: Scoring transparente e auditável baseado em regras dos catálogos
@@ -297,7 +299,7 @@ npm run dev
 
 ## Variáveis de ambiente
 
-Crie um arquivo `.env` no backend a partir do `.env.example`:
+Crie um arquivo `.env` no backend baseado no `.env.example`:
 
 ```env
 APP_NAME=marketing-page-analyzer
@@ -328,48 +330,11 @@ Analisa uma página a partir de uma URL.
 
 **Arquitetura AI-First**: O sistema infere automaticamente contexto, detecta padrões narrativos, identifica intenção, classifica tipo de página, identifica público provável, seleciona padrões de storytelling e constrói catalog_context baseado em URL, conteúdo extraído, módulos detectados, análise de storytelling, score breakdown e narrative insights.
 
-Entrada (apenas `url` é obrigatória):
+Entrada (todos os campos opcionais exceto `url`):
 
 ```json
 {
   "url": "https://www.exemplo.com.br/pagina"
-}
-```
-
-Campos opcionais para compatibilidade/uso futuro (não obrigatórios, não expostos na UX principal):
-
-```json
-{
-  "url": "https://www.exemplo.com.br/pagina",
-  "business_goal": "conversao",
-  "target_audience": "pessoa física interessada em produto financeiro",
-  "page_type_hint": "produto"
-}
-```
-
-### `POST /analyze/briefing`
-
-Analisa uma página planejada a partir de um briefing.
-
-**Arquitetura AI-First**: O sistema infere automaticamente contexto, detecta padrões narrativos, identifica intenção, classifica tipo de página, identifica público provável, seleciona padrões de storytelling e constrói catalog_context baseado no conteúdo do briefing, constraints, análise de storytelling e narrative insights.
-
-Entrada (apenas `briefing` é obrigatório):
-
-```json
-{
-  "briefing": "Criar uma página para divulgar uma solução financeira para pequenos negócios.",
-  "constraints": ["tom simples", "evitar promessas absolutas"]
-}
-```
-
-Campos opcionais para compatibilidade/uso futuro (não obrigatórios, não expostos na UX principal):
-
-```json
-{
-  "briefing": "Criar uma página para divulgar uma solução financeira para pequenos negócios.",
-  "business_goal": "gerar leads",
-  "target_audience": "microempreendedores e pequenas empresas",
-  "constraints": ["tom simples", "evitar promessas absolutas"]
 }
 ```
 
@@ -412,9 +377,9 @@ Campos opcionais para compatibilidade/uso futuro (não obrigatórios, não expos
     }
   },
   "page_summary": {
-    "detected_type": "produto",
-    "primary_goal": "conversao",
-    "main_topic": "solução financeira"
+    "detected_type": "product",
+    "primary_goal": "conversion",
+    "main_topic": "financial solution"
   },
   "recommendations": [
     {
@@ -461,27 +426,77 @@ Campos opcionais para compatibilidade/uso futuro (não obrigatórios, não expos
 
 ## Catálogos locais
 
-O projeto usa catálogos JSON para reduzir recomendações genéricas e dar contexto aos agentes.
+O projeto usa catálogos JSON para fornecer conhecimento especializado de domínio aos agentes ICA através do mecanismo de **catalog_context**, eliminando a necessidade de configuração de Knowledge Base ou embedding na fase de MVP.
 
 ### `modules_catalog.json`
 
-Define tipos de módulos, como hero, benefícios, FAQ, prova social, simulador, CTA e conteúdo educativo.
+Define mais de 50 tipos de módulos com metadados detalhados:
+- ID do módulo, nome, nome de exibição, tipo genérico
+- Propósito, descrição, sinônimos
+- Dicas de detecção, conteúdo comum, elementos de UI
+- Cenários bons/ruins para uso
+- Regras de recomendação (keepWhen, removeWhen, improveWhen)
+
+Exemplos: hero, benefits, FAQ, social proof, simulator, CTA, trust badges, educational content, comparison tables, testimonials.
 
 ### `storytelling_patterns.json`
 
-Define padrões narrativos por tipo de página, como produto, campanha, educação financeira e institucional.
+Define padrões narrativos por tipo de página com:
+- Tipo de página, segmento, objetivo de negócio, público-alvo
+- Nome e descrição do storytelling
+- Estágios da jornada emocional
+- Passos narrativos com módulos recomendados
+- Módulos obrigatórios/opcionais/a evitar
+- Ordem recomendada de módulos
+- Diretrizes de tom, diretrizes de compliance
+- Exemplos de CTA, padrões de copy a evitar
+- Regras de avaliação para agentes
+
+Exemplos: conversion funnel, educational journey, campaign landing, institutional positioning.
+
+### `seo_rules.json`
+
+Define regras de SEO com:
+- ID da regra, categoria, severidade
+- Descrição, applies_to (tipos de página)
+- Verificações (campo, comprimento mín/máx, requisitos)
+- Exemplos ruins/bons
+- Ação recomendada
+- Impacto no score (missing, too_short, too_long, generic)
+- Orientação para agentes
+
+Categorias: metadata, headings, content, links, technical.
 
 ### `brand_rules.json`
 
-Define regras de tom e segurança de linguagem, como evitar promessas absolutas e simplificar termos financeiros.
+Define regras de marca e compliance com:
+- ID da regra, categoria, subcategoria, severidade
+- Descrição, applies_to (tipos de página)
+- Exemplos ruins, alternativas seguras
+- Palavras-chave de detecção
+- Ação recomendada, módulos recomendados
+- Orientação para agentes
 
-### `keyword_topics.json`
+Categorias: compliance (promessas financeiras, YMYL, disclaimers), tom (institucional, clareza), segurança de linguagem (agressivo, urgência, afirmações absolutas).
 
-Define temas e palavras-chave iniciais para apoiar sugestões de SEO sem depender de APIs pagas no MVP.
+### Como funciona o catalog_context
+
+O serviço **Catalog Context Builder**:
+1. Analisa a página
+2. Seleciona os itens mais relevantes de cada catálogo (máximo 8 por catálogo)
+3. Compacta-os para campos essenciais
+4. Injeta-os no payload ICA como `catalog_context`
+5. Agentes ICA usam este contexto como fonte de conhecimento de domínio
+
+Esta abordagem fornece:
+- **Conhecimento especializado** sem necessidade de configuração de Knowledge Base
+- **Raciocínio transparente** - agentes citam regras/padrões específicos
+- **Recomendações auditáveis** - rastreáveis até entradas do catálogo
+- **Manutenção fácil** - atualizar catálogos sem retreinamento
 
 ## Fallback local
 
-Para evitar bloqueios durante a demo, o backend deve ter um fallback local caso a integração com IBM Consulting Advantage não esteja configurada.
+Para evitar bloqueios durante a demo, o backend possui um fallback local caso a integração com IBM Consulting Advantage não esteja configurada.
 
 Exemplo:
 
@@ -514,15 +529,14 @@ class LocalAgentFallback:
 
 - Criar backend FastAPI.
 - Criar endpoint `/health`.
-- Criar endpoint `/analyze/url`.
-- Criar endpoint `/analyze/briefing`.
-- Implementar scraper simples.
+- Criar endpoint `/analyze/url` para análise baseada em URL.
+- Implementar scraper e parser de página.
 - Implementar normalizador de página.
-- Criar catálogos JSON.
+- Implementar detector de módulos.
+- Criar catálogos JSON (módulos, padrões de storytelling, regras de marca, regras de SEO).
 - Criar cliente para IBM Consulting Advantage.
 - Criar fallback local.
 - Criar frontend com formulário de URL.
-- Criar frontend com formulário de briefing.
 - Criar tela de resultado.
 - Criar cards de score.
 - Criar lista de recomendações.
@@ -532,17 +546,17 @@ class LocalAgentFallback:
 
 ### P1
 
-- Adicionar Playwright para páginas com JavaScript.
+- Adicionar Playwright para páginas JavaScript.
 - Adicionar upload de mockup.
 - Adicionar histórico de análises.
 - Adicionar exportação em Markdown.
 - Adicionar testes unitários.
-- Adicionar loading states e tratamento de erro.
+- Adicionar estados de loading e tratamento de erros.
 
 ### P2
 
 - Adicionar RAG com páginas aprovadas.
-- Adicionar benchmark com concorrentes.
+- Adicionar benchmarking com concorrentes.
 - Adicionar comparação antes/depois.
 - Adicionar geração de wireframe sugerido.
 - Adicionar priorização visual por impacto e esforço.
@@ -552,15 +566,14 @@ class LocalAgentFallback:
 ### Backend
 
 ```text
-Crie um backend FastAPI para um aplicativo chamado Marketing Page Analyzer.
+Crie um backend FastAPI para uma aplicação chamada Marketing Page Analyzer.
 
 Requisitos:
 - Endpoint GET /health.
-- Endpoint POST /analyze/url.
-- Endpoint POST /analyze/briefing.
+- Endpoint POST /analyze/url para análise de página baseada em URL.
 - Usar Pydantic para validação.
 - Separar routes, schemas e services.
-- Criar services para scraper, normalização, detecção de módulos e cliente do IBM Consulting Advantage.
+- Criar services para scraping, parsing, detecção de módulos e cliente do IBM Consulting Advantage.
 - Criar fallback local para demo caso a chamada ao IBM Consulting Advantage não esteja configurada.
 - Manter o código simples, testável e bem organizado.
 ```
@@ -574,9 +587,9 @@ Requisitos:
 - Receber uma URL.
 - Baixar HTML com httpx.
 - Extrair title, meta description, canonical, headings H1 a H3, links, imagens e texto principal.
-- Usar BeautifulSoup e trafilatura quando fizer sentido.
+- Usar BeautifulSoup e trafilatura quando apropriado.
 - Retornar um dicionário estruturado.
-- Tratar erros de timeout, URL inválida e HTML vazio.
+- Tratar erros de timeout, URLs inválidas e HTML vazio.
 ```
 
 ### Frontend
@@ -585,189 +598,102 @@ Requisitos:
 Crie uma interface React com TypeScript para o Marketing Page Analyzer.
 
 Requisitos:
-- Tela inicial com tabs para análise por URL e análise por briefing.
-- Campo de URL (obrigatório) e campo de briefing (obrigatório na aba de briefing).
-- Campos avançados opcionais para objetivo de negócio, público-alvo e dica de tipo de página (recolhidos por padrão).
+- Interface simples e focada para análise de página baseada em URL.
+- Campo de entrada de URL (obrigatório).
 - Botão para iniciar análise.
-- Tela de resultado com score geral, scores por área, resumo executivo, top prioridades, mapa de módulos e sugestões de copy.
+- Tela de resultado com score geral, scores por área, módulos detectados, resumo executivo, top prioridades, mapa de módulos e recomendações.
 - Usar Tailwind CSS.
 - Componentes reutilizáveis.
-- Criar um arquivo lib/api.ts para chamadas ao backend.
-- Enfatizar inferência automática AI-first nas mensagens da UI.
+- Criar arquivo lib/api.ts para chamadas ao backend.
+- Enfatizar análise automática com IA nas mensagens da UI.
 ```
 
 ### Testes
 
 ```text
-Crie testes unitários com pytest para os serviços:
-- seo_static_analyzer.py.
+Crie testes unitários com pytest para os services:
 - module_detector.py.
 - page_normalizer.py.
+- scoring_service.py.
 
 Cenários:
 - Página sem title.
 - Página sem meta description.
-- Página com múltiplos H1.
+- Página com múltiplos H1s.
 - Página com headings fora de ordem.
 - Página com módulos vazios.
-- Briefing curto demais.
+- Análise de URL com conteúdo real de página.
 ```
 
-## Prompts para IBM Consulting Advantage
+## Integração IBM Consulting Advantage (ICA)
 
-### Orchestrator Agent
+O sistema utiliza **IBM Consulting Advantage** para orquestração multiagente com fallback automático para processamento local.
 
-```text
-Você é o Orchestrator Agent de um analisador de páginas de marketing para uma instituição financeira.
+### Recursos Principais
 
-Sua tarefa é coordenar análises especializadas de SEO, módulos, storytelling, conteúdo e segurança de marca.
+- **Injeção de Catalog Context**: Backend injeta `catalog_context` com regras, padrões e módulos relevantes no payload ICA
+- **Sem Necessidade de Knowledge Base**: Catalog context fornece conhecimento especializado de domínio sem configuração de KB/embedding
+- **Fallback Automático**: Se ICA não estiver disponível, sistema usa fallback de agente local
+- **Scoring Transparente**: Scoring data-driven baseado em regras de catálogo com explicabilidade completa
+- **Rastreabilidade de Agentes**: Cada recomendação cita regras/padrões específicos do catálogo
 
-Use os dados normalizados da página, o objetivo de negócio, o público-alvo e os catálogos disponíveis.
+### Configuração
 
-Você deve:
-1. Identificar o tipo provável da página.
-2. Definir a intenção principal da página.
-3. Consolidar os achados dos agentes especializados.
-4. Retornar uma resposta única, clara e priorizada.
+Configure as variáveis de ambiente em `backend/.env`:
 
-Critérios:
-- Seja prático.
-- Priorize recomendações de alto impacto.
-- Não invente dados.
-- Sinalize incertezas quando necessário.
-- Evite recomendações genéricas.
-- Retorne apenas JSON válido.
+```env
+ADVANTAGE_BASE_URL=https://api.ibm.com/consulting-advantage
+ADVANTAGE_API_KEY=your_api_key_here
+ADVANTAGE_ORCHESTRATOR_ID=d5d0c63a-4a42-4431-b870-3f496a43fe10
+ENABLE_AGENT_FALLBACK=true
 ```
 
-### SEO Agent
+### Instruções para Agentes
 
-```text
-Você é um especialista em SEO para páginas de marketing de serviços financeiros.
+Os agentes ICA recebem instruções para:
+- Usar `catalog_context` como fonte de conhecimento de domínio
+- Não inventar regras, módulos ou padrões fora do contexto fornecido
+- Basear recomendações em `relevant_modules`, `relevant_storytelling_patterns`, `relevant_seo_rules` e `relevant_brand_rules`
+- Citar IDs específicos de regras e padrões nas recomendações
+- Fornecer explicabilidade para todos os scores e recomendações
 
-Analise metadados, headings, texto principal, links e estrutura da página.
-
-Avalie:
-- Title tag.
-- Meta description.
-- H1.
-- Hierarquia de H2 e H3.
-- Palavra-chave principal.
-- Palavras-chave secundárias.
-- Intenção de busca.
-- Links internos.
-- Oportunidades para snippets.
-
-Retorne JSON válido com score, problemas, recomendações, title sugerido, meta description sugerida, palavra-chave principal e palavras-chave secundárias.
-```
-
-### Module Strategy Agent
-
-```text
-Você é um estrategista de UX e conteúdo especializado em páginas modulares de marketing.
-
-Você receberá módulos detectados e um catálogo de módulos possíveis.
-
-Avalie:
-- Quais módulos manter.
-- Quais módulos remover.
-- Quais módulos mudar de posição.
-- Quais módulos reescrever.
-- Quais módulos adicionar.
-
-Considere tipo da página, objetivo de negócio e público-alvo.
-Retorne JSON válido com justificativa e impacto esperado.
-```
-
-### Storytelling Agent
-
-```text
-Você é um especialista em storytelling para páginas digitais de marketing.
-
-Analise se a página tem progressão narrativa clara:
-- Gancho.
-- Contexto ou problema.
-- Solução.
-- Benefícios.
-- Prova.
-- CTA.
-- Redução de objeções.
-
-Compare a estrutura atual com o padrão ideal para o tipo da página.
-Retorne score, diagnóstico, estrutura recomendada e sugestões de copy.
-Retorne apenas JSON válido.
-```
-
-### Brand Safety Agent
-
-```text
-Você é um revisor de marca e segurança de conteúdo para uma instituição financeira.
-
-Analise:
-- Clareza.
-- Tom institucional.
-- Promessas absolutas.
-- Termos financeiros complexos.
-- Riscos de interpretação.
-- CTAs ambíguos.
-- Necessidade de revisão humana.
-
-Use as regras de marca fornecidas.
-Retorne JSON válido com score, riscos, trechos problemáticos, sugestões de reescrita e indicação de revisão humana.
-```
-
-### Recommendation Agent
-
-```text
-Você é um consultor de marketing digital responsável por transformar análises em plano de ação.
-
-Você receberá achados dos agentes de SEO, módulos, storytelling e brand safety.
-
-Crie:
-- Resumo executivo.
-- Top 5 prioridades.
-- Quick wins.
-- Melhorias estruturais.
-- Sugestões de copy.
-- Nova ordem de módulos.
-- Checklist final.
-
-Classifique cada recomendação por impacto, esforço e área.
-Retorne apenas JSON válido.
-```
+Para documentação detalhada da integração, consulte `backend/ICA_INTEGRATION.md`.
 
 ## Roteiro de demo
 
 ### Abertura
 
-"O problema que queremos resolver é que otimizar páginas de marketing exige olhar SEO, conteúdo, UX, storytelling, marca e segurança de linguagem ao mesmo tempo. Esse processo normalmente é manual, demorado e pouco padronizado."
+"O problema que queremos resolver é que otimizar páginas de marketing requer olhar SEO, conteúdo, UX, storytelling, marca e segurança de linguagem ao mesmo tempo. Esse processo normalmente é manual, demorado e pouco padronizado."
 
 ### Fluxo
 
 1. Abrir o app.
-2. Colar uma URL pública ou inserir um briefing.
-3. Informar objetivo de negócio.
-4. Informar público-alvo.
-5. Rodar análise.
-6. Mostrar score geral.
-7. Mostrar oportunidades de SEO.
-8. Mostrar plano de módulos.
-9. Mostrar storytelling recomendado.
-10. Mostrar sugestões de copy.
-11. Mostrar top prioridades.
+2. Colar uma URL pública de página de marketing.
+3. Rodar a análise.
+4. Sistema faz scraping e parsing da página.
+5. Sistema detecta módulos e estrutura.
+6. Mostrar o score geral.
+7. Mostrar módulos detectados.
+8. Mostrar oportunidades de SEO.
+9. Mostrar o plano de módulos.
+10. Mostrar o storytelling recomendado.
+11. Mostrar narrative insights.
+12. Mostrar top prioridades.
 
 ### Fechamento
 
-"A solução usa IBM Consulting Advantage para orquestrar agentes especialistas e IBM Bob para acelerar a construção do software. O resultado é uma análise padronizada, explicável e acionável para times de Marketing Digital."
+"A solução usa IBM Consulting Advantage para orquestrar agentes especialistas e IBM Bob para acelerar o desenvolvimento de software. O resultado é uma análise padronizada, explicável e acionável para times de Marketing Digital baseada em conteúdo real de página."
 
 ## Critérios de aceite
 
 - O usuário consegue analisar uma URL.
-- O usuário consegue analisar um briefing.
+- O sistema faz scraping e parsing de conteúdo real de página.
+- O sistema detecta módulos automaticamente.
 - A API retorna JSON estruturado.
-- O dashboard exibe score geral e scores por área.
+- O dashboard exibe o score geral e scores por área.
 - A solução retorna pelo menos cinco recomendações priorizadas.
 - As recomendações indicam impacto e esforço.
-- O sistema funciona mesmo com fallback local.
+- O sistema funciona mesmo com o fallback local.
 - O README permite rodar o projeto localmente.
 
 ## Roadmap sugerido
@@ -794,7 +720,7 @@ Retorne apenas JSON válido.
 - Histórico.
 - Exportação.
 - RAG.
-- Benchmark.
+- Benchmarking.
 
 ## Observações
 
