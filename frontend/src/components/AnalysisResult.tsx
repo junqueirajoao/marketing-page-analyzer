@@ -84,28 +84,6 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
       {/* Score Breakdown - Detalhamento de pontuação - COLLAPSED BY DEFAULT */}
       {data.score_breakdown && <ScoreBreakdown breakdown={data.score_breakdown} />}
 
-      {/* Page Summary - Resumo executivo - COLLAPSED BY DEFAULT */}
-      <CollapsibleSection
-        title="Resumo Executivo"
-        icon="📋"
-        defaultExpanded={false}
-      >
-        <div className="space-y-3">
-          <div className="flex items-start">
-            <span className="font-semibold text-gray-700 w-32">Tipo:</span>
-            <span className="text-gray-900">{data.page_summary.detected_type}</span>
-          </div>
-          <div className="flex items-start">
-            <span className="font-semibold text-gray-700 w-32">Objetivo:</span>
-            <span className="text-gray-900">{data.page_summary.primary_goal}</span>
-          </div>
-          <div className="flex items-start">
-            <span className="font-semibold text-gray-700 w-32">Tema Principal:</span>
-            <span className="text-gray-900">{data.page_summary.main_topic}</span>
-          </div>
-        </div>
-      </CollapsibleSection>
-
       {/* Recommendations - Top prioridades - COLLAPSED BY DEFAULT */}
       {data.recommendations && data.recommendations.length > 0 && (
         <CollapsibleSection

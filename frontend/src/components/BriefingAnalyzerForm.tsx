@@ -10,8 +10,6 @@ interface BriefingAnalyzerFormProps {
 export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onResult, onError, onLoading }) => {
   const [formData, setFormData] = useState({
     briefing: '',
-    business_goal: '',
-    target_audience: '',
     constraints: '',
   });
 
@@ -29,10 +27,8 @@ export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onRe
       
       const payload: AnalyzeBriefingPayload = {
         briefing: formData.briefing,
-        ...(formData.business_goal && { business_goal: formData.business_goal }),
-        ...(formData.target_audience && { target_audience: formData.target_audience }),
-        ...(formData.constraints && { 
-          constraints: formData.constraints.split(',').map(c => c.trim()).filter(c => c) 
+        ...(formData.constraints && {
+          constraints: formData.constraints.split(',').map(c => c.trim()).filter(c => c)
         }),
       };
       
@@ -46,53 +42,28 @@ export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onRe
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="briefing" className="block text-sm font-medium text-gray-700 mb-1">
-          Briefing *
+        <label htmlFor="briefing" className="block text-sm font-medium text-gray-700 mb-2">
+          Briefing da Página *
         </label>
         <textarea
           id="briefing"
           required
           value={formData.briefing}
           onChange={(e) => setFormData({ ...formData, briefing: e.target.value })}
-          placeholder="Descreva os requisitos da sua página de marketing..."
-          rows={6}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Descreva os requisitos da sua página de marketing. Exemplo: Preciso de uma landing page para promover nosso novo produto de investimentos..."
+          rows={8}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
         />
+        <p className="mt-2 text-sm text-gray-500">
+          Descreva o que você precisa. O sistema irá automaticamente identificar o tipo de página, objetivo e público-alvo ideal.
+        </p>
       </div>
 
       <div>
-        <label htmlFor="business_goal_briefing" className="block text-sm font-medium text-gray-700 mb-1">
-          Objetivo de Negócio
-        </label>
-        <input
-          type="text"
-          id="business_goal_briefing"
-          value={formData.business_goal}
-          onChange={(e) => setFormData({ ...formData, business_goal: e.target.value })}
-          placeholder="ex: aumentar conversões, gerar leads"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="target_audience_briefing" className="block text-sm font-medium text-gray-700 mb-1">
-          Público-Alvo
-        </label>
-        <input
-          type="text"
-          id="target_audience_briefing"
-          value={formData.target_audience}
-          onChange={(e) => setFormData({ ...formData, target_audience: e.target.value })}
-          placeholder="ex: pequenos empresários, millennials"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="constraints" className="block text-sm font-medium text-gray-700 mb-1">
-          Restrições (separadas por vírgula)
+        <label htmlFor="constraints" className="block text-sm font-medium text-gray-700 mb-2">
+          Restrições (opcional)
         </label>
         <input
           type="text"
@@ -100,15 +71,18 @@ export const BriefingAnalyzerForm: React.FC<BriefingAnalyzerFormProps> = ({ onRe
           value={formData.constraints}
           onChange={(e) => setFormData({ ...formData, constraints: e.target.value })}
           placeholder="ex: mobile-first, sem vídeo, limite de orçamento"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
         />
+        <p className="mt-2 text-sm text-gray-500">
+          Separe múltiplas restrições por vírgula.
+        </p>
       </div>
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+        className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium text-base"
       >
-        Analisar Briefing
+        🚀 Analisar Briefing
       </button>
     </form>
   );
