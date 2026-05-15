@@ -9,7 +9,7 @@ Modern, responsive web interface for analyzing financial marketing pages using I
 ## Prerequisites
 
 - Node.js 18+ installed
-- Backend running on http://localhost:8001
+- Backend running on http://localhost:8000
 - npm or yarn package manager
 
 ## Installation
@@ -77,7 +77,7 @@ frontend/
 
 ## API Integration
 
-The frontend connects to the backend API at `http://localhost:8001`:
+The frontend connects to the backend API at `http://localhost:8000`:
 
 ### Endpoints
 - **POST** `/analyze/url` - Analyze a URL
@@ -142,15 +142,15 @@ Vite provides instant HMR for fast development iteration.
 ### Environment Variables
 Create `.env.local` for custom configuration:
 ```env
-VITE_API_BASE_URL=http://localhost:8001
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
 ## Troubleshooting
 
 ### Backend Connection Issues
-1. Verify backend is running: http://localhost:8001/health
+1. Verify backend is running: http://localhost:8000/health
 2. Check CORS configuration in backend
-3. Verify port 8001 is not blocked by firewall
+3. Verify port 8000 is not blocked by firewall
 
 ### Build Errors
 1. Delete `node_modules` and `package-lock.json`

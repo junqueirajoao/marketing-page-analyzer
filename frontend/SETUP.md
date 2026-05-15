@@ -8,7 +8,7 @@ Complete setup and testing guide for the **Financial Marketing Pages Analyzer** 
 
 - Node.js 18+ installed
 - npm or yarn package manager
-- Backend running on port 8001
+- Backend running on port 8000
 - Modern web browser (Chrome, Firefox, Edge, Safari)
 
 ## Complete Setup Instructions
@@ -38,19 +38,19 @@ In a separate terminal:
 ```powershell
 cd backend
 .\.venv\Scripts\Activate.ps1
-uvicorn app.main:app --reload --port 8001
+uvicorn app.main:app --reload --port 8000
 ```
 
 **Linux/Mac:**
 ```bash
 cd backend
 source .venv/bin/activate
-uvicorn app.main:app --reload --port 8001
+uvicorn app.main:app --reload --port 8000
 ```
 
 **Verify backend is running:**
-- Health check: http://localhost:8001/health
-- API docs: http://localhost:8001/docs
+- Health check: http://localhost:8000/health
+- API docs: http://localhost:8000/docs
 
 ### Step 3: Start the Frontend
 
@@ -179,8 +179,8 @@ The frontend will start on **http://localhost:3000**
 - Check if port 3000 is already in use
 
 ### Backend connection errors
-- Verify backend is running on http://localhost:8001
-- Check backend health endpoint: http://localhost:8001/health
+- Verify backend is running on http://localhost:8000
+- Check backend health endpoint: http://localhost:8000/health
 - Ensure no firewall is blocking the connection
 
 ### TypeScript errors in editor
